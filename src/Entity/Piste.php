@@ -22,6 +22,10 @@ class Piste
     #[ORM\Column(length: 50)]
     private ?string $audio = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pistes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Album $album = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,18 @@ class Piste
     public function setAudio(string $audio): static
     {
         $this->audio = $audio;
+
+        return $this;
+    }
+
+    public function getAlbum(): ?Album
+    {
+        return $this->album;
+    }
+
+    public function setAlbum(?Album $album): static
+    {
+        $this->album = $album;
 
         return $this;
     }

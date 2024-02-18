@@ -19,6 +19,10 @@ class ImageConcert
     #[ORM\Column(length: 50)]
     private ?string $alt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ImageConcerts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Concert $concert = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class ImageConcert
     public function setAlt(string $alt): static
     {
         $this->alt = $alt;
+
+        return $this;
+    }
+
+    public function getConcert(): ?Concert
+    {
+        return $this->concert;
+    }
+
+    public function setConcert(?Concert $concert): static
+    {
+        $this->concert = $concert;
 
         return $this;
     }

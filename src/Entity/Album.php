@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AlbumRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,14 @@ class Album
 
     #[ORM\Column(nullable: true)]
     private ?bool $ban = null;
+
+    #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true)]
+    private Collection $pistes;
+
+    public function __construct()
+    {
+        $this->pistes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +115,36 @@ class Album
     public function setBan(?bool $ban): static
     {
         $this->ban = $ban;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Piste>
+     */
+    public function getPistes(): Collection
+    {
+        return $this->pistes;
+    }
+
+    public function addPiste(Piste $piste): static
+    {
+        if (!$this->pistes->contains($piste)) {
+            $this->pistes->add($piste);
+            $piste->setAlbum($this);
+        }
+
+        return $this;
+    }
+
+    public function removePiste(Piste $piste): static
+    {
+        if ($this->pistes->removeElement($piste)) {
+            // set the owning side to null (unless already changed)
+            if ($piste->getAlbum() === $this) {
+                $piste->setAlbum(null);
+            }
+        }
 
         return $this;
     }
