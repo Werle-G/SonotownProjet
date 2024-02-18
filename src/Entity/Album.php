@@ -43,9 +43,9 @@ class Album
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'aimers')]
     private Collection $aimers;
 
-    #[ORM\ManyToOne(inversedBy: 'produirs')]
+    #[ORM\ManyToOne(inversedBy: 'albums')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $produirs = null;
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -215,14 +215,14 @@ class Album
         return $this;
     }
 
-    public function getProduirs(): ?User
+    public function getUser(): ?User
     {
-        return $this->produirs;
+        return $this->user;
     }
 
-    public function setProduirs(?User $produirs): static
+    public function setUser(?User $user): static
     {
-        $this->produirs = $produirs;
+        $this->user = $user;
 
         return $this;
     }

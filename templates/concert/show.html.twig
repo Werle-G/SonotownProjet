@@ -6,10 +6,20 @@
 
     <h1>Liste des concerts de </h1>
 
+    <a href="{{ path('new_concert') }}">Nouveau concert</a><br>
+
     {% for concert in concerts %}
+
+
         {{ concert.descriptionConcert }}
         {{ concert.lieu }}
         {{ concert.user.pseudo }}
+        <a href="{{ path('edit_concert', {'id': concert.id}) }}">Éditer concert</a>
+        <a href="{{ path('delete_concert', {'id': concert.id}) }}">delete concert</a><br>
+
     {% endfor %}
+
+          
+
 
 {% endblock %}

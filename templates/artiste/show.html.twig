@@ -10,14 +10,26 @@
 
         <h2>Discographie</h2>
 
+        <a href="{{ path('new_album') }}">Ajouter un nouvel album</a>
+
         {% for album in albums %}
 
         <a href="{{ path('show_album', {'id': album.id}) }}">{{ album.nomAlbum}}</a>
+        <a href="{{ path('edit_album', {'id': album.id}) }}">Éditer album</a>
+        <a href="{{ path('delete_album', {'id': album.id}) }}">delete album</a>
         
 
         {% endfor %}
 
       </div>
+
+      <h3>Concert</h3>
+
+      <a href="{{ path('show_concert', {'id': user.id}) }}">Voir les concerts</a>
+
+      {# <a href="{{ path('edit_concert', {'id': concert.id}) }}">Éditer concert</a>
+      <a href="{{ path('delete_concert', {'id': concert.id}) }}">delete album</a> #}
+
 
       <div class="artiste-header">
 
@@ -25,7 +37,7 @@
 
         <p>{{ user.biographie}}</p>
         
-        <p>{{ user.genreMusical.nomGenreMusical}}</p>
+        {# <p>{{ user.genreMusical.nomGenreMusical}}</p> #}
 
       </div>
 

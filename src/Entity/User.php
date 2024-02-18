@@ -65,8 +65,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'aimers')]
     private Collection $aimers;
 
-    #[ORM\OneToMany(targetEntity: Album::class, mappedBy: 'produirs', orphanRemoval: true)]
-    private Collection $produirs;
+    #[ORM\OneToMany(targetEntity: Album::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $albums;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?GenreMusical $genreMusical = null;
@@ -75,15 +75,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $jouers;
 
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $poster;
+    private Collection $posters;
 
     public function __construct()
     {
         $this->suivres = new ArrayCollection();
         $this->aimers = new ArrayCollection();
-        $this->produirs = new ArrayCollection();
+        $this->albums = new ArrayCollection();
         $this->jouers = new ArrayCollection();
-        $this->poster = new ArrayCollection();
+        $this->posters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -315,30 +315,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Album>
      */
-    public function getProduirs(): Collection
+    public function getAlbums(): Collection
     {
-        return $this->produirs;
+        return $this->albums;
     }
-
-    public function addProduir(Album $produir): static
+    
+    public function addAlbum(Album $album): static
     {
-        if (!$this->produirs->contains($produir)) {
-            $this->produirs->add($produir);
-            $produir->setProduirs($this);
+        if (!$this->albums->contains($album)) {
+            $this->albums->add($album);
+            $album->setUser($this);
         }
-
+    
         return $this;
     }
-
-    public function removeProduir(Album $produir): static
+    
+    public function removeAlbum(Album $album): static
     {
-        if ($this->produirs->removeElement($produir)) {
+        if ($this->albums->removeElement($album)) {
             // set the owning side to null (unless already changed)
-            if ($produir->getProduirs() === $this) {
-                $produir->setProduirs(null);
+            if ($album->getUser() === $this) {
+                $album->setUser(null);
             }
         }
-
+    
         return $this;
     }
 
@@ -387,15 +387,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Post>
      */
-    public function getPoster(): Collection
+    public function getPosters(): Collection
     {
-        return $this->poster;
+        return $this->posters;
     }
 
     public function addPoster(Post $poster): static
     {
-        if (!$this->poster->contains($poster)) {
-            $this->poster->add($poster);
+        if (!$this->posters->contains($poster)) {
+            $this->posters->add($poster);
             $poster->setUser($this);
         }
 
@@ -404,7 +404,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removePoster(Post $poster): static
     {
-        if ($this->poster->removeElement($poster)) {
+        if ($this->posters->removeElement($poster)) {
             // set the owning side to null (unless already changed)
             if ($poster->getUser() === $this) {
                 $poster->setUser(null);
