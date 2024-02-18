@@ -37,9 +37,13 @@ class Album
     #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true)]
     private Collection $pistes;
 
+    #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums')]
+    private Collection $genreMusicals;
+
     public function __construct()
     {
         $this->pistes = new ArrayCollection();
+        $this->genreMusicals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -144,6 +148,33 @@ class Album
             if ($piste->getAlbum() === $this) {
                 $piste->setAlbum(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GenreMusical>
+     */
+    public function getGenreMusicals(): Collection
+    {
+        return $this->genreMusicals;
+    }
+
+    public function addGenreMusical(GenreMusical $genreMusical): static
+    {
+        if (!$this->genreMusicals->contains($genreMusical)) {
+            $this->genreMusicals->add($genreMusical);
+            $genreMusical->addAlbum($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGenreMusical(GenreMusical $genreMusical): static
+    {
+        if ($this->genreMusicals->removeElement($genreMusical)) {
+            $genreMusical->removeAlbum($this);
         }
 
         return $this;
