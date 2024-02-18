@@ -28,6 +28,10 @@ class Concert
     #[ORM\OneToMany(targetEntity: ImageConcert::class, mappedBy: 'concert', orphanRemoval: true)]
     private Collection $ImageConcerts;
 
+    #[ORM\ManyToOne(inversedBy: 'jouers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->ImageConcerts = new ArrayCollection();
@@ -100,6 +104,18 @@ class Concert
                 $imageConcert->setConcert(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

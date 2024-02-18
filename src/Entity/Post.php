@@ -23,6 +23,10 @@ class Post
     #[ORM\Column(nullable: true)]
     private ?bool $ban = null;
 
+    #[ORM\ManyToOne(inversedBy: 'poster')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,18 @@ class Post
     public function setBan(?bool $ban): static
     {
         $this->ban = $ban;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

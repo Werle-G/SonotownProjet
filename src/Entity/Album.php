@@ -40,10 +40,18 @@ class Album
     #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums')]
     private Collection $genreMusicals;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'aimers')]
+    private Collection $aimers;
+
+    #[ORM\ManyToOne(inversedBy: 'produirs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $produirs = null;
+
     public function __construct()
     {
         $this->pistes = new ArrayCollection();
         $this->genreMusicals = new ArrayCollection();
+        $this->aimers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -176,6 +184,45 @@ class Album
         if ($this->genreMusicals->removeElement($genreMusical)) {
             $genreMusical->removeAlbum($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getAimers(): Collection
+    {
+        return $this->aimers;
+    }
+
+    public function addAimer(User $aimer): static
+    {
+        if (!$this->aimers->contains($aimer)) {
+            $this->aimers->add($aimer);
+            $aimer->addAimer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAimer(User $aimer): static
+    {
+        if ($this->aimers->removeElement($aimer)) {
+            $aimer->removeAimer($this);
+        }
+
+        return $this;
+    }
+
+    public function getProduirs(): ?User
+    {
+        return $this->produirs;
+    }
+
+    public function setProduirs(?User $produirs): static
+    {
+        $this->produirs = $produirs;
 
         return $this;
     }
