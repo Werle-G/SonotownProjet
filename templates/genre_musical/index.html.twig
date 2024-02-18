@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Genres musicaux{% endblock %}
+
+{% block body %}
+
+    <h1>Genres musicaux</h1>
+
+    {% for genreMusical in genreMusicals %}
+
+        <a href="{{ path('show_genre_musical', {'id': genreMusical.id}) }}">{{ genreMusical.nomGenreMusical }}</a>
+    {% endfor %}
+
+{% endblock %}

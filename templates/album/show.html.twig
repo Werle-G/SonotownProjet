@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail Album{% endblock %}
+
+{% block body %}
+
+<div class="artiste-container">
+
+          <h1>Détail Album</h1>
+
+      <div class="artiste-header">
+
+        <h2>{{ user.pseudo}}</h2>
+
+        {{ user.biographie}}
+        {{ user.dateCreationGroupe}}
+        
+        {{ user.genreMusical}}
+
+      </div>
+
+      <div class="artiste-album">
+
+
+        <h3>{{ album.nomAlbum}}</h3>
+
+        {% for piste in album.pistes %}
+
+            {{ piste.titre }}
+            {{ piste.duree }}
+
+        {% endfor %}
+        
+      </div>
+
+</div>
+
+
+{% endblock %}

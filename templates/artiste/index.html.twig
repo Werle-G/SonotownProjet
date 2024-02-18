@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des artistes{% endblock %}
+
+{% block body %}
+
+    <h1>liste des Artistes</h1>
+
+    {% for user in users %}
+        <a href="{{ path('show_artiste', {'id': user.id}) }}">{{ user.pseudo}}</a>
+    {% endfor %}
+
+
+
+{% endblock %}

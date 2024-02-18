@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArtisteController!{% endblock %}
+
+{% block body %}
+
+<div class="artiste-container">
+
+      <div class="artiste-album">
+
+        <h2>Discographie</h2>
+
+        {% for album in albums %}
+
+        <a href="{{ path('show_album', {'id': album.id}) }}">{{ album.nomAlbum}}</a>
+        
+
+        {% endfor %}
+
+      </div>
+
+      <div class="artiste-header">
+
+        <h1>{{ user.pseudo}}</h1>
+
+        <p>{{ user.biographie}}</p>
+        
+        <p>{{ user.genreMusical.nomGenreMusical}}</p>
+
+      </div>
+
+
+</div>
+
+
+{% endblock %}

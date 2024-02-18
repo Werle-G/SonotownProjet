@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des concerts{% endblock %}
+
+{% block body %}
+
+    <h1>Liste des concerts de </h1>
+
+    {% for concert in concerts %}
+        {{ concert.descriptionConcert }}
+        {{ concert.lieu }}
+        {{ concert.user.pseudo }}
+    {% endfor %}
+
+{% endblock %}

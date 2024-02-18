@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page utilisateurs{% endblock %}
+
+{% block body %}
+
+
+    <h1>Page utilisateurs</h1>
+
+
+    {% for user in users %}
+        <a href="{{ path('show_profil', {'id': user.id}) }}">{{ user.pseudo }}</a>
+    {% endfor %}
+
+
+{% endblock %}
