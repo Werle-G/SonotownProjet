@@ -44,8 +44,8 @@
     </div>
 
     {% for genreMusical in form.genreMusicals %}
-        {{ form_widget(genreMusical) }} {{ form_label(genreMusical) }}
-    {% endfor %}
+    {{ form_label(genreMusical) }} {{ form_widget(genreMusical) }}
+{% endfor %}
 
     <div class="form-group">
         {{ form_label(form.user) }}

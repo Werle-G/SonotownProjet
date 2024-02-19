@@ -37,21 +37,26 @@ class AlbumController extends AbstractController
         $form = $this->createForm(AlbumType::class, $album);
         
         $form->handleRequest($request);
-
-
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             $album = $form->getData();
-
     
+            // Associer les pistes à l'album
             foreach ($album->getPistes() as $piste) {
                 $piste->setAlbum($album); 
                 $entityManager->persist($piste);
             }
     
+            // Associer les genres sélectionnés à l'album
+            // Supposons que votre formulaire a un champ 'genreMusicals' qui contient les genres sélectionnés
+            foreach ($form->get('genreMusicals')->getData() as $genre) {
+                $album->addGenreMusical($genre);
+                dd($album);
+            }
+    
             $entityManager->persist($album);
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_album');
         }
     

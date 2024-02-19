@@ -39,7 +39,7 @@ class Album
     private Collection $pistes;
 
     // #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums')]
-    #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums', orphanRemoval: true, cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums', cascade: ["persist"])]
 
     private Collection $genreMusicals;
 

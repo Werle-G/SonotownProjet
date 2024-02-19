@@ -19,7 +19,7 @@ class GenreMusical
     private ?string $nomGenreMusical = null;
 
     // #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'genreMusicals')]
-    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'genreMusicals', orphanRemoval: true, cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'genreMusicals', cascade: ["persist"])]
 
     private Collection $albums;
 
