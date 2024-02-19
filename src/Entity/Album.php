@@ -38,7 +38,9 @@ class Album
     #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true, cascade: ["persist"])]
     private Collection $pistes;
 
-    #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums')]
+    // #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums')]
+    #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums', orphanRemoval: true, cascade: ["persist"])]
+
     private Collection $genreMusicals;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'aimers')]

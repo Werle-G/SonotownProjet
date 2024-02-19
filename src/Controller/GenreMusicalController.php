@@ -8,6 +8,7 @@ use App\Form\GenreMusicalType;
 use App\Repository\AlbumRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\GenreMusicalRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -60,14 +61,15 @@ class GenreMusicalController extends AbstractController
     }
 
     #[Route('/genre/musical/{id}', name: 'show_genre_musical')]
-    public function show(User $users, AlbumRepository $albumRepository, GenreMusical $genreMusical, $id)
+    public function show(UserRepository $userRepository, AlbumRepository $albumRepository, $id)
     {
 
         // $artistes = $userRepository->findBy(["nomGenreMusical" => $id]);
         $albums = $albumRepository->findBy(["genreMusical" => $id]);
+        $users = $userRepository->findBy(["genreMusical" => $id]);
 
         return $this->render('genre_musical/show.html.twig', [
-            'genreMusical' => $genreMusical,
+            // 'genreMusical' => $genreMusical,
             'albums' => $albums,
             'users' => $users,
         ]);

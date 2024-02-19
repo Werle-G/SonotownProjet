@@ -1,12 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Album concert{% endblock %}
+{% block title %}Créer un concert{% endblock %}
 
 {% block body %}
+    <h1>Créer un concert</h1>
 
-    <h1>Ajout/Modifier Concert</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.lieu) }}
+    {{ form_row(form.dateConcert) }}
+    {{ form_row(form.descriptionConcert) }}
+    {{ form_row(form.user) }}
 
+    <h2>Images du concert</h2>
+    {{ form_row(form.imageConcerts) }}
 
-        {{ form(formAddConcert) }}
-
+    {{ form_row(form.valider) }}
+    {{ form_end(form) }}
 {% endblock %}
+

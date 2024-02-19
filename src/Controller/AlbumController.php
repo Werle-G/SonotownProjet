@@ -35,31 +35,23 @@ class AlbumController extends AbstractController
         }
     
         $form = $this->createForm(AlbumType::class, $album);
-    
+        
         $form->handleRequest($request);
+
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $album = $form->getData();
 
-            dump($album);
-            
-
+    
             foreach ($album->getPistes() as $piste) {
-                $piste->setAlbum($album); // Définir l'album pour chaque piste
+                $piste->setAlbum($album); 
                 $entityManager->persist($piste);
             }
-
-            foreach ($album->getGenreMusicals() as $genreMusical) {
-                $album->addGenreMusical($genreMusical);
-                // dump($genreMusical);
-            }
-
-        
+    
             $entityManager->persist($album);
             $entityManager->flush();
 
-            dump($album); 
-
-    
             return $this->redirectToRoute('app_album');
         }
     
@@ -68,7 +60,6 @@ class AlbumController extends AbstractController
             'edit' => $album->getId()
         ]);
     }
-
 
 
     #[Route('/album/{id}/delete', name: 'delete_album')]

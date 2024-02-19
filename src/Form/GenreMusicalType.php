@@ -16,11 +16,18 @@ class GenreMusicalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nomGenreMusical')
+            // ->add('nomGenreMusical')
+            // // ->add('albums', EntityType::class, [
+            // ->add('album', HiddenType::class, [
+            //     'mapped' => false, 
+            // ])
             // ->add('albums', EntityType::class, [
-            ->add('album', HiddenType::class, [
-                'mapped' => false, 
-            ])
+            //     'class' => 'App\Entity\Album',
+            //     'choice_label' => 'nomAlbum',
+            //     'multiple' => true,
+            //     'expanded' => true,
+            //     'by_reference' => false,
+            // ]);
             // ->add('valider', SubmitType::class, [
             //     'attr' => [
             //         'class' => 'btn btn-success'

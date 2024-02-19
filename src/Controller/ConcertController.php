@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Concert;
 use App\Form\ConcertType;
+use App\Entity\ImageConcert;
 use App\Repository\ConcertRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,13 +24,13 @@ class ConcertController extends AbstractController
         ]);
     }
 
-
     #[Route('/concert/new', name: 'new_concert')]
     #[Route('/concert/{id}/edit', name: 'edit_concert')]
     public function new_edit(Concert $concert = null, Request $request, EntityManagerInterface $entityManager): Response
     {
         if(!$concert) {
             $concert = new Concert();  
+            $concert->addImageConcert(new ImageConcert());
         } 
 
         $form = $this->createForm(ConcertType::class, $concert);
@@ -40,11 +41,17 @@ class ConcertController extends AbstractController
             $entityManager->persist($concert);
             $entityManager->flush();
 
+            foreach ($concert->getImageConcerts() as $image) {
+                $image->setConcert($concert); // Correction du nom de la méthode
+                $entityManager->persist($image);
+                $entityManager->flush(); // Ajout de flush() ici
+            }
+
             return $this->redirectToRoute('app_concert');
         }
 
         return $this->render('concert/new.html.twig', [
-            'formAddConcert' => $form->createView(),
+            'form' => $form->createView(),
             'edit' => $concert->getId()
         ]);
     }

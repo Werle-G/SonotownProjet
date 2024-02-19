@@ -23,7 +23,7 @@ class Piste
     #[ORM\Column(length: 50)]
     private ?string $audio = null;
 
-    #[ORM\ManyToOne(inversedBy: 'pistes')]
+    #[ORM\ManyToOne(targetEntity: Album::class, inversedBy: 'pistes', cascade: ["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Album $album = null;
 

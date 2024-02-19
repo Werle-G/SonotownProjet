@@ -34,8 +34,8 @@ class AlbumType extends AbstractType
             ->add('genreMusicals', EntityType::class, [
                 'class' => GenreMusical::class,
                 'choice_label' => 'nomGenreMusical',
-                'multiple' => true,
-                'expanded' => true,
+                'multiple' => true, // Permet la sélection de plusieurs genres musicaux
+                'expanded' => true, // Affiche les genres musicaux sous forme de cases à cocher
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
@@ -43,8 +43,8 @@ class AlbumType extends AbstractType
             ])
             ->add('pistes', CollectionType::class, [
                 'entry_type' => PisteType::class,
-                'allow_add' => true, // Permet d'ajouter de nouveaux éléments à la collection
-                'by_reference' => false, // Nécessaire lorsque vous utilisez des formulaires imbriqués pour les entités
+                'allow_add' => true, 
+                'by_reference' => false, 
             ])
             ->add('valider', SubmitType::class, [
                 'attr' => [

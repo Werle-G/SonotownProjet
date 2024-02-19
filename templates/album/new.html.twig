@@ -43,10 +43,9 @@
         {{ form_widget(form.ban, {'attr': {'class': 'form-control'}}) }}
     </div>
 
-    <div class="form-group">
-        {{ form_label(form.genreMusicals) }}
-        {{ form_widget(form.genreMusicals, {'attr': {'class': 'form-control'}}) }}
-    </div>
+    {% for genreMusical in form.genreMusicals %}
+        {{ form_widget(genreMusical) }} {{ form_label(genreMusical) }}
+    {% endfor %}
 
     <div class="form-group">
         {{ form_label(form.user) }}

@@ -25,7 +25,9 @@ class Concert
     #[ORM\Column(type: Types::TEXT)]
     private ?string $descriptionConcert = null;
 
-    #[ORM\OneToMany(targetEntity: ImageConcert::class, mappedBy: 'concert', orphanRemoval: true)]
+    // #[ORM\OneToMany(targetEntity: ImageConcert::class, mappedBy: 'concert', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ImageConcert::class, mappedBy: 'concert', orphanRemoval: true, cascade: ["persist"])]
+
     private Collection $ImageConcerts;
 
     #[ORM\ManyToOne(inversedBy: 'jouers')]
