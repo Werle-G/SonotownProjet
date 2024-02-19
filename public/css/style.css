@@ -22,9 +22,7 @@ nav ul{
     padding-left: 0px;
 }
 
-
-
-/* Page artiste */
+/* Page artiste Profil */
 
 .artiste-container{
     display: flex;
@@ -47,3 +45,77 @@ nav ul{
 }
 
 
+/* Page artiste Détail album */
+
+.artiste-Albums{
+    display: flex;
+    width: 70%;
+    gap: 20px;
+}
+.artiste-album-pistes{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.artiste-titre{
+    display: flex;
+    justify-content: space-between;
+}
+
+.artiste-titre div span:last-child{
+    padding-left: 10px;
+}
+
+/* Page artiste Post */
+
+
+.artiste-post{
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Page artiste Détail Concerts */
+
+
+.artiste-concert-container{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+.artiste-concert-ligne{
+
+    display: flex;
+    justify-content: column;
+    gap: 20px;
+}
+
+
+/* Genre Musical Page Ajout/modification */
+
+.genreMusical-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+    padding: 20px 30px 0px 30px;
+}
+
+.genreMusical-header{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    gap: 20px;
+}
+
+.genreMusical-main{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.genreMusical-ligne{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}

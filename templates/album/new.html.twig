@@ -4,9 +4,60 @@
 
 {% block body %}
 
-    <h1>Ajouter/Modifier Album</h1>
+        {% if edit %}
+        <h1>Editer un album</h1>
+        {% else %}
+        <h1>Créer un nouvel album</h1>
+        {% endif %}
 
+    {# <h1>Créer un nouvel album</h1> #}
 
-        {{ form(formAddAlbum) }}
+    {{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.nomAlbum) }}
+        {{ form_widget(form.nomAlbum, {'attr': {'class': 'form-control'}}) }}
+    </div>
 
+    <div class="form-group">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.imageAlbum) }}
+        {{ form_widget(form.imageAlbum, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.dateSortieAlbum) }}
+        {{ form_widget(form.dateSortieAlbum, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.nbPistes) }}
+        {{ form_widget(form.nbPistes, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.ban) }}
+        {{ form_widget(form.ban, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.genreMusicals) }}
+        {{ form_widget(form.genreMusicals, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.user) }}
+        {{ form_widget(form.user, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.pistes) }}
+        {{ form_widget(form.pistes, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    {# <button type="submit" class="btn btn-success">Créer</button> #}
+    {{ form_end(form) }}
 {% endblock %}

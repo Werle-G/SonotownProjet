@@ -4,10 +4,11 @@ namespace App\Form;
 
 use App\Entity\Concert;
 use App\Entity\ImageConcert;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ImageConcertType extends AbstractType
 {
@@ -18,7 +19,12 @@ class ImageConcertType extends AbstractType
             ->add('alt')
             ->add('concert', EntityType::class, [
                 'class' => Concert::class,
-'choice_label' => 'id',
+                'choice_label' => 'id',
+            ])
+            ->add('valider', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
             ])
         ;
     }

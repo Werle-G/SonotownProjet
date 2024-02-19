@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\PisteRepository;
+use App\Entity\Album;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PisteRepository;
 
 #[ORM\Entity(repositoryClass: PisteRepository::class)]
 class Piste

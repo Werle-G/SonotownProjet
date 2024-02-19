@@ -34,7 +34,8 @@ class Album
     #[ORM\Column(nullable: true)]
     private ?bool $ban = null;
 
-    #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true)]
+    // #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true, cascade: ["persist"])]
     private Collection $pistes;
 
     #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums')]
@@ -226,4 +227,9 @@ class Album
 
         return $this;
     }
+
+    // public function __toString()
+    // {
+    //     return $this->nomAlbum ?? '';
+    // }
 }

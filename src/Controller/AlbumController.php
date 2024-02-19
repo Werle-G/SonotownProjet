@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Album;
+use App\Entity\Piste;
 use App\Form\AlbumType;
 use App\Repository\AlbumRepository;
 use App\Repository\PisteRepository;
@@ -24,37 +25,51 @@ class AlbumController extends AbstractController
         ]);
     }
 
-
-
-    #[Route('/album/new', name: 'new_album')]
     #[Route('/album/{id}/edit', name: 'edit_album')]
+    #[Route('/album/new', name: 'new_album')]
     public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager): Response
     {
         if(!$album) {
-          $album = new Album();  
-        } 
-
+            $album = new Album();  
+            $album->addPiste(new Piste());  
+        }
+    
         $form = $this->createForm(AlbumType::class, $album);
-
+    
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
- 
             $album = $form->getData();
-            // prepare PDO
+
+            dump($album);
+            
+
+            foreach ($album->getPistes() as $piste) {
+                $piste->setAlbum($album); // Définir l'album pour chaque piste
+                $entityManager->persist($piste);
+            }
+
+            foreach ($album->getGenreMusicals() as $genreMusical) {
+                $album->addGenreMusical($genreMusical);
+                // dump($genreMusical);
+            }
+
+        
             $entityManager->persist($album);
-            // execute PDO
             $entityManager->flush();
 
+            dump($album); 
+
+    
             return $this->redirectToRoute('app_album');
         }
-
-        //  bloc soumssion
-
+    
         return $this->render('album/new.html.twig', [
-            'formAddAlbum' => $form,
+            'form' => $form->createView(),
             'edit' => $album->getId()
         ]);
     }
+
+
 
     #[Route('/album/{id}/delete', name: 'delete_album')]
     public function delete(Album $album, EntityManagerInterface $entityManager): Response

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Repository\AlbumRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,14 +30,16 @@ class ArtisteController extends AbstractController
     }
 
     #[Route('/artiste/{id}', name: 'show_artiste')]
-    public function show(User $user, AlbumRepository $albumRepository, $id):Response
+    public function show(User $user, AlbumRepository $albumRepository, PostRepository $postRepository, $id):Response
     {
 
         $albums = $albumRepository->findBy(["user" => $id]);
+        $posts = $postRepository->findBy(["user" => $id]);
 
         return $this->render('artiste/show.html.twig', [
             'user' => $user,
             'albums' => $albums,
+            'posts' => $posts,
         ]);
     }
 

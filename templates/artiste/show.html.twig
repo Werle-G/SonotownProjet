@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ArtisteController!{% endblock %}
+{% block title %}{{ user.pseudo }}{% endblock %}
 
 {% block body %}
 
@@ -23,12 +23,32 @@
 
       </div>
 
+      <div class="artiste-concert">
+
+
       <h3>Concert</h3>
 
-      <a href="{{ path('show_concert', {'id': user.id}) }}">Voir les concerts</a>
+      <a href="{{ path('show_concert', {'id': user.id}) }}">Voir les concerts</a><br>
 
-      {# <a href="{{ path('edit_concert', {'id': concert.id}) }}">Éditer concert</a>
-      <a href="{{ path('delete_concert', {'id': concert.id}) }}">delete album</a> #}
+    </div>
+
+
+      <div class="artiste-post">
+
+
+      <h4>Posts</h4>
+
+      <a href="{{ path('new_post') }}">Nouveau post</a><br>
+
+      {% for post in posts %}
+
+      <a href="{{ path('show_post', {'id': post.id}) }}">{{ post.message }}</a><br>
+      <a href="{{ path('edit_post', {'id': post.id}) }}">Éditer post</a><br>
+      <a href="{{ path('delete_post', {'id': post.id}) }}">delete post</a><br>
+
+      {% endfor %}
+
+      </div>
 
 
       <div class="artiste-header">
@@ -37,12 +57,8 @@
 
         <p>{{ user.biographie}}</p>
         
-        {# <p>{{ user.genreMusical.nomGenreMusical}}</p> #}
-
       </div>
 
-
 </div>
-
 
 {% endblock %}

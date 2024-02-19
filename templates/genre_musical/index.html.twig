@@ -6,9 +6,15 @@
 
     <h1>Genres musicaux</h1>
 
+    <a href="{{ path('new_genre_musical') }}">Créer nouveau genre</a><br>
+
     {% for genreMusical in genreMusicals %}
 
-        <a href="{{ path('show_genre_musical', {'id': genreMusical.id}) }}">{{ genreMusical.nomGenreMusical }}</a>
+        <a href="{{ path('show_genre_musical', {'id': genreMusical.id}) }}">{{ genreMusical.nomGenreMusical }}</a><br>
+        <a href="{{ path('edit_genre_musical', {'id': genreMusical.id}) }}">Modifier genre</a><br>
+
+
+        <a href="{{ path('delete_genre_musical', {'id': genreMusical.id}) }}">Supprimer genre</a><br>
     {% endfor %}
 
 {% endblock %}
