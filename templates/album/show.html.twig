@@ -28,6 +28,11 @@
 
         {{ album.description }}
 
+        <figure>
+          <img style="width:100px; height:100px"   src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="">
+        </figure>
+        {# {{ album.}} #}
+
         {% for piste in album.pistes %}
 
             {{ piste.titre }}

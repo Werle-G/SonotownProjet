@@ -18,6 +18,10 @@
         }) }}
         {{ form_row(registrationForm.agreeTerms) }}
 
+        {# Inclure le champ CSRF #}
+        
+        {{ form_row(registrationForm._token) }}
+
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}

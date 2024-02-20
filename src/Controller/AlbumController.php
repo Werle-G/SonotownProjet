@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AlbumController extends AbstractController
@@ -26,17 +27,19 @@ class AlbumController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ARTISTE')] 
     #[Route('/album/{id}/edit', name: 'edit_album')]
     #[Route('/album/new', name: 'new_album')]
-    public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager): Response
+    public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir): Response
     {
         if(!$album) {
             $album = new Album();  
+            $album->setUser($this->getUser());
             $album->addPiste(new Piste()); 
-            $genreMusical = new GenreMusical();
-            $entityManager->persist($genreMusical);
+            // $genreMusical = new GenreMusical();
+            // $entityManager->persist($genreMusical);
         
-            $album->addGenreMusical($genreMusical); 
+            // $album->addGenreMusical($genreMusical); 
         }
     
         $form = $this->createForm(AlbumType::class, $album);
@@ -45,7 +48,14 @@ class AlbumController extends AbstractController
     
         if ($form->isSubmitted() && $form->isValid()) {
             $album = $form->getData();
+
+
+            if($photo = $form['photo']->getData()){
+                $fileName = uniqid().'.'.$photo->guessExtension();
+                $photo->move($photoDir, $fileName);
+            }
     
+            $album->setImageAlbum($fileName);
 
             foreach ($album->getPistes() as $piste) {
                 $piste->setAlbum($album); 

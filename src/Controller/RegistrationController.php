@@ -42,13 +42,18 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            // Récupère le rôle choisi dans le formulaire
+            $role = $form->get('role')->getData();
+            // Ajoute le rôle à l'utilisateur
+            $user->setRoles([$role]);
+
             $entityManager->persist($user);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('g.werle@laposte.net', 'Sonotown'))
+                    ->from(new Address('sonotown8@gmail.com', 'Sonotown'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')

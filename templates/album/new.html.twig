@@ -13,7 +13,9 @@
         {{ form_start(form) }}
         {{ form_row(form.nomAlbum) }}
         {{ form_row(form.description) }}
-        {{ form_row(form.imageAlbum) }}
+        {{ form_label(form.photo, 'choisi une photo') }}
+        {{ form_widget(form.photo) }}
+
         {{ form_row(form.dateSortieAlbum) }}
         {{ form_row(form.nbPistes) }}
         <div id="genreMusicals" data-prototype="{{ form_widget(form.genreMusicals.vars.prototype)|e }}">
@@ -21,7 +23,7 @@
                 {{ form_row(genreForm) }}
             {% endfor %}
         </div>
-        {{ form_row(form.user) }}
+        {# {{ form_row(form.user) }} #}
         {{ form_row(form.pistes) }}
         {{ form_row(form.valider) }}
     {{ form_end(form) }}

@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -29,21 +30,19 @@ class AlbumType extends AbstractType
             ->add('description', TextType::class, [
                 'label' => 'Description',
             ])
-            ->add('imageAlbum', FileType::class, [
-                'label' => 'Pochette de l\'album',
+            ->add('photo', FileType::class, [
+                'label' => 'imageAlbum',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                    new Image([
+                        'maxSize' => '5000k',
                     ])
                 ],
             ])
+                // Pour ajouter image: 
+                // constraints : max size => 
+
             ->add('dateSortieAlbum', DateType::class, [
                 'widget' => 'single_text',
                 'attr' => ['class' => 'form-control']
@@ -53,6 +52,7 @@ class AlbumType extends AbstractType
             ])
             ->add('genreMusicals', CollectionType::class, [
                 'entry_type' => EntityType::class,
+                'required' => false,
                 'entry_options' => [
                     'class' => GenreMusical::class,
                     'choice_label' => 'nomGenreMusical',
@@ -61,10 +61,10 @@ class AlbumType extends AbstractType
                 'allow_delete' => true, // Permet de supprimer des genres musicaux de la collection
                 'by_reference' => false, // Obligatoire lorsque vous utilisez un CollectionType avec une relation ManyToMany
             ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'pseudo',
-            ])
+            // ->add('user', EntityType::class, [
+            //     'class' => User::class,
+            //     'choice_label' => 'pseudo',
+            // ])
             ->add('pistes', CollectionType::class, [
                 'entry_type' => PisteType::class,
                 'allow_add' => true, 
