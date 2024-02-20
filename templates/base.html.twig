@@ -11,18 +11,7 @@
     </head>
     <body>
 
-        <nav>
-            <ul>
-                <li><a href="{{ path('app_login')}}">Login</a></li>    
-                <li><a href="{{ path('app_logout')}}">Logout</a></li>    
-                <li><a href="{{ path('app_register')}}">Register</a></li>    
-                <li><a href="{{ path('app_profil')}}">Profil</a></li>    
-                <li><a href="{{ path('app_artiste')}}">Artiste</a></li>
-                <li><a href="{{ path('app_genre_musical')}}">Genre Musicals</a></li>
-                <li><a href="{{ path('app_album')}}">Albums</a></li>
-                <li><a href="{{ path('app_concert')}}">Concerts</a></li>
-            </ul>
-        </nav>
+        {% include "_partials/_nav.html.twig" %}
 
         {% block body %}{% endblock %}
 

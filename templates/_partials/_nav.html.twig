@@ -1,0 +1,31 @@
+<nav>
+    <ul>
+	    <li><a href="{{ path('app_home') }}">Sonotown</a></li>
+
+        {% if app.user %}
+
+            {% if is_granted('ROLE_ADMIN') %}
+
+                <li><a href="{{ path('admin') }}">Paramètre</a></li>
+                    
+            {% endif %}
+
+            <li><a href="{{ path('app_artiste')}}">Artiste</a></li>
+            <li><a href="{{ path('app_genre_musical')}}">Genre Musicals</a></li>
+            <li><a href="{{ path('app_album')}}">Albums</a></li>
+            <li><a href="{{ path('app_profil')}}">Profil</a></li>  
+            <li><a href="{{ path('app_logout') }}">Logout</a></li>
+
+        {% else %}
+
+              
+            <li><a href="{{ path('app_artiste')}}">Artiste</a></li>
+            <li><a href="{{ path('app_genre_musical')}}">Genre Musicals</a></li>
+            <li><a href="{{ path('app_album')}}">Albums</a></li>
+            <li><a href="{{ path('app_register')}}">Register</a></li>    
+            <li><a href="{{ path('app_login')}}">Login</a></li>    
+
+        {% endif %}
+    </ul>
+
+</nav>

@@ -13,17 +13,18 @@
         {{ form_start(form) }}
         {{ form_row(form.nomAlbum) }}
         {{ form_row(form.description) }}
-        {{ form_label(form.photo, 'choisi une photo') }}
+        {{ form_label(form.photo, 'Télécharge une photo d\'album') }}
         {{ form_widget(form.photo) }}
 
         {{ form_row(form.dateSortieAlbum) }}
         {{ form_row(form.nbPistes) }}
-        <div id="genreMusicals" data-prototype="{{ form_widget(form.genreMusicals.vars.prototype)|e }}">
-            {% for genreForm in form.genreMusicals %}
-                {{ form_row(genreForm) }}
-            {% endfor %}
+        <div class="form-group">
+            <label for="genreMusicals" class="control-label">Genres musicaux</label>
+            <div id="genreMusicals" class="collection">
+                {{ form_errors(form.genreMusicals) }}
+                {{ form_widget(form.genreMusicals) }}
+            </div>
         </div>
-        {# {{ form_row(form.user) }} #}
         {{ form_row(form.pistes) }}
         {{ form_row(form.valider) }}
     {{ form_end(form) }}

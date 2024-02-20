@@ -50,21 +50,15 @@ class AlbumType extends AbstractType
             ->add('nbPistes', IntegerType::class, [
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('genreMusicals', CollectionType::class, [
-                'entry_type' => EntityType::class,
-                'required' => false,
-                'entry_options' => [
-                    'class' => GenreMusical::class,
-                    'choice_label' => 'nomGenreMusical',
-                ],
-                'allow_add' => true, // Permet d'ajouter de nouveaux genres musicaux à la collection
-                'allow_delete' => true, // Permet de supprimer des genres musicaux de la collection
-                'by_reference' => false, // Obligatoire lorsque vous utilisez un CollectionType avec une relation ManyToMany
+            ->add('genreMusicals', EntityType::class, [
+                'class' => GenreMusical::class,
+                'choice_label' => 'nomGenreMusical',
+                'multiple' => true,  
+                'expanded' => true,  
+                'attr' => [
+                    'class' => 'form-control'
+                ]
             ])
-            // ->add('user', EntityType::class, [
-            //     'class' => User::class,
-            //     'choice_label' => 'pseudo',
-            // ])
             ->add('pistes', CollectionType::class, [
                 'entry_type' => PisteType::class,
                 'allow_add' => true, 
