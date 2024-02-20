@@ -10,53 +10,19 @@
         <h1>Créer un nouvel album</h1>
         {% endif %}
 
-    {# <h1>Créer un nouvel album</h1> #}
-
-    {{ form_start(form) }}
-    <div class="form-group">
-        {{ form_label(form.nomAlbum) }}
-        {{ form_widget(form.nomAlbum, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group">
-        {{ form_label(form.description) }}
-        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group">
-        {{ form_label(form.imageAlbum) }}
-        {{ form_widget(form.imageAlbum, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group">
-        {{ form_label(form.dateSortieAlbum) }}
-        {{ form_widget(form.dateSortieAlbum, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group">
-        {{ form_label(form.nbPistes) }}
-        {{ form_widget(form.nbPistes, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group">
-        {{ form_label(form.ban) }}
-        {{ form_widget(form.ban, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    {% for genreMusical in form.genreMusicals %}
-    {{ form_label(genreMusical) }} {{ form_widget(genreMusical) }}
-{% endfor %}
-
-    <div class="form-group">
-        {{ form_label(form.user) }}
-        {{ form_widget(form.user, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    <div class="form-group">
-        {{ form_label(form.pistes) }}
-        {{ form_widget(form.pistes, {'attr': {'class': 'form-control'}}) }}
-    </div>
-
-    {# <button type="submit" class="btn btn-success">Créer</button> #}
+        {{ form_start(form) }}
+        {{ form_row(form.nomAlbum) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.imageAlbum) }}
+        {{ form_row(form.dateSortieAlbum) }}
+        {{ form_row(form.nbPistes) }}
+        <div id="genreMusicals" data-prototype="{{ form_widget(form.genreMusicals.vars.prototype)|e }}">
+            {% for genreForm in form.genreMusicals %}
+                {{ form_row(genreForm) }}
+            {% endfor %}
+        </div>
+        {{ form_row(form.user) }}
+        {{ form_row(form.pistes) }}
+        {{ form_row(form.valider) }}
     {{ form_end(form) }}
 {% endblock %}

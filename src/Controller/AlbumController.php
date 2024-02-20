@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Album;
 use App\Entity\Piste;
 use App\Form\AlbumType;
+use App\Entity\GenreMusical;
 use App\Repository\AlbumRepository;
 use App\Repository\PisteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +32,11 @@ class AlbumController extends AbstractController
     {
         if(!$album) {
             $album = new Album();  
-            $album->addPiste(new Piste());  
+            $album->addPiste(new Piste()); 
+            $genreMusical = new GenreMusical();
+            $entityManager->persist($genreMusical);
+        
+            $album->addGenreMusical($genreMusical); 
         }
     
         $form = $this->createForm(AlbumType::class, $album);
@@ -41,18 +46,12 @@ class AlbumController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $album = $form->getData();
     
-            // Associer les pistes à l'album
+
             foreach ($album->getPistes() as $piste) {
                 $piste->setAlbum($album); 
                 $entityManager->persist($piste);
             }
-    
-            // Associer les genres sélectionnés à l'album
-            // Supposons que votre formulaire a un champ 'genreMusicals' qui contient les genres sélectionnés
-            foreach ($form->get('genreMusicals')->getData() as $genre) {
-                $album->addGenreMusical($genre);
-                dd($album);
-            }
+
     
             $entityManager->persist($album);
             $entityManager->flush();

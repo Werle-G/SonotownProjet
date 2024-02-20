@@ -64,7 +64,6 @@ class GenreMusicalController extends AbstractController
     public function show(UserRepository $userRepository, AlbumRepository $albumRepository, $id)
     {
 
-        // $artistes = $userRepository->findBy(["nomGenreMusical" => $id]);
         $albums = $albumRepository->findBy(["genreMusical" => $id]);
         $users = $userRepository->findBy(["genreMusical" => $id]);
 

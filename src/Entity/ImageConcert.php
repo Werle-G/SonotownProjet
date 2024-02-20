@@ -19,7 +19,7 @@ class ImageConcert
     #[ORM\Column(length: 50)]
     private ?string $alt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'imageConcerts')]
+    #[ORM\ManyToOne(targetEntity: Concert::class, inversedBy: 'imageConcerts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Concert $concert = null;
 
