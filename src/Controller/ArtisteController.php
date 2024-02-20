@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Doctrine\DBAL\Types\Types;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Repository\AlbumRepository;
@@ -13,17 +14,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ArtisteController extends AbstractController
 {
     #[Route('/artiste', name: 'app_artiste')]
-    public function index(UserRepository $UserRepository): Response
+    public function index(UserRepository $userRepository): Response
     {
-            // $entreprises = $entityManager->getRepository(Entreprise::class)->findAll();
-        // $entreprises = $entrepriseRepository->findAll();
 
-        // SELECT * FROM entreprise ORDER BY raisonSociale
+        $users = $userRepository->findAllUser('["ROLE_ARTISTE"]');
 
-        // SELECT * FROM entreprise WHERE ville = 'Strasbourg' ORDER BY raisonSociale ASC
-        // $entreprises = $entrepriseRepository->findBy(["ville" => "Strasbourg"], ["raisonSociale" => "ASC"]);
-
-        $users = $UserRepository->findAll();
         return $this->render('artiste/index.html.twig', [
             'users' => $users,
         ]);

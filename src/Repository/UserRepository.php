@@ -40,20 +40,27 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllUser(?string $roles)
+    {
+
+        $query = $this->createQueryBuilder('u')
+            ->where('u.roles LIKE :val')
+            ->setParameter('val', $roles)
+            ->orderBy('u.nomArtiste', 'ASC')
+        ;
+        return $query->getQuery()->getResult();
+    }
+
+    // On crée une requète dont le paramètre ('u') est l'alias de la table utilisateur
+
+    // ->where('u.roles LIKE :val'): Cette ligne ajoute une clause WHERE à la requête pour filtrer les utilisateurs dont le champ roles est similaire à une valeur spécifiée. Le LIKE est utilisé pour effectuer une recherche partielle. Le paramètre :val est un paramètre nommé qui sera remplacé par une valeur lors de l'exécution de la requête.
+
+    // ->setParameter('val', $roles): associe valeur au paramètre :val 
+
+    // ->orderBy('u.nomArtiste', 'ASC'): spécifie que les résultats de la requête doivent être triés par ordre croissant en fonction de la colonne nomArtiste de la
+
+    // return $query->getQuery()->getResult():  exécute la requête en appelant getQuery() pour obtenir un objet Query représentant la requête construite, puis getResult() pour obtenir les résultats de la requête. Les résultats sont renvoyés par la méthode.
+
 
 //    public function findOneBySomeField($value): ?User
 //    {

@@ -4,28 +4,47 @@
 
         {% if app.user %}
 
+            {# Si l'utilisateur est admin #}
+
             {% if is_granted('ROLE_ADMIN') %}
 
                 <li><a href="{{ path('admin') }}">Paramètre</a></li>
-                    
-            {% endif %}
+                <li><a href="{{ path('app_logout') }}">Logout</a></li>
 
-            <li><a href="{{ path('app_artiste')}}">Artiste</a></li>
-            <li><a href="{{ path('app_genre_musical')}}">Genre Musicals</a></li>
+                    
+            {% elseif is_granted('ROLE_ARTISTE')%}
+
+            {# Si l'utilisateur est artiste #}
+
+            <li><a href="{{ path('app_genre_musical')}}">Genres Musicaux</a></li>
             <li><a href="{{ path('app_album')}}">Albums</a></li>
             <li><a href="{{ path('app_profil')}}">Profil</a></li>  
             <li><a href="{{ path('app_logout') }}">Logout</a></li>
 
-        {% else %}
+            {% else %}
 
+            {# Si l'utilisateur est user #}
+
+
+            <li><a href="{{ path('app_artiste')}}">Artiste</a></li>
+            <li><a href="{{ path('app_genre_musical')}}">Genres Musicaux</a></li>
+            <li><a href="{{ path('app_album')}}">Albums</a></li>
+            <li><a href="{{ path('app_profil')}}">Profil</a></li>  
+            <li><a href="{{ path('app_logout') }}">Logout</a></li>
+
+            {% endif %}
+            
+
+            
+
+        {% else %}
               
             <li><a href="{{ path('app_artiste')}}">Artiste</a></li>
-            <li><a href="{{ path('app_genre_musical')}}">Genre Musicals</a></li>
+            <li><a href="{{ path('app_genre_musical')}}">Genres Musicaux</a></li>
             <li><a href="{{ path('app_album')}}">Albums</a></li>
             <li><a href="{{ path('app_register')}}">Register</a></li>    
             <li><a href="{{ path('app_login')}}">Login</a></li>    
 
         {% endif %}
     </ul>
-
 </nav>

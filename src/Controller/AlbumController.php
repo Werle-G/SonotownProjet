@@ -38,7 +38,6 @@ class AlbumController extends AbstractController
             $album->addPiste(new Piste()); 
             // $genreMusical = new GenreMusical();
             // $entityManager->persist($genreMusical);
-        
             // $album->addGenreMusical($genreMusical); 
         }
     

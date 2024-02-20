@@ -12,15 +12,46 @@ h1{
 
 a{
     text-decoration: none;
+    color: inherit;
 }
 
+
+
+/* Nav */
+
+nav{
+    height: 100px;
+    background-color: #BDB7A7;
+    display: flex;
+    justify-content: space-around;
+    align-items: center; 
+}
 
 nav ul{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     list-style: none;
     padding-left: 0px;
+    margin-bottom: 0px;
+    width: 100%;
 }
+
+
+/* Home */
+
+
+
+#home-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+}
+
+#home h1{
+}
+
 
 /* Page artiste Profil */
 

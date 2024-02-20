@@ -5,12 +5,14 @@
 {% block body %}
 
 
-    <h1>Page utilisateurs</h1>
+<a href="{{ path('edit_profil', {'id': app.user.id}) }}">Éditer le profil</a>
+
+<h1>Profil utilisateur</h1>
 
 
-    {% for user in users %}
-        <a href="{{ path('show_profil', {'id': user.id}) }}">{{ user.pseudo }}</a>
-    {% endfor %}
+{{ user.pseudo }}
+
+
 
 
 {% endblock %}
