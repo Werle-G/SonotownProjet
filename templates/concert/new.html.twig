@@ -3,7 +3,14 @@
 {% block title %}Créer un concert{% endblock %}
 
 {% block body %}
-    <h1>Créer un concert</h1>
+
+
+
+    {% if edit %}
+        <h1>Editer le concert</h1>
+    {% else %}
+        <h1>Créer un concert</h1>
+    {% endif %}
 
     {{ form_start(form) }}
     {{ form_row(form.lieu) }}
@@ -13,7 +20,30 @@
     <h2>Images du concert</h2>
     {{ form_row(form.imageConcerts) }}
 
-    {{ form_row(form.valider) }}
+    {# {% if app.request.attributes.get('_route') == 'admin_products_edit' %} #}
+        <h2>Images</h2>
+        {% for imageConcert in concert.imageConcerts %}
+            <div>
+                <img src="{{ asset('uploads/Concerts/mini/300x300-' ~ imageConcert.nomImage ) }}" alt="Image" width="150">
+
+
+                {# <a href="{{ path('admin_products_delete_image', {id: imageConcert.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ imageConcert.id) }}"> #}
+                    {# Supprimer</a> #}
+
+                    {# data-delete 
+                        data-token : verifier qu'on vient bien de notre formulaire
+                        csrf_token : pour être sûr que notre delete vient bien de notre formulaire  
+                        Ca va generer un token de securit qui permettre dans notre controller de vérifier que le formulaire est bien valide #}
+            </div>
+        {% endfor %}
+    {# {% endif %} #}
+
+
+
+
     {{ form_end(form) }}
+    {# {{ form(form) }} #}
+
+
 {% endblock %}
 

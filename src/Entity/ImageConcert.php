@@ -16,7 +16,7 @@ class ImageConcert
     #[ORM\Column(length: 50)]
     private ?string $nomImage = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $alt = null;
 
     #[ORM\ManyToOne(targetEntity: Concert::class, inversedBy: 'imageConcerts')]
