@@ -27,25 +27,24 @@ class AlbumController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_ARTISTE')] 
+    // #[IsGranted('ROLE_ARTISTE')] 
     #[Route('/album/{id}/edit', name: 'edit_album')]
     #[Route('/album/new', name: 'new_album')]
     public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir): Response
     {
+
         if(!$album) {
             $album = new Album();  
             $album->setUser($this->getUser());
             $album->addPiste(new Piste()); 
-            // $genreMusical = new GenreMusical();
-            // $entityManager->persist($genreMusical);
-            // $album->addGenreMusical($genreMusical); 
         }
-    
+
         $form = $this->createForm(AlbumType::class, $album);
         
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+
             $album = $form->getData();
 
 
@@ -57,10 +56,11 @@ class AlbumController extends AbstractController
             $album->setImageAlbum($fileName);
 
             foreach ($album->getPistes() as $piste) {
+                
                 $piste->setAlbum($album); 
                 $entityManager->persist($piste);
+                $entityManager->flush();  
             }
-
     
             $entityManager->persist($album);
             $entityManager->flush();
@@ -81,7 +81,7 @@ class AlbumController extends AbstractController
         $entityManager->remove($album);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_album'); // Rediriger vers une autre page après la suppression
+        return $this->redirectToRoute('app_album'); 
     }
 
     #[Route('/album/{id}', name: 'show_album')]

@@ -24,28 +24,34 @@ class ConcertController extends AbstractController
         ]);
     }
 
-    #[Route('/concert/new', name: 'new_concert')]
+    // #[IsGranted('ROLE_ARTISTE')] 
     #[Route('/concert/{id}/edit', name: 'edit_concert')]
+    #[Route('/concert/new', name: 'new_concert')]
     public function new_edit(Concert $concert = null, Request $request, EntityManagerInterface $entityManager): Response
     {
         if(!$concert) {
             $concert = new Concert();  
+            $concert->setUser($this->getUser());
             $concert->addImageConcert(new ImageConcert());
         } 
 
         $form = $this->createForm(ConcertType::class, $concert);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+
             $concert = $form->getData();
-            $entityManager->persist($concert);
-            $entityManager->flush();
 
             foreach ($concert->getImageConcerts() as $image) {
-                $image->setConcert($concert); // Correction du nom de la méthode
+
+                $image->setConcert($concert);  
                 $entityManager->persist($image);
-                $entityManager->flush(); // Ajout de flush() ici
+                $entityManager->flush();  
             }
+
+            $entityManager->persist($concert);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_concert');
         }

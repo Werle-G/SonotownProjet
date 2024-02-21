@@ -22,10 +22,6 @@ class ImageConcertType extends AbstractType
             ->add('alt', TextType::class, [
                 'attr' => ['class' => 'form-control']
             ])
-            // ->add('concert', EntityType::class, [
-            //     'class' => Concert::class,
-            //     'choice_label' => 'id',
-            // ])
             ->add('concert', HiddenType::class, [
                 'mapped' => false, 
             ])

@@ -51,11 +51,8 @@ class ProfilController extends AbstractController
     // #[Route('/profil', name: 'show_profil')]
     // public function show(User $user, $id)
     // {
-
     //     // $artistes = $userRepository->findBy(["nomGenreMusical" => $id]);
     //     // $albums = $albumRepository->findBy(["genreMusical" => $id]);
-
-
     //     return $this->render('profil/show.html.twig', [
     //         // 'genreMusical' => $genreMusical,
     //         // 'albums' => $albums,

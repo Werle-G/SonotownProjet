@@ -10,22 +10,22 @@
 
         <h2>Discographie</h2>
 
-        {% if app.user == user %}
+        {# {% if app.user == user %} #}
 
           <a href="{{ path('new_album') }}">Ajouter un nouvel album</a>
           
-        {% endif %}
+        {# {% endif %} #}
 
         {% for album in albums %}
 
         <a href="{{ path('show_album', {'id': album.id}) }}">{{ album.nomAlbum}}</a>
 
-        {% if app.user == user %}
+        {# {% if app.user == user %} #}
 
         <a href="{{ path('edit_album', {'id': album.id}) }}">Éditer album</a>
         <a href="{{ path('delete_album', {'id': album.id}) }}">delete album</a>
         
-        {% endif %}
+        {# {% endif %} #}
 
         {% endfor %}
 
