@@ -17,10 +17,10 @@ class ProfilType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('imageCouverture')
-            ->add('avatar')
+            // ->add('imageCouverture')
+            // ->add('avatar')
             ->add('email')
-            ->add('password')
+            // ->add('password')
             ->add('pseudo', TextType::class, [
                 'label' => 'Nom de l\'album',
             ])
