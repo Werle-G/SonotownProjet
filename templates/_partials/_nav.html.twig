@@ -9,6 +9,7 @@
             {% if is_granted('ROLE_ADMIN') %}
 
                 <li><a href="{{ path('admin') }}">Paramètre</a></li>
+                <li><a href="{{ path('show_profil')}}">Profil</a></li>  
                 <li><a href="{{ path('app_logout') }}">Logout</a></li>
                     
             {% elseif is_granted('ROLE_ARTISTE')%}
@@ -27,12 +28,13 @@
                 <li><a href="{{ path('app_artiste')}}">Artiste</a></li>
                 <li><a href="{{ path('app_genre_musical')}}">Genres Musicaux</a></li>
                 <li><a href="{{ path('app_album')}}">Albums</a></li>
-                <li><a href="{{ path('app_profil')}}">Profil</a></li>  
+                <li><a href="{{ path('show_profil')}}">Profil</a></li>  
                 <li><a href="{{ path('app_logout') }}">Logout</a></li>
 
             {% endif %}
             
         {% else %}
+
               
             <li><a href="{{ path('app_artiste')}}">Artiste</a></li>
             <li><a href="{{ path('app_genre_musical')}}">Genres Musicaux</a></li>

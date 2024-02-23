@@ -102,4 +102,9 @@ class GenreMusical
 
         return $this;
     }
+
+    public function __toString(){
+
+        return $this->nomGenreMusical;
+    }
 }

@@ -4,8 +4,29 @@
 
 {% block body %}
 
+
+    {% for flash_error in app.flashes('warning') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
     <h1>Modifier Profil</h1>
 
-        {{ form(form) }}
+    {# {{ form_errors(form) }}
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.email) }}
+        {{ form_row(form.pseudo) }}
+        {{ form_row(form.plainPassword, {
+            label: 'Password'
+        }) }}
+        
+        {{ form_row(form._token) }}
+
+        <button type="submit" class="btn">Register</button>
+    {{ form_end(form) }} #}
+
+    {{ form(form) }}
+
 
 {% endblock %}

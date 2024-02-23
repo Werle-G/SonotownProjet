@@ -4,7 +4,11 @@
 
 {% block body %}
 
-<a href="{{ path('edit_profil', {'id': app.user.id}) }}">Éditer le profil</a>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ path('edit_profil', {'id': app.user.id}) }}">Éditer le profil</a>
+    {% endif %}
+
+
 
 <h1>Profil utilisateur</h1>
 
