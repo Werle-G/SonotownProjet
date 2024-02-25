@@ -62,11 +62,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'suivres', mappedBy: 'suivres')]
-    private Collection $suivres;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'followers')]
+    private Collection $follows;
+    
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'follows')]
+    private Collection $followers;
 
-    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'aimers')]
-    private Collection $aimers;
+    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'playlists')]
+    private Collection $playlists;
 
     // Albums crées par un utilisateur 
     #[ORM\OneToMany(targetEntity: Album::class, mappedBy: 'user', orphanRemoval: true)]
@@ -84,10 +87,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $posts;
 
+    #[ORM\ManyToMany(targetEntity: Concert::class, inversedBy: 'users')]
+    private Collection $aimerConcerts;
+
     public function __construct()
     {
-        $this->suivres = new ArrayCollection();
-        $this->aimers = new ArrayCollection();
+        $this->follows = new ArrayCollection();
+        $this->followers = new ArrayCollection();
+
+        $this->playlists = new ArrayCollection();
 
         $this->albums = new ArrayCollection();
         // Pointe la collection qu'un utilisateur a crée
@@ -97,6 +105,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         // Posts des utilisateurs
         $this->posts = new ArrayCollection();
+        $this->aimerConcerts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -281,25 +290,55 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, self>
+     * @return Collection<int, User>
      */
-    public function getSuivres(): Collection
+    public function getFollows(): Collection
     {
-        return $this->suivres;
+        return $this->follows;
     }
 
-    public function addSuivre(self $suivre): static
+    public function addFollow(User $follow): static
     {
-        if (!$this->suivres->contains($suivre)) {
-            $this->suivres->add($suivre);
+        if (!$this->follows->contains($follow)) {
+            $this->follows->add($follow);
+            $follow->addFollower($this);  
         }
 
         return $this;
     }
 
-    public function removeSuivre(self $suivre): static
+    public function removeFollow(User $follow): static
     {
-        $this->suivres->removeElement($suivre);
+        if ($this->follows->removeElement($follow)) {
+            $follow->removeFollower($this);  
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
+    }
+
+    public function addFollower(User $follower): static
+    {
+        if (!$this->followers->contains($follower)) {
+            $this->followers->add($follower);
+            $follower->addFollow($this);  
+        }
+
+        return $this;
+    }
+
+    public function removeFollower(User $follower): static
+    {
+        if ($this->followers->removeElement($follower)) {
+            $follower->removeFollow($this);  
+        }
 
         return $this;
     }
@@ -307,23 +346,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Album>
      */
-    public function getAimers(): Collection
+    public function getPlaylists(): Collection
     {
-        return $this->aimers;
+        return $this->playlists;
     }
 
-    public function addAimer(Album $aimer): static
+    public function addPlaylist(Album $playlist): static
     {
-        if (!$this->aimers->contains($aimer)) {
-            $this->aimers->add($aimer);
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists->add($playlist);
         }
 
         return $this;
     }
 
-    public function removeAimer(Album $aimer): static
+    public function removePlaylist(Album $playlist): static
     {
-        $this->aimers->removeElement($aimer);
+        $this->playlists->removeElement($playlist);
 
         return $this;
     }
@@ -426,6 +465,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $post->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Concert>
+     */
+    public function getAimerConcerts(): Collection
+    {
+        return $this->aimerConcerts;
+    }
+
+    public function addAimerConcert(Concert $aimerConcert): static
+    {
+        if (!$this->aimerConcerts->contains($aimerConcert)) {
+            $this->aimerConcerts->add($aimerConcert);
+        }
+
+        return $this;
+    }
+
+    public function removeAimerConcert(Concert $aimerConcert): static
+    {
+        $this->aimerConcerts->removeElement($aimerConcert);
 
         return $this;
     }

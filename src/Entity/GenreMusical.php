@@ -18,18 +18,16 @@ class GenreMusical
     #[ORM\Column(length: 50)]
     private ?string $nomGenreMusical = null;
 
-    // #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'genreMusicals')]
-    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'genreMusicals', cascade: ["persist"])]
-
-    private Collection $albums;
-
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'genreMusical')]
     private Collection $users;
 
+    #[ORM\ManyToMany(targetEntity: Album::class, mappedBy: 'genreMusicals')]
+    private Collection $albums;
+
     public function __construct()
     {
-        $this->albums = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->albums = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -45,30 +43,6 @@ class GenreMusical
     public function setNomGenreMusical(string $nomGenreMusical): static
     {
         $this->nomGenreMusical = $nomGenreMusical;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Album>
-     */
-    public function getAlbums(): Collection
-    {
-        return $this->albums;
-    }
-
-    public function addAlbum(Album $album): static
-    {
-        if (!$this->albums->contains($album)) {
-            $this->albums->add($album);
-        }
-
-        return $this;
-    }
-
-    public function removeAlbum(Album $album): static
-    {
-        $this->albums->removeElement($album);
 
         return $this;
     }
@@ -106,5 +80,32 @@ class GenreMusical
     public function __toString(){
 
         return $this->nomGenreMusical;
+    }
+
+    /**
+     * @return Collection<int, Album>
+     */
+    public function getAlbums(): Collection
+    {
+        return $this->albums;
+    }
+
+    public function addAlbum(Album $album): static
+    {
+        if (!$this->albums->contains($album)) {
+            $this->albums->add($album);
+            $album->addGenreMusical($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlbum(Album $album): static
+    {
+        if ($this->albums->removeElement($album)) {
+            $album->removeGenreMusical($this);
+        }
+
+        return $this;
     }
 }

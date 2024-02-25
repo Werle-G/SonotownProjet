@@ -38,23 +38,23 @@ class Album
     #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true, cascade: ["persist"])]
     private Collection $pistes;
 
-    // #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums')]
-    #[ORM\ManyToMany(targetEntity: GenreMusical::class, mappedBy: 'albums', cascade: ["persist"])]
 
-    private Collection $genreMusicals;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'aimers')]
-    private Collection $aimers;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'playlists')]
+    private Collection $playlists;
 
     #[ORM\ManyToOne(inversedBy: 'albums')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\ManyToMany(targetEntity: GenreMusical::class, inversedBy: 'albums')]
+    private Collection $genreMusicals;
+
     public function __construct()
     {
         $this->pistes = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
         $this->genreMusicals = new ArrayCollection();
-        $this->aimers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,55 +164,29 @@ class Album
         return $this;
     }
 
-    /**
-     * @return Collection<int, GenreMusical>
-     */
-    public function getGenreMusicals(): Collection
-    {
-        return $this->genreMusicals;
-    }
-
-    public function addGenreMusical(GenreMusical $genreMusical): static
-    {
-        if (!$this->genreMusicals->contains($genreMusical)) {
-            $this->genreMusicals->add($genreMusical);
-            $genreMusical->addAlbum($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGenreMusical(GenreMusical $genreMusical): static
-    {
-        if ($this->genreMusicals->removeElement($genreMusical)) {
-            $genreMusical->removeAlbum($this);
-        }
-
-        return $this;
-    }
-
+ 
     /**
      * @return Collection<int, User>
      */
-    public function getAimers(): Collection
+    public function getPlaylists(): Collection
     {
-        return $this->aimers;
+        return $this->playlists;
     }
 
-    public function addAimer(User $aimer): static
+    public function addPlaylist(User $playlist): static
     {
-        if (!$this->aimers->contains($aimer)) {
-            $this->aimers->add($aimer);
-            $aimer->addAimer($this);
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists->add($playlist);
+            $playlist->addPlaylist($this);
         }
 
         return $this;
     }
 
-    public function removeAimer(User $aimer): static
+    public function removePlaylist(User $playlist): static
     {
-        if ($this->aimers->removeElement($aimer)) {
-            $aimer->removeAimer($this);
+        if ($this->playlists->removeElement($playlist)) {
+            $playlist->removePlaylist($this);
         }
 
         return $this;
@@ -252,5 +226,29 @@ class Album
     // private  string|numfmt_get_locale
     // @ORM\Column
     // *  @var File
+
+    /**
+     * @return Collection<int, GenreMusical>
+     */
+    public function getGenreMusicals(): Collection
+    {
+        return $this->genreMusicals;
+    }
+
+    public function addGenreMusical(GenreMusical $genreMusical): static
+    {
+        if (!$this->genreMusicals->contains($genreMusical)) {
+            $this->genreMusicals->add($genreMusical);
+        }
+
+        return $this;
+    }
+
+    public function removeGenreMusical(GenreMusical $genreMusical): static
+    {
+        $this->genreMusicals->removeElement($genreMusical);
+
+        return $this;
+    }
 
 }
