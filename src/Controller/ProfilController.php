@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -21,7 +22,7 @@ class ProfilController extends AbstractController
     {
 
         return $this->render('profil/index.html.twig', [
-            'user' => $user,
+            // 'user' => $user,
         ]);
     }
 
@@ -41,29 +42,17 @@ class ProfilController extends AbstractController
     
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $password = $user->get('plainPassword');
+            // $password = $user->get('plainPassword');
 
-            $hash = $password;
+            // $hash = $password;
             
 
-            if(password_verify($password,$hash)){
+            // if(password_verify($password,$hash)){
 
 
             $npassword = $form->getData();
             $post = $form->getData();
-            
-            // $newPassword = $form->getData()->getNewPassword(); 
 
-            // $user = $form->getData()['newPassword']; 
-
-            // $user->setPlainPassword($newPassword); 
-
-            // $entityManager->persist($user); 
-            // $entityManager->flush(); 
-
-            // $password = filter_input(INPUT_POST,'password',FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            // $hash = $user->getPassword();
             
             $this->addFlash('succes',
                 'Votre compte a été modifié');
@@ -76,30 +65,8 @@ class ProfilController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-}
+
         
-
-
-
-
-
-
-        // $form->handleRequest($request);
-    
-        // if ($form->isSubmitted() && $form->isValid()) {
-
-        //     $album = $form->getData();
-
-
-        //     if($photo = $form['photo']->getData()){
-        //         $fileName = uniqid().'.'.$photo->guessExtension();
-        //         $photo->move($photoDir, $fileName);
-        //     }
-    
-        //     $album->setImageAlbum($fileName);
-
-
-
 
     #[IsGranted('ROLE_USER')]
     #[Route('/profil', name: 'show_profil')]
