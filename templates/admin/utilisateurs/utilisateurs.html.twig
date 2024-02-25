@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Utilisateurs{% endblock %}
+
+{% block body %}
+
+        <h1>Liste des Utilisateurs</h1>
+
+        {% for user in users %}
+
+            {{ user.pseudo }}
+            
+        {% endfor %}
+
+{% endblock %}

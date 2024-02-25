@@ -2,20 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\GenreMusical;
-use App\Repository\AlbumRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\GenreMusicalRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
+use App\Repository\AlbumRepository;
+use App\Repository\GenreMusicalRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class GenreMusicalController extends AbstractController
 {
-    #[Route('/genre/musical', name: 'app_genre_musical')]
+    #[Route('/genre/musical', name: 'genre_musical')]
     public function index(GenreMusicalRepository $genreMusicalRepository): Response
     {
 
@@ -38,4 +36,5 @@ class GenreMusicalController extends AbstractController
             'users' => $users,
         ]);
     }
+    
 }

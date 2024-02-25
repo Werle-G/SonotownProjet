@@ -1,7 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Administrateur{% endblock %}
+{% block title %}Page administrateur{% endblock %}
 
 {% block body %}
-        <h1>Panneau d'administration</h1>
+
+        <h1>Page administrateur</h1>
+
+
+        <a href="{{ path('admin_utilisateurs')}}">Utilisateurs</a>
+        <a href="{{ path('admin_genre_musical')}}">Genres musicaux</a>
+
+
 {% endblock %}

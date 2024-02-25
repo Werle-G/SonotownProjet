@@ -2,23 +2,23 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Album;
 use App\Entity\Piste;
 use App\Form\AlbumType;
-use App\Entity\GenreMusical;
 use App\Repository\AlbumRepository;
 use App\Repository\PisteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[Route('/artiste/album', name: 'artiste_')]
 class AlbumController extends AbstractController
 {
-    #[Route('/album', name: 'app_album')]
+    #[Route('/', name: 'all_album')]
     public function index(AlbumRepository $albumRepository): Response
     {
         $albums = $albumRepository->findAll();
@@ -27,11 +27,12 @@ class AlbumController extends AbstractController
         ]);
     }
 
-    // #[IsGranted('ROLE_ARTISTE')] 
-    #[Route('/album/{id}/edit', name: 'edit_album')]
-    #[Route('/album/new', name: 'new_album')]
+    #[Route('/{id}/edit', name: 'edit_album')]
+    #[Route('/new', name: 'new_album')]
     public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir): Response
     {
+
+        $this->denyAccessUnlessGranted('ROLE_ARTISTE');
 
         if(!$album) {
             $album = new Album();  
@@ -65,17 +66,17 @@ class AlbumController extends AbstractController
             $entityManager->persist($album);
             $entityManager->flush();
     
-            return $this->redirectToRoute('app_album');
+            return $this->redirectToRoute('artiste_show_album');
         }
     
-        return $this->render('album/new.html.twig', [
+        return $this->render('artiste/album/new.html.twig', [
             'form' => $form->createView(),
             'edit' => $album->getId()
         ]);
     }
 
 
-    #[Route('/album/{id}/delete', name: 'delete_album')]
+    #[Route('/{id}/delete', name: 'delete_album')]
     public function delete(Album $album, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($album);
@@ -84,18 +85,14 @@ class AlbumController extends AbstractController
         return $this->redirectToRoute('app_album'); 
     }
 
-    #[Route('/album/{id}', name: 'show_album')]
-    public function show(Album $album, PisteRepository $pisteRepository, $id):Response
+    #[Route('/{id}', name: 'show_album')]
+    public function show(AlbumRepository $albumRepository, $id):Response
     {
 
-        $pistes = $pisteRepository->findBy(["album" => $id]);
+        $albums = $albumRepository->findBy(["user" => $id]);
         
-        return $this->render('album/show.html.twig', [
-            'user' => $this->getUser(),
-            'album' => $album,
-            'pistes' => $pistes,
+        return $this->render('artiste/album/discographie.html.twig', [
+            'albums' => $albums,
         ]);
     }
-
-
 }

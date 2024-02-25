@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Genres musicaux{% endblock %}
+
+{% block body %}
+
+    <h1>Genres musicaux</h1>
+
+    <a href="{{ path('admin_new_genre_musical') }}">Ajouter un genre musical</a><br>
+
+    {% for genreMusical in genreMusicals %}
+
+        {{ genreMusical.nomGenreMusical }} 
+        <a href="{{ path('admin_edit_genre_musical', {'id': genreMusical.id}) }}">Modifier</a>
+        <a href="{{ path('admin_delete_genre_musical', {'id': genreMusical.id}) }}">Supprimer</a><br>
+
+    {% endfor %}
+
+{% endblock %}

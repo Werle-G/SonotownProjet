@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[Route('/artiste', name: 'artiste_')]
 class ArtisteController extends AbstractController
 {
-    #[Route('/artiste', name: 'app_artiste')]
+    #[Route('/', name: 'all_artiste')]
     public function index(UserRepository $userRepository): Response
     {
 
@@ -24,16 +25,14 @@ class ArtisteController extends AbstractController
         ]);
     }
 
-    #[Route('/artiste/{id}', name: 'show_artiste')]
-    public function show(User $user, AlbumRepository $albumRepository, PostRepository $postRepository, $id):Response
+    #[Route('/{id}', name: 'page_artiste')]
+    public function show(User $user, PostRepository $postRepository, $id):Response
     {
 
-        $albums = $albumRepository->findBy(["user" => $id]);
         $posts = $postRepository->findBy(["user" => $id]);
 
-        return $this->render('artiste/show.html.twig', [
+        return $this->render('artiste/page.html.twig', [
             'user' => $user,
-            'albums' => $albums,
             'posts' => $posts,
         ]);
     }

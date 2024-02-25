@@ -5,13 +5,10 @@
 {% block body %}
 
 
-    <h1>Artiste</h1>
-
-    {{ user.nomArtiste }}
-    {# {% for user in users %}
-        <a href="{{ path('show_artiste', {'id': user.id}) }}">{{ user.pseudo}}</a>
-    {% endfor %} #}
-
-
+    <h1>Liste des Artistes</h1>
+    
+    {% for user in users %}
+        <a href="{{ path('artiste_page_artiste', {'id': user.id}) }}">{{ user.nomArtiste }}</a>
+    {% endfor %}
 
 {% endblock %}
