@@ -23,7 +23,7 @@ class Post
     #[ORM\Column(nullable: true)]
     private ?bool $ban = null;
 
-    #[ORM\ManyToOne(inversedBy: 'posters')]
+    #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

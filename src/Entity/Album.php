@@ -22,10 +22,6 @@ class Album
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    // NOTE: This is not a mapped field of entity metadata, just a simple property.
-    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName', size: 'imageSize')]
-    private ?File $file = null;
-
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $imageAlbum = null;
 

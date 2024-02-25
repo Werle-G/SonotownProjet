@@ -62,31 +62,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'suivres')]
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'suivres', mappedBy: 'suivres')]
     private Collection $suivres;
 
     #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'aimers')]
     private Collection $aimers;
 
+    // Albums crées par un utilisateur 
     #[ORM\OneToMany(targetEntity: Album::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $albums;
 
+    // Genre musical d'un utilisateur
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?GenreMusical $genreMusical = null;
 
+    // Concerts joués par un utilisateur
     #[ORM\OneToMany(targetEntity: Concert::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $jouers;
+    private Collection $concerts;
 
+    // Posts crée par un utilisateur
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $posters;
+    private Collection $posts;
 
     public function __construct()
     {
         $this->suivres = new ArrayCollection();
         $this->aimers = new ArrayCollection();
+
         $this->albums = new ArrayCollection();
-        $this->jouers = new ArrayCollection();
-        $this->posters = new ArrayCollection();
+        // Pointe la collection qu'un utilisateur a crée
+
+        // Concerts joués par un utilisateur
+        $this->concerts = new ArrayCollection();
+
+        // Posts des utilisateurs
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -363,27 +373,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Concert>
      */
-    public function getJouers(): Collection
+    public function getConcerts(): Collection
     {
-        return $this->jouers;
+        return $this->concerts;
     }
 
-    public function addJouer(Concert $jouer): static
+    public function addConcert(Concert $concert): static
     {
-        if (!$this->jouers->contains($jouer)) {
-            $this->jouers->add($jouer);
-            $jouer->setUser($this);
+        if (!$this->concerts->contains($concert)) {
+            $this->concerts->add($concert);
+            $concert->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeJouer(Concert $jouer): static
+    public function removeConcert(Concert $concert): static
     {
-        if ($this->jouers->removeElement($jouer)) {
+        if ($this->concerts->removeElement($concert)) {
             // set the owning side to null (unless already changed)
-            if ($jouer->getUser() === $this) {
-                $jouer->setUser(null);
+            if ($concert->getUser() === $this) {
+                $concert->setUser(null);
             }
         }
 
@@ -393,27 +403,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Post>
      */
-    public function getPosters(): Collection
+    public function getPosts(): Collection
     {
-        return $this->posters;
+        return $this->posts;
     }
 
-    public function addPoster(Post $poster): static
+    public function addPoster(Post $post): static
     {
-        if (!$this->posters->contains($poster)) {
-            $this->posters->add($poster);
-            $poster->setUser($this);
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->setUser($this);
         }
 
         return $this;
     }
 
-    public function removePoster(Post $poster): static
+    public function removePost(Post $post): static
     {
-        if ($this->posters->removeElement($poster)) {
+        if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
-            if ($poster->getUser() === $this) {
-                $poster->setUser(null);
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
             }
         }
 

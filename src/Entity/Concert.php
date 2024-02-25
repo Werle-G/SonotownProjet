@@ -25,18 +25,16 @@ class Concert
     #[ORM\Column(type: Types::TEXT)]
     private ?string $descriptionConcert = null;
 
-    // #[ORM\OneToMany(targetEntity: ImageConcert::class, mappedBy: 'concert', orphanRemoval: true)]
     #[ORM\OneToMany(targetEntity: ImageConcert::class, mappedBy: 'concert', orphanRemoval: true, cascade: ["persist"])]
+    private Collection $imageConcerts;
 
-    private Collection $ImageConcerts;
-
-    #[ORM\ManyToOne(inversedBy: 'jouers')]
+    #[ORM\ManyToOne(targetEntity: user::class, inversedBy: 'concerts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     public function __construct()
     {
-        $this->ImageConcerts = new ArrayCollection();
+        $this->imageConcerts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,13 +83,13 @@ class Concert
      */
     public function getImageConcerts(): Collection
     {
-        return $this->ImageConcerts;
+        return $this->imageConcerts;
     }
 
     public function addImageConcert(ImageConcert $imageConcert): static
     {
-        if (!$this->ImageConcerts->contains($imageConcert)) {
-            $this->ImageConcerts->add($imageConcert);
+        if (!$this->imageConcerts->contains($imageConcert)) {
+            $this->imageConcerts->add($imageConcert);
             $imageConcert->setConcert($this);
         }
 
@@ -100,7 +98,7 @@ class Concert
 
     public function removeImageConcert(ImageConcert $imageConcert): static
     {
-        if ($this->ImageConcerts->removeElement($imageConcert)) {
+        if ($this->imageConcerts->removeElement($imageConcert)) {
             // set the owning side to null (unless already changed)
             if ($imageConcert->getConcert() === $this) {
                 $imageConcert->setConcert(null);
