@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/artiste/album', name: 'artiste_')]
 class AlbumController extends AbstractController
 {
+    // Tout les albums
     #[Route('/', name: 'all_album')]
     public function index(AlbumRepository $albumRepository): Response
     {
@@ -27,6 +28,7 @@ class AlbumController extends AbstractController
         ]);
     }
 
+    // Ajout/éditions albums
     #[Route('/{id}/edit', name: 'edit_album')]
     #[Route('/new', name: 'new_album')]
     public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir): Response
@@ -48,7 +50,6 @@ class AlbumController extends AbstractController
 
             $album = $form->getData();
 
-
             if($photo = $form['photo']->getData()){
                 $fileName = uniqid().'.'.$photo->guessExtension();
                 $photo->move($photoDir, $fileName);
@@ -62,11 +63,11 @@ class AlbumController extends AbstractController
                 $entityManager->persist($piste);
                 $entityManager->flush();  
             }
-    
+
             $entityManager->persist($album);
             $entityManager->flush();
-    
-            return $this->redirectToRoute('artiste_show_album');
+
+            return $this->redirectToRoute('all_album_per_artiste');
         }
     
         return $this->render('artiste/album/new.html.twig', [
@@ -75,7 +76,7 @@ class AlbumController extends AbstractController
         ]);
     }
 
-
+    // Delete album
     #[Route('/{id}/delete', name: 'delete_album')]
     public function delete(Album $album, EntityManagerInterface $entityManager): Response
     {
@@ -85,7 +86,8 @@ class AlbumController extends AbstractController
         return $this->redirectToRoute('app_album'); 
     }
 
-    #[Route('/{id}', name: 'show_album')]
+    // Discographie d'un artiste
+    #[Route('/{id}', name: 'all_album_per_artiste')]
     public function show(AlbumRepository $albumRepository, $id):Response
     {
 
@@ -95,4 +97,16 @@ class AlbumController extends AbstractController
             'albums' => $albums,
         ]);
     }
+
+    // Détails d'un album de l'artiste
+    #[Route('/detail/{idAlbum}', name: 'detail_album')]
+    public function detail($idAlbum, AlbumRepository $albumRepository): Response
+    {
+        $album = $albumRepository->findOneBy(['id' => $idAlbum]);
+        
+        return $this->render('artiste/album/detail.html.twig', [
+            'album' => $album,
+        ]);
+    }
+
 }

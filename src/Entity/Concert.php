@@ -28,7 +28,7 @@ class Concert
     #[ORM\OneToMany(targetEntity: ImageConcert::class, mappedBy: 'concert', orphanRemoval: true, cascade: ["persist"])]
     private Collection $imageConcerts;
 
-    #[ORM\ManyToOne(targetEntity: user::class, inversedBy: 'concerts')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'concerts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+// use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -90,6 +91,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Concert::class, inversedBy: 'users')]
     private Collection $aimerConcerts;
 
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: true)]
+    private string $slug;
+
     public function __construct()
     {
         $this->follows = new ArrayCollection();
@@ -106,6 +110,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // Posts des utilisateurs
         $this->posts = new ArrayCollection();
         $this->aimerConcerts = new ArrayCollection();
+    }
+
+    // Slug
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     public function getId(): ?int

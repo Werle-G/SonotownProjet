@@ -6,23 +6,24 @@
 
 <div class="artiste-container">
 
-
       <div class="artiste-album">
 
+        <h1>Détail de l'album {{ album.nomAlbum}}</h1>
 
-        <h3>{{ album.nomAlbum}}</h3>
-
-        {{ album.description }}
+        <p>{{ album.description }}</p>
 
         <figure>
           <img style="width:100px; height:100px"   src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="">
         </figure>
-        {# {{ album.}} #}
 
+        <a href="{{ path('artiste_edit_album', {'id': album.id}) }}">Edit album</a>
+        <a href="{{ path('artiste_delete_album', {'id': album.id}) }}">Delete album</a>
         {% for piste in album.pistes %}
 
-            {{ piste.titre }}
-            {{ piste.duree }}
+        <h2>Pistes de l'album</h2>
+
+            Nom du morceau {{ piste.titre }}<br>
+            Durée du morceau {{ piste.duree }}
 
         {% endfor %}
         

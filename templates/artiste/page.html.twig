@@ -10,22 +10,22 @@
 
       <div class="artiste-album">
 
+        
         <h2>Discographie artiste</h2>
 
-        <a href="{{ path('artiste_show_album', {'id': user.id}) }}">Discographie</a>
+        <a href="{{ path('artiste_all_album_per_artiste', {'id': user.id}) }}">Discographie</a>
 
       </div>
 
       <div class="artiste-concert">
 
-      <h3>Concert</h3>
-
-        <a href="{{ path('show_concert', {'id': user.id}) }}">Voir les concerts</a><br>
+      <h3>Concerts</h3>
+      
+      <a href="{{ path('all_concert_per_artiste', {'id': user.id}) }}">Voir concert</a><br>
 
       </div>
 
       <div class="artiste-post">
-
 
       <h4>Posts</h4>
 
@@ -41,14 +41,8 @@
 
       </div>
 
+      {% include "artiste/header.html.twig" %}
 
-      <div class="artiste-header">
-
-        <h1>{{ user.pseudo}}</h1>
-
-        <p>{{ user.biographie}}</p>
-        
-      </div>
 
 </div>
 

@@ -6,9 +6,12 @@
 
     <h1>Liste des concerts</h1>
 
+    <a href="{{ path('new_concert')}}">Ajouter un concert</a><br>
+
     {% for concert in concerts %}
 
-        <a href="{{ path('show_concert', {'id': concert.id}) }}">{{ concert.lieu }}</a><br>
+        <a href="{{ path('detail_concert', {'idConcert': concert.id}) }}">{{ concert.lieu }}</a><br>
+
     {% endfor %}
 
 {% endblock %}

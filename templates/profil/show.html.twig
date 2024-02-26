@@ -4,16 +4,23 @@
 
 {% block body %}
 
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {# {{ dump(app.user.roles) }} #}
+
+    {% if (app.user.roles != 'ROLE_ARTISTE') %}
+
         <a href="{{ path('edit_profil', {'id': app.user.id}) }}">Éditer le profil</a>
+
+    {% else %}
+
+        <a href="{{ path('artiste_edit_profil', {'id': app.user.id}) }}">Éditer le profil artiste</a>
+
     {% endif %}
-
-
 
 <h1>Profil utilisateur</h1>
 
 
 {{ user.pseudo }}
 
+{# <a href="{{ path('page_artiste')}}"></a> #}
 
 {% endblock %}

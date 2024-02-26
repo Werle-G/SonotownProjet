@@ -30,23 +30,28 @@ class ProfilType extends AbstractType
                 'label' => 'Entrez votre email',
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password', 'class' => 'form-control'],
-                'invalid_message' => 'Le mot de passe ne correspond pas',
-                'required' => true,
-                'first_options'  => ['label' => 'Entrez votre mot de passe'],
-                'second_options' => ['label' => 'Répétez votre mot de passe'],
-                'constraints' => [
-                    new Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/'),
-                ],
-            ])
-            ->add('newPassword', PasswordType::class, [
-                'attr' => ['class' => 'form-control'],
-                'label' => 'Nouveau mot de passe',
-                'label_attr' => ['class' => 'form-label mt-4'],
-                'constraints' => [new Assert\NotBlank()]
+            // ->add('plainPassword', RepeatedType::class, [
+            //     'type' => PasswordType::class,
+            //     'mapped' => false,
+            //     'attr' => ['autocomplete' => 'new-password', 'class' => 'form-control'],
+            //     'invalid_message' => 'Le mot de passe ne correspond pas',
+            //     'required' => true,
+            //     'first_options'  => ['label' => 'Entrez votre mot de passe'],
+            //     'second_options' => ['label' => 'Répétez votre mot de passe'],
+            //     'constraints' => [
+            //         new Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/'),
+            //     ],
+            // ])
+            // ->add('newPassword', PasswordType::class, [
+            //     'attr' => ['class' => 'form-control'],
+            //     'label' => 'Nouveau mot de passe',
+            //     'label_attr' => ['class' => 'form-label mt-4'],
+            //     'constraints' => [new Assert\NotBlank()]
+            // ])
+            ->add('valider', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
             ])
         ;
     }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ProfilType;
+use Cocur\Slugify\Slugify;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,47 +19,41 @@ class ProfilController extends AbstractController
 {
 
     #[Route('/profil/visiteur', name: 'app_profil')]
-    public function index(UserRepository $userRepository): Response
+    public function index(): Response
     {
 
         return $this->render('profil/index.html.twig', [
-            // 'user' => $user,
         ]);
     }
 
-    #[IsGranted('ROLE_USER')]
-    #[Route('/profil/edit/', name: 'edit_profil', methods: ['GET', 'POST'])]
-    public function editProfil(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hasher): Response
+    
+    #[Route('/profil/edit/{id}', name: 'edit_profil')]
+    public function editProfil($id, Request $request,UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
 
         // Si l'utilisateur est connecté
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $user = $this->getUser(); 
+        $userSession = $this->getUser(); 
+
+        $userbdd = $userRepository->findOneBy(['id' => $id]);
+
+        if($userSession == $userbdd) {
+
+            $form = $this->createForm(ProfilType::class, $userSession);
+        
+            $form->handleRequest($request);
+        
+            if ($form->isSubmitted() && $form->isValid()) {
     
-        $form = $this->createForm(ProfilType::class, $user);
+                $user = $form->getData();
+
+                $entityManager->persist($user);
+                $entityManager->flush();
     
-        $form->handleRequest($request);
+                return $this->redirectToRoute('show_profil');
     
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // $password = $user->get('plainPassword');
-
-            // $hash = $password;
-            
-
-            // if(password_verify($password,$hash)){
-
-
-            $npassword = $form->getData();
-            $post = $form->getData();
-
-            
-            $this->addFlash('succes',
-                'Votre compte a été modifié');
-
-            return $this->redirectToRoute('show_profil');
-
+            }
         }
     
         return $this->render('profil/edit.html.twig', [
@@ -66,13 +61,10 @@ class ProfilController extends AbstractController
         ]);
     }
 
-        
-
     #[IsGranted('ROLE_USER')]
     #[Route('/profil', name: 'show_profil')]
     public function show(): Response
     {
-
         // Si l'utilisateur est connecté
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 

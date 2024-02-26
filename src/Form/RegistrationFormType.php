@@ -35,10 +35,13 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Entrez un nom d\'utilisateur',
                 'attr' => ['class' => 'form-control']
             ])
+            ->add('nomArtiste', TextType::class, [
+                'label' => 'Entrez un nom d\'artiste',
+                'attr' => ['class' => 'form-control']
+            ])
             ->add('email', TextType::class, [
                 'label' => 'Entrez votre email',
                 'attr' => ['class' => 'form-control']
-                
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -54,7 +57,7 @@ class RegistrationFormType extends AbstractType
                     new NotBlank([
                         'message' => 'Entrez votre mot de passe',
                     ]),
-                    new Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/',
+                    new Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
                     ),
                 ],
             ])
@@ -70,7 +73,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                    'message' => 'Vous devez acceptez les conditions d\'utilisations',
+                    'message' => 'En cochant cette case, vous confirmer avoir 15 ans',
                     ]),
                 ],
             ])

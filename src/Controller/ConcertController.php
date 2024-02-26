@@ -7,6 +7,7 @@ use App\Entity\Concert;
 use App\Form\ConcertType;
 use App\Entity\ImageConcert;
 use App\Service\PictureService;
+use App\Repository\UserRepository;
 use App\Repository\ConcertRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,11 +28,12 @@ class ConcertController extends AbstractController
         ]);
     }
 
-    // #[IsGranted('ROLE_ARTISTE')] 
+    // Ajouter, éditer un concert
     #[Route('/concert/{id}/edit', name: 'edit_concert')]
     #[Route('/concert/new', name: 'new_concert')]
     public function new_edit(Concert $concert = null, Request $request, EntityManagerInterface $entityManager, PictureService $pictureService): Response
     {
+
         if(!$concert) {
             $concert = new Concert();  
             $concert->setUser($this->getUser());
@@ -62,17 +64,17 @@ class ConcertController extends AbstractController
             $entityManager->persist($concert);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_concert');
+            return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('concert/new.html.twig', [
+        return $this->render('artiste/concert/new.html.twig', [
             'form' => $form->createView(),
             'edit' => $concert->getId(),
             'concert' => $concert,
         ]);
     }
     
-
+    // Supprimer un concert
     #[Route('/concert/{id}/delete', name: 'delete_concert')]
     public function delete(Concert $concert, EntityManagerInterface $entityManager): Response
     {
@@ -82,14 +84,28 @@ class ConcertController extends AbstractController
         return $this->redirectToRoute('app_concert');
     }
 
-    #[Route('/concert/{id}', name: 'show_concert')]
-    public function show(Concert $concert): Response
+    // Tout les concerts de l'artiste
+    #[Route('/concert/{id}', name: 'all_concert_per_artiste')]
+    public function show($id, ConcertRepository $concertRepository,UserRepository $userRepository): Response
     {
 
-        return $this->render('concert/show.html.twig', [
-            'concert' => $concert,
+        $user = $userRepository->findBy(["id" => $id]);
+        $concerts = $concertRepository->findBy(["user" => $user]);
+        
+        return $this->render('artiste/concert/concerts.html.twig', [
+            'user' => $user,
+            'concerts' => $concerts,
         ]);
     }
 
-
+       // Détails d'un concert de l'artiste
+    #[Route('/detail/concert/{idConcert}', name: 'detail_concert')]
+    public function detail($idConcert, ConcertRepository $concertRepository): Response
+    {
+        $concert = $concertRepository->findOneBy(['id' => $idConcert]);
+        
+        return $this->render('artiste/concert/detail.html.twig', [
+            'concert' => $concert,
+        ]);
+    }
 }

@@ -4,13 +4,10 @@
 
 {% block body %}
 
-    <h1>Détail concert</h1>
+    <h1>{{ concert.lieu }}</h1>
 
-    <a href="{{ path('edit_concert', {'id': concert.id}) }}">Editer concert</a>
-
-
-    {{ concert.lieu }} <br>
     {{ concert.descriptionConcert }} <br>
+
 
 
     {% for imageConcert in concert.imageConcerts %}
@@ -18,9 +15,9 @@
         <img src="{{ asset('uploads/Concerts/mini/300x300-') ~ imageConcert.nomImage }}">
         
     {% endfor %}
-
-
-          
+    <br>
+    <a href="{{ path('edit_concert', {'id': concert.id}) }}">Editer concert</a><br>
+    <a href="{{ path('delete_concert', {'id': concert.id}) }}">Delete concert</a>
 
 
 {% endblock %}
