@@ -57,10 +57,10 @@ class ArtisteController extends AbstractController
                 $slug = $slugify->slugify($user->getNomArtiste());
                 $user->setSlug($slug);
                 
-                // $entityManager->persist($user);
-                // $entityManager->flush();
+                $entityManager->persist($user);
+                $entityManager->flush();
     
-                // return $this->redirectToRoute('show_profil');
+                return $this->redirectToRoute('show_profil');
     
             }
         }

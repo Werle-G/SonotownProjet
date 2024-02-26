@@ -30,6 +30,10 @@ class ProfilType extends AbstractType
                 'label' => 'Entrez votre email',
                 'attr' => ['class' => 'form-control']
             ])
+            ->add('nomArtiste', TextType::class, [
+                'label' => 'Entrez un nom d\'artiste',
+                'attr' => ['class' => 'form-control']
+            ])
             // ->add('plainPassword', RepeatedType::class, [
             //     'type' => PasswordType::class,
             //     'mapped' => false,

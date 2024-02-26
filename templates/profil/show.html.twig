@@ -6,7 +6,7 @@
 
     {# {{ dump(app.user.roles) }} #}
 
-    {% if (app.user.roles != 'ROLE_ARTISTE') %}
+    {% if not is_granted('ROLE_ARTISTE') %}
 
         <a href="{{ path('edit_profil', {'id': app.user.id}) }}">Éditer le profil</a>
 
@@ -18,8 +18,7 @@
 
 <h1>Profil utilisateur</h1>
 
-
-{{ user.pseudo }}
+    Nom artiste : {{ user.nomArtiste }}
 
 {# <a href="{{ path('page_artiste')}}"></a> #}
 
