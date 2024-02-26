@@ -4,12 +4,14 @@
 
 {% block body %}
 
+<a href="{{ path('artiste_edit_profil', {'id': app.user.id}) }}">Éditer le profil artiste</a>
+
+
 <div class="artiste-container">
 
   <h1>Page de l'artiste</h1>
 
       <div class="artiste-album">
-
         
         <h2>Discographie artiste</h2>
 
@@ -31,17 +33,17 @@
 
       <a href="{{ path('new_post') }}">Nouveau post</a><br>
 
-      {% for post in posts %}
+      {# {% for post in posts %}
 
       <a href="{{ path('show_post', {'id': post.id}) }}">{{ post.message }}</a><br>
       <a href="{{ path('edit_post', {'id': post.id}) }}">Éditer post</a><br>
       <a href="{{ path('delete_post', {'id': post.id}) }}">delete post</a><br>
 
-      {% endfor %}
+      {% endfor %} #}
 
       </div>
 
-      {% include "artiste/header.html.twig" %}
+      {% include "artiste/page/header.html.twig" %}
 
 
 </div>
