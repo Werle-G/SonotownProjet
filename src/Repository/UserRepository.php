@@ -51,7 +51,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $query->getQuery()->getResult();
     }
 
-    public function findArtisteHome(?string $roles)
+    public function findAllUserByDate(?string $roles)
     {
         $query = $this->createQueryBuilder('u')
             ->where('u.roles LIKE :val')
