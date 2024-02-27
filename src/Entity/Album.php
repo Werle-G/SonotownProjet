@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 class Album
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,11 +35,8 @@ class Album
     #[ORM\Column(nullable: true)]
     private ?bool $ban = null;
 
-    // #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true)]
     #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true, cascade: ["persist"])]
     private Collection $pistes;
-
-
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'playlists')]
     private Collection $playlists;

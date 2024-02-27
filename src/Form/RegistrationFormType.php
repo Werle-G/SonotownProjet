@@ -57,7 +57,7 @@ class RegistrationFormType extends AbstractType
                     new NotBlank([
                         'message' => 'Entrez votre mot de passe',
                     ]),
-                    new Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+                    new Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{4,}$/',
                     ),
                 ],
             ])

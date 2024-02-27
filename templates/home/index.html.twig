@@ -4,11 +4,93 @@
 
 {% block body %}
 
-<section id="home-container">
+<section id="home-hero">
+
+    <video autoplay loop muted plays-inline id="back-video">
+            <source src="{{ asset('video/video.mp4') }}" type="video/mp4">
+    </video>
+
+    <div id="home-content">
+
+        <h1>Sonotown</h1>
+
+        <p>Le site qui te permet de découvrir des musiciens indépendants</p>
+
+        <a href="#home-infos">En savoir plus</a>
+        
+    </div>
+
+</section>
+
+<section id="home-artistes" class="home-padding">
+
+    <h2>Les nouveaux artistes</h2>
+
+    <div id="home-artistes-content">
+
+        {% for user in users %}
+
+            <div id="artistes-card">
+
+                {{ user.nomArtiste }}
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<section id="home-albums" class="home-padding">
+
+    <h3>Les meilleurs albums</h3>
+
+    <div id="home-albums-content">
+
+
+        <div id="home-albums-slider">
+
+            {# {% for album in albums %}
     
-    <h1>Home Sonotown</h1>
+                {{ album.nomAlbum }}
+                
+            {% endfor %} #}
+
+        </div>
+
+        <div id="home-albums-text">
+
+            </h4>Derniers albums</h4>
+    
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ab fuga aliquid et quia at doloribus culpa neque quam nulla</p>
+
+        </div>
 
 
+    </div>
+
+</section>
+
+<section id="home-infos" class="home-padding">
+
+    <h5>Qui sommes-nous ?</h5>
+
+    <div id="home-infos-container">
+
+        <figure>
+            <img src="{{ asset('images/synthesizer.jpg')}}" alt="Synthétiseur">
+        </figure>
+    
+        <div id="home-infos-text">
+    
+            <h6>Explication du site</h6>
+        
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa aspernatur qui at, doloremque error consequuntur cum itaque labore excepturi vel, repudiandae ad sint quia ex molestiae modi accusantium, recusandae hic!</p>
+    
+        </div>
+
+    </div>
 
 </section>
 

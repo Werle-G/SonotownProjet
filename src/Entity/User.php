@@ -95,6 +95,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, unique: true, nullable: true)]
     private string $slug;
 
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'commenter')]
+    private Collection $commentaires;
+
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'repondre')]
+    private Collection $repondres;
+
     public function __construct()
     {
         
@@ -114,6 +120,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->aimerConcerts = new ArrayCollection();
 
         $this->dateCreationCompte = new DateTimeImmutable();
+        
+        $this->commentaires = new ArrayCollection();
+        $this->repondres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -511,6 +520,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setCommenter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getCommenter() === $this) {
+                $commentaire->setCommenter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getRepondres(): Collection
+    {
+        return $this->repondres;
+    }
+
+    public function addRepondre(Commentaire $repondre): static
+    {
+        if (!$this->repondres->contains($repondre)) {
+            $this->repondres->add($repondre);
+            $repondre->setRepondre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepondre(Commentaire $repondre): static
+    {
+        if ($this->repondres->removeElement($repondre)) {
+            // set the owning side to null (unless already changed)
+            if ($repondre->getRepondre() === $this) {
+                $repondre->setRepondre(null);
+            }
+        }
 
         return $this;
     }
