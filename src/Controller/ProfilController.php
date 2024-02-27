@@ -61,7 +61,6 @@ class ProfilController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_USER')]
     #[Route('/profil', name: 'show_profil')]
     public function show(): Response
     {

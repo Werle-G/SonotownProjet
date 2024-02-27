@@ -23,15 +23,15 @@ class ProfilType extends AbstractType
     {
         $builder
             ->add('pseudo', TextType::class, [
-                'label' => 'C',
+                'label' => 'Pseudo',
                 'attr' => ['class' => 'form-control']
             ])
             ->add('email', TextType::class, [
-                'label' => 'Entrez votre email',
+                'label' => 'Modifier votre adresse email',
                 'attr' => ['class' => 'form-control']
             ])
             ->add('nomArtiste', TextType::class, [
-                'label' => 'Entrez un nom d\'artiste',
+                'label' => 'Modifier votre nom d\'artiste',
                 'attr' => ['class' => 'form-control']
             ])
             // ->add('plainPassword', RepeatedType::class, [

@@ -6,6 +6,7 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Serializer;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,10 +37,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     private ?string $pseudo = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeInterface $dateCreationCompte = null;
 
     #[ORM\Column(length: 50, nullable: true)]
@@ -111,20 +112,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // Posts des utilisateurs
         $this->posts = new ArrayCollection();
         $this->aimerConcerts = new ArrayCollection();
-    }
 
-    // Slug
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
+        $this->dateCreationCompte = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -212,12 +201,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDateCreationCompte(): ?\DateTimeInterface
+    public function getDateCreationCompte(): ?\DateTimeImmutable
     {
         return $this->dateCreationCompte;
     }
 
-    public function setDateCreationCompte(?\DateTimeInterface $dateCreationCompte): static
+    public function setDateCreationCompte(\DateTimeImmutable $dateCreationCompte): static
     {
         $this->dateCreationCompte = $dateCreationCompte;
 
@@ -508,6 +497,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAimerConcert(Concert $aimerConcert): static
     {
         $this->aimerConcerts->removeElement($aimerConcert);
+
+        return $this;
+    }
+
+    // Slug
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

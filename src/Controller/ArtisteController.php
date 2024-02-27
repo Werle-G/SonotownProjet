@@ -60,8 +60,7 @@ class ArtisteController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
     
-                return $this->redirectToRoute('show_profil');
-    
+                return $this->redirectToRoute('show_artiste');
             }
         }
     
@@ -69,17 +68,37 @@ class ArtisteController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    // Page d'un artiste
-    #[Route('/{id}', name: 'page_artiste')]
-    public function show(User $user, PostRepository $postRepository, $id):Response
+
+    #[Route('/profil', name: 'show_artiste')]
+    public function show(PostRepository $postRepository): Response
     {
+        // Si l'utilisateur est connecté
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $posts = $postRepository->findBy(["user" => $id]);
+        $user = $this->getUser();
 
-        return $this->render('artiste/page.html.twig', [
+        // $posts = $postRepository->findBy(["user" => $id]);
+
+
+        return $this->render('artiste/page/show.html.twig', [
             'user' => $user,
-            'posts' => $posts,
+            // 'posts' => $posts,
+
         ]);
     }
+
+        // Page d'un artiste
+    // #[Route('/{id}', name: 'show_artiste')]
+    // public function show(User $user, PostRepository $postRepository, $id):Response
+    // {
+
+    //     $posts = $postRepository->findBy(["user" => $id]);
+    //     $user = $this->getUser();
+
+    //     return $this->render('artiste/page/show.html.twig', [
+    //         'user' => $user,
+    //         'posts' => $posts,
+    //     ]);
+    // }
 
 }
