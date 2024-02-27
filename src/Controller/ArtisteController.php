@@ -71,33 +71,18 @@ class ArtisteController extends AbstractController
     }
 
     #[Route('/profil', name: 'page_artiste')]
-    public function show(PostRepository $postRepository): Response
+    public function show(): Response
     {
         // Si l'utilisateur est connecté
-        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $this->getUser();
 
         // $posts = $postRepository->findBy(["user" => $id]);
 
-
         return $this->render('artiste/page/show.html.twig', [
             'user' => $user,
             // 'posts' => $posts,
-        ]);
-    }
-
-        // Page d'un artiste
-    #[Route('/{id}', name: 'show_artiste')]
-    public function showArtiste(User $user, PostRepository $postRepository, $id):Response
-    {
-
-        $posts = $postRepository->findBy(["user" => $id]);
-        $user = $this->getUser();
-
-        return $this->render('artiste/page/show.html.twig', [
-            'user' => $user,
-            'posts' => $posts,
         ]);
     }
 

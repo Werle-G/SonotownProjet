@@ -4,21 +4,25 @@
 
 {% block body %}
 
-    {# {{ dump(app.user.roles) }} #}
+<div class="container">
 
     {% if not is_granted('ROLE_ARTISTE') %}
-
+    
         <a href="{{ path('edit_profil', {'id': app.user.id}) }}">Éditer le profil</a>
-
+    
     {% else %}
-
+    
         <a href="{{ path('artiste_edit_profil', {'id': app.user.id}) }}">Éditer le profil artiste</a>
-
+    
     {% endif %}
-
-<h1>Profil utilisateur</h1>
-
+    
+    <h1>Profil utilisateur</h1>
+    
     Nom artiste : {{ user.nomArtiste }}
+
+</div>
+    {# {{ dump(app.user.roles) }} #}
+
 
 {# <a href="{{ path('page_artiste')}}"></a> #}
 

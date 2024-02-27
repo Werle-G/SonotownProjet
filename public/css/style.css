@@ -23,16 +23,17 @@ a{
 /* Nav */
 
 nav{
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     padding: 20px 8%;
     display: flex;
     align-items: center; 
     width: 100%;
+    height: 7vh;
     z-index: 4;
-    /* background: rgb(200, 202, 195) ; */
-    background: transparent ;
+    background: rgb(200, 202, 195) ;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 
@@ -73,9 +74,9 @@ nav a{
   /* Container */
 
 /* Définition des styles */
-/* #container {
+.container {
     padding: 6em;
-} */
+}
 
 /* #home-hero {
     padding: 6em;
@@ -103,7 +104,7 @@ nav a{
 
 #home-hero{
     width: 100%;
-    height: 100vh;
+    height: 93vh;
     background-image: linear-gradient(rgba(200, 202, 195, 0.3), rgba(200, 202, 195, 0.3));
     position: relative;
     padding: 0 5%;
@@ -191,42 +192,150 @@ nav a{
     width: 100%;
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 #artistes-card{
-    padding: 20px;
-    height: 200px;
+    height: 250px;
     width: 200px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    border: rgb(230, 230, 230) solid 0.1em;
+}
 
+#card-image{
+    height: 70%;
+    position: relative;
+}
+
+#card-image h3{
+    position: absolute;
+    bottom: 0px;
+    top: 80%;
+    left: 25%;
+    z-index: 5;
+}
+
+#card-separation{
+    height: 0.1em;
+    width: 100%;
+    background: rgb(230, 230, 230);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#card-header{
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+
+.card-ligne{
+    display: flex;
+    justify-content: space-between;
 }
 
 /* Home albums */
 
 #home-albums{
     width: 100%;
-    height: 60vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    gap: 30px;
 }
 
 #home-albums-content{
     display: flex;
     height: 100%;
-    padding: 30px;
-}
-
-#home-albums-slider{
-    width: 70%;
+    gap: 30px;
 }
 
 #home-albums-text{
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+
 }
+
+/* Slider */
+
+
+
+.carousel img {
+    height: 500px;
+    object-fit: cover;
+    width: 500px;
+}
+  
+.carousel {
+box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+height: 500px;
+overflow: hidden;
+width: 500px;
+}
+
+#left, #right{
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(91, 91, 91, 0.3);
+    color: #fff;
+}
+
+.btn-slider{
+    position: relative;
+    /* top: 250px; */
+    width: 20px;
+}
+
+#left{
+    position: relative;
+    left: 50px;
+    top: 225px;
+    z-index: 5; 
+}
+
+#right{
+    position: relative;
+    right: 50px;
+    top: 225px;
+    z-index: 5; 
+}
+
+.image-container {
+    display: flex;
+    transform: translateX(0);
+    transition: transform 0.5s ease-in-out;
+}
+  
+.btn {
+    background-color: #C8CAC3;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.8rem;
+    width: 49.5%;
+}
+
+.btn img{
+    color: #BDB7A7;
+
+}
+  
+.btn:hover {
+    opacity: 0.9;
+}
+  
+/* Home album text */
+
+#home-albums-text{
+    width: 50%;
+}
+
 
 /* Home infos */
 
@@ -248,6 +357,11 @@ nav a{
     padding-bottom: 6em;
 }
 
+#home-infos h6, #home-albums h4, #home-artistes h2{
+    color: rgb(107 107 107);
+    font-size: 35px;
+}
+
 #home-infos-container figure{
     width: 100%;
     margin-bottom: 0px;
@@ -262,7 +376,10 @@ nav a{
     height: auto;
 }
 
-
+#home-albums-text h5{
+    font-size: 25px;
+    color: #A8906F;
+}
 
 /* Page artiste Profil */
 

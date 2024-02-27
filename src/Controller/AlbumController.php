@@ -67,7 +67,7 @@ class AlbumController extends AbstractController
             $entityManager->persist($album);
             $entityManager->flush();
 
-            return $this->redirectToRoute('all_album_per_artiste');
+            return $this->redirectToRoute('artiste_all_album');
         }
     
         return $this->render('artiste/album/new.html.twig', [
