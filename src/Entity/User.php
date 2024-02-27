@@ -70,24 +70,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'follows')]
     private Collection $followers;
 
-    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'playlists')]
-    private Collection $playlists;
-
     // Albums crées par un utilisateur 
     #[ORM\OneToMany(targetEntity: Album::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $albums;
 
-    // Genre musical d'un utilisateur
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?GenreMusical $genreMusical = null;
-
     // Concerts joués par un utilisateur
     #[ORM\OneToMany(targetEntity: Concert::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $concerts;
-
-    // Posts crée par un utilisateur
-    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $posts;
 
     #[ORM\ManyToMany(targetEntity: Concert::class, inversedBy: 'users')]
     private Collection $aimerConcerts;
@@ -101,13 +90,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'repondre')]
     private Collection $repondres;
 
+    #[ORM\OneToMany(targetEntity: Playlist::class, mappedBy: 'user')]
+    private Collection $playlists;
+
+    #[ORM\ManyToMany(targetEntity: Album::class, mappedBy: 'aimerAlbums')]
+    private Collection $aimerAlbums;
+
     public function __construct()
     {
         
         $this->follows = new ArrayCollection();
         $this->followers = new ArrayCollection();
-
-        $this->playlists = new ArrayCollection();
 
         $this->albums = new ArrayCollection();
         // Pointe la collection qu'un utilisateur a crée
@@ -115,14 +108,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // Concerts joués par un utilisateur
         $this->concerts = new ArrayCollection();
 
-        // Posts des utilisateurs
-        $this->posts = new ArrayCollection();
         $this->aimerConcerts = new ArrayCollection();
 
         $this->dateCreationCompte = new DateTimeImmutable();
         
         $this->commentaires = new ArrayCollection();
         $this->repondres = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->aimerAlbums = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -363,30 +356,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Album>
      */
-    public function getPlaylists(): Collection
-    {
-        return $this->playlists;
-    }
-
-    public function addPlaylist(Album $playlist): static
-    {
-        if (!$this->playlists->contains($playlist)) {
-            $this->playlists->add($playlist);
-        }
-
-        return $this;
-    }
-
-    public function removePlaylist(Album $playlist): static
-    {
-        $this->playlists->removeElement($playlist);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Album>
-     */
     public function getAlbums(): Collection
     {
         return $this->albums;
@@ -414,18 +383,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGenreMusical(): ?GenreMusical
-    {
-        return $this->genreMusical;
-    }
-
-    public function setGenreMusical(?GenreMusical $genreMusical): static
-    {
-        $this->genreMusical = $genreMusical;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Concert>
      */
@@ -450,36 +407,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($concert->getUser() === $this) {
                 $concert->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Post>
-     */
-    public function getPosts(): Collection
-    {
-        return $this->posts;
-    }
-
-    public function addPoster(Post $post): static
-    {
-        if (!$this->posts->contains($post)) {
-            $this->posts->add($post);
-            $post->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePost(Post $post): static
-    {
-        if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getUser() === $this) {
-                $post->setUser(null);
             }
         }
 
@@ -579,6 +506,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($repondre->getRepondre() === $this) {
                 $repondre->setRepondre(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Playlist>
+     */
+    public function getPlaylists(): Collection
+    {
+        return $this->playlists;
+    }
+
+    public function addPlaylist(Playlist $playlist): static
+    {
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists->add($playlist);
+            $playlist->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylist(Playlist $playlist): static
+    {
+        if ($this->playlists->removeElement($playlist)) {
+            // set the owning side to null (unless already changed)
+            if ($playlist->getUser() === $this) {
+                $playlist->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Album>
+     */
+    public function getAimerAlbums(): Collection
+    {
+        return $this->aimerAlbums;
+    }
+
+    public function addAimerAlbum(Album $aimerAlbum): static
+    {
+        if (!$this->aimerAlbums->contains($aimerAlbum)) {
+            $this->aimerAlbums->add($aimerAlbum);
+            $aimerAlbum->addAimerAlbum($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAimerAlbum(Album $aimerAlbum): static
+    {
+        if ($this->aimerAlbums->removeElement($aimerAlbum)) {
+            $aimerAlbum->removeAimerAlbum($this);
         }
 
         return $this;

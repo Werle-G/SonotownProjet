@@ -18,15 +18,11 @@ class GenreMusical
     #[ORM\Column(length: 50)]
     private ?string $nomGenreMusical = null;
 
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'genreMusical')]
-    private Collection $users;
-
     #[ORM\ManyToMany(targetEntity: Album::class, mappedBy: 'genreMusicals')]
     private Collection $albums;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->albums = new ArrayCollection();
     }
 
@@ -43,36 +39,6 @@ class GenreMusical
     public function setNomGenreMusical(string $nomGenreMusical): static
     {
         $this->nomGenreMusical = $nomGenreMusical;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setGenreMusical($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getGenreMusical() === $this) {
-                $user->setGenreMusical(null);
-            }
-        }
 
         return $this;
     }

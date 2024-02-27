@@ -38,9 +38,6 @@ class Album
     #[ORM\OneToMany(targetEntity: Piste::class, mappedBy: 'album', orphanRemoval: true, cascade: ["persist"])]
     private Collection $pistes;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'playlists')]
-    private Collection $playlists;
-
     #[ORM\ManyToOne(inversedBy: 'albums')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -48,11 +45,14 @@ class Album
     #[ORM\ManyToMany(targetEntity: GenreMusical::class, inversedBy: 'albums')]
     private Collection $genreMusicals;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'aimerAlbums')]
+    private Collection $aimerAlbums;
+
     public function __construct()
     {
         $this->pistes = new ArrayCollection();
-        $this->playlists = new ArrayCollection();
         $this->genreMusicals = new ArrayCollection();
+        $this->aimerAlbums = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -161,35 +161,7 @@ class Album
 
         return $this;
     }
-
  
-    /**
-     * @return Collection<int, User>
-     */
-    public function getPlaylists(): Collection
-    {
-        return $this->playlists;
-    }
-
-    public function addPlaylist(User $playlist): static
-    {
-        if (!$this->playlists->contains($playlist)) {
-            $this->playlists->add($playlist);
-            $playlist->addPlaylist($this);
-        }
-
-        return $this;
-    }
-
-    public function removePlaylist(User $playlist): static
-    {
-        if ($this->playlists->removeElement($playlist)) {
-            $playlist->removePlaylist($this);
-        }
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -201,29 +173,6 @@ class Album
 
         return $this;
     }
-
-    // public function __toString()
-    // {
-    //     return $this->nomAlbum ?? '';
-    // }
-
-    // Imahe 
-        // NOTE: This is not a mapped field of entity metadata, just a simple property.
-    // #[Vich\UploadableField(mapping: 'images', fileNameProperty: 'nomAlbum', size: 'imageSize')]
-    // private ?File $imagefile = null;
-
-    // #[ORM\Column(length: 50, nullable: true)]
-    // private ?string $imageAlbum = null;
-    /**
-     *
-     * @Vich\UploadableField(mapping="images", fileNameProperty: 'nomAlbum', size: 'imageSize'
-     */
-    // #[Vich\UploadableField(mapping: 'images', fileNameProperty: 'nomAlbum', size: 'imageSize')]
-    // private ?string $imageAlbum = null;
-
-    // private  string|numfmt_get_locale
-    // @ORM\Column
-    // *  @var File
 
     /**
      * @return Collection<int, GenreMusical>
@@ -245,6 +194,30 @@ class Album
     public function removeGenreMusical(GenreMusical $genreMusical): static
     {
         $this->genreMusicals->removeElement($genreMusical);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getAimerAlbums(): Collection
+    {
+        return $this->aimerAlbums;
+    }
+
+    public function addAimerAlbum(User $aimerAlbum): static
+    {
+        if (!$this->aimerAlbums->contains($aimerAlbum)) {
+            $this->aimerAlbums->add($aimerAlbum);
+        }
+
+        return $this;
+    }
+
+    public function removeAimerAlbum(User $aimerAlbum): static
+    {
+        $this->aimerAlbums->removeElement($aimerAlbum);
 
         return $this;
     }
