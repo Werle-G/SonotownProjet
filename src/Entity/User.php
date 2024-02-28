@@ -96,6 +96,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Album::class, mappedBy: 'aimerAlbums')]
     private Collection $aimerAlbums;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Reseau $reseau = null;
+
     public function __construct()
     {
         
@@ -564,6 +567,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->aimerAlbums->removeElement($aimerAlbum)) {
             $aimerAlbum->removeAimerAlbum($this);
         }
+
+        return $this;
+    }
+
+    public function getReseau(): ?Reseau
+    {
+        return $this->reseau;
+    }
+
+    public function setReseau(?Reseau $reseau): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($reseau === null && $this->reseau !== null) {
+            $this->reseau->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($reseau !== null && $reseau->getUser() !== $this) {
+            $reseau->setUser($this);
+        }
+
+        $this->reseau = $reseau;
 
         return $this;
     }
