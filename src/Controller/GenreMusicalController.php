@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GenreMusicalController extends AbstractController
 {
-    #[Route('/genre/musical', name: 'genre_musical')]
+    #[Route('/genre/musical', name: 'all_genre_musical')]
     public function index(GenreMusicalRepository $genreMusicalRepository): Response
     {
 
@@ -23,8 +23,8 @@ class GenreMusicalController extends AbstractController
         ]);
     }
 
-    #[Route('/genre/musical/{id}', name: 'show_genre_musical')]
-    public function show(GenreMusical $genreMusical, UserRepository $userRepository, AlbumRepository $albumRepository, $id)
+    #[Route('/genre/musical/detail/{id}', name: 'detail_genre_musical')]
+    public function detail_genre_musical(GenreMusical $genreMusical, UserRepository $userRepository, AlbumRepository $albumRepository, $id)
     {
 
         $albums = $albumRepository->findBy(["genreMusicals" => $id]);

@@ -9,7 +9,7 @@
     <h1>Liste des Artistes</h1>
     
     {% for user in users %}
-        <a href="{{ path('artiste_page_artiste', {'id': user.id}) }}">{{ user.nomArtiste }}</a>
+        <a href="{{ path('artiste_page', {'id': user.id}) }}">{{ user.nomArtiste }}</a>
     {% endfor %}
 
 {% endblock %}

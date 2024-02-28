@@ -208,14 +208,51 @@ nav a{
 #card-image{
     height: 70%;
     position: relative;
+    top: 0px;
+    right: 0px;
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    z-index: 1; 
 }
 
-#card-image h3{
+#card-image img{
+    z-index: 2;
+    position: relative;
+    transition: 0.2 ease-in-out;
+
+}
+
+#card-image img:hover{
+    background: rgba(0, 0, 0, 0.6);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    opacity: 0.5;
+    z-index: 3;
+    cursor: pointer;
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+
+#card-image:hover {
+    background: rgba(0, 0, 0, 0.6); 
+}
+
+
+#card-image:hover img {
+    opacity: 0.5; 
+}
+
+
+#card-image h3 {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     top: 80%;
-    left: 25%;
+    left: 0;
+    right: 0;
     z-index: 5;
+    text-align: center;
+
 }
 
 #card-separation{

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Artiste{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+  <h1>Modifier page artiste</h1>
+
+
+  {% if edit %}
+  <h1>Editer l'album</h1>
+  {% else %}
+  <h1>Créer un nouvel album</h1>
+  {% endif %}
+
+  {{ form_start(form) }}
+  {{ form_label(form.couverture, 'Télécharge une photo de couverture') }}
+  {{ form_widget(form.couverture) }}
+  {{ form_label(form.avatar, 'Télécharge une photo de profil') }}
+  {{ form_widget(form.avatar) }}
+  {{ form_row(form.pseudo) }}
+  {{ form_row(form.nomArtiste) }}
+
+  {{ form_row(form.dateCreationGroupe) }}
+  {{ form_row(form.biographie) }}
+  {{ form_row(form.reseau) }}
+  {{ form_row(form.valider) }}
+{{ form_end(form) }}
+
+
+
+
+</div>
+
+
+{% endblock %}

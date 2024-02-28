@@ -6,6 +6,9 @@
 
 <div class="artiste-container">
 
+  <a href="{{ path('artiste_all_album_per_artiste', {'idArtiste': album.user.id}) }}">Discographie</a>
+
+
       <div class="artiste-album">
 
         <h1>Détail de l'album {{ album.nomAlbum}}</h1>

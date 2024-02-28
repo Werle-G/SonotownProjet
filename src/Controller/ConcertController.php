@@ -29,9 +29,9 @@ class ConcertController extends AbstractController
     }
 
     // Ajouter, éditer un concert
-    #[Route('/concert/{id}/edit', name: 'edit_concert')]
-    #[Route('/concert/new', name: 'new_concert')]
-    public function new_edit(Concert $concert = null, Request $request, EntityManagerInterface $entityManager, PictureService $pictureService): Response
+    #[Route('/artiste/concert/{id}/edit', name: 'edit_concert')]
+    #[Route('/artiste/concert/new', name: 'new_concert')]
+    public function new_edit_concert(Concert $concert = null, Request $request, EntityManagerInterface $entityManager, PictureService $pictureService): Response
     {
 
         if(!$concert) {
@@ -67,7 +67,7 @@ class ConcertController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('artiste/concert/new.html.twig', [
+        return $this->render('artiste_page/concert/new_edit_concert.html.twig', [
             'form' => $form->createView(),
             'edit' => $concert->getId(),
             'concert' => $concert,
@@ -76,7 +76,7 @@ class ConcertController extends AbstractController
     
     // Supprimer un concert
     #[Route('/concert/{id}/delete', name: 'delete_concert')]
-    public function delete(Concert $concert, EntityManagerInterface $entityManager): Response
+    public function delete_concert(Concert $concert, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($concert);
         $entityManager->flush();
@@ -85,26 +85,26 @@ class ConcertController extends AbstractController
     }
 
     // Tout les concerts de l'artiste
-    #[Route('/concert/{id}', name: 'all_concert_per_artiste')]
+    #[Route('/artiste/concert/{id}', name: 'all_concert_per_artiste')]
     public function show($id, ConcertRepository $concertRepository,UserRepository $userRepository): Response
     {
 
         $user = $userRepository->findBy(["id" => $id]);
         $concerts = $concertRepository->findBy(["user" => $user]);
         
-        return $this->render('artiste/concert/concerts.html.twig', [
+        return $this->render('artiste_page/concert/all_concert_per_artiste.html.twig', [
             'user' => $user,
             'concerts' => $concerts,
         ]);
     }
 
        // Détails d'un concert de l'artiste
-    #[Route('/detail/concert/{idConcert}', name: 'detail_concert')]
-    public function detail($idConcert, ConcertRepository $concertRepository): Response
+    #[Route('/artiste/detail/concert/{idConcert}', name: 'detail_concert')]
+    public function detail_concert($idConcert, ConcertRepository $concertRepository): Response
     {
         $concert = $concertRepository->findOneBy(['id' => $idConcert]);
         
-        return $this->render('artiste/concert/detail.html.twig', [
+        return $this->render('artiste_page/concert/detail_concert.html.twig', [
             'concert' => $concert,
         ]);
     }

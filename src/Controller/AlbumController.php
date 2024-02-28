@@ -31,7 +31,7 @@ class AlbumController extends AbstractController
     // Ajout/éditions albums
     #[Route('/{id}/edit', name: 'edit_album')]
     #[Route('/new', name: 'new_album')]
-    public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir): Response
+    public function new_edit_album(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir, $id): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_ARTISTE');
@@ -50,6 +50,8 @@ class AlbumController extends AbstractController
 
             $album = $form->getData();
 
+            $fileName = '';
+
             if($photo = $form['photo']->getData()){
                 $fileName = uniqid().'.'.$photo->guessExtension();
                 $photo->move($photoDir, $fileName);
@@ -67,10 +69,10 @@ class AlbumController extends AbstractController
             $entityManager->persist($album);
             $entityManager->flush();
 
-            return $this->redirectToRoute('artiste_all_album');
+            return $this->redirectToRoute('artiste_detail_album', ['idAlbum' => $id]);
         }
     
-        return $this->render('artiste/album/new.html.twig', [
+        return $this->render('artiste_page/album/new_edit_album.html.twig', [
             'form' => $form->createView(),
             'edit' => $album->getId()
         ]);
@@ -87,24 +89,24 @@ class AlbumController extends AbstractController
     }
 
     // Discographie d'un artiste
-    #[Route('/{id}', name: 'all_album_per_artiste')]
-    public function show(AlbumRepository $albumRepository, $id):Response
+    #[Route('/{idArtiste}', name: 'all_album_per_artiste')]
+    public function all_album_per_artiste(AlbumRepository $albumRepository, $idArtiste):Response
     {
 
-        $albums = $albumRepository->findBy(["user" => $id]);
+        $albums = $albumRepository->findBy(["user" => $idArtiste]);
         
-        return $this->render('artiste/album/discographie.html.twig', [
+        return $this->render('artiste_page/album/all_album_per_artiste.html.twig', [
             'albums' => $albums,
         ]);
     }
 
     // Détails d'un album de l'artiste
     #[Route('/detail/{idAlbum}', name: 'detail_album')]
-    public function detail($idAlbum, AlbumRepository $albumRepository): Response
+    public function detail_album($idAlbum, AlbumRepository $albumRepository): Response
     {
         $album = $albumRepository->findOneBy(['id' => $idAlbum]);
         
-        return $this->render('artiste/album/detail.html.twig', [
+        return $this->render('artiste_page/album/detail_album.html.twig', [
             'album' => $album,
         ]);
     }

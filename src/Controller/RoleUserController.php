@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ProfilType;
+use App\Form\RoleUserType;
 use Cocur\Slugify\Slugify;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,62 +16,63 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
-class ProfilController extends AbstractController
+class RoleUserController extends AbstractController
 {
 
-    #[Route('/profil/visiteur', name: 'app_profil')]
+    #[Route('/profil', name: 'all_user')]
     public function index(): Response
     {
 
         return $this->render('profil/index.html.twig', [
         ]);
     }
-
     
-    #[Route('/profil/edit/{id}', name: 'edit_profil')]
-    public function editProfil($id, Request $request,UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    #[Route('/profil/edit/{id}', name: 'user_profil_edit')]
+    public function user_profil_edit($id, Request $request,UserRepository $userRepository, EntityManagerInterface $entityManager, User $user): Response
     {
 
         // Si l'utilisateur est connecté
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $userSession = $this->getUser(); 
-
+        
         $userbdd = $userRepository->findOneBy(['id' => $id]);
-
+        
         if($userSession == $userbdd) {
-
-            $form = $this->createForm(ProfilType::class, $userSession);
-        
+            
+            $form = $this->createForm(RoleUserType::class, $userSession);
+            
             $form->handleRequest($request);
-        
+            
             if ($form->isSubmitted() && $form->isValid()) {
-    
+                
                 $user = $form->getData();
-
+                
                 $entityManager->persist($user);
                 $entityManager->flush();
-    
-                return $this->redirectToRoute('show_profil');
-    
+                
+                return $this->redirectToRoute('user_profil');
+                
             }
         }
-    
-        return $this->render('profil/edit.html.twig', [
+        
+        return $this->render('user_page/user_profil_edit.html.twig', [
             'form' => $form->createView(),
-        ]);
-    }
-
-    #[Route('/profil', name: 'show_profil')]
-    public function show(): Response
-    {
-        // Si l'utilisateur est connecté
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $user = $this->getUser();
-
-        return $this->render('profil/show.html.twig', [
             'user' => $user,
         ]);
     }
+
+    #[Route('/profil/user', name: 'user_profil')]
+    public function user_profil(): Response
+    {
+        // Si l'utilisateur est connecté
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+    
+        $userSession = $this->getUser();
+    
+        return $this->render('user_page/user_profil.html.twig', [
+            'user' => $userSession ,
+        ]);
+    }
+
 }

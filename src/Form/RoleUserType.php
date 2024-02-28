@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 
-class ProfilType extends AbstractType
+class RoleUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -28,10 +28,6 @@ class ProfilType extends AbstractType
             ])
             ->add('email', TextType::class, [
                 'label' => 'Modifier votre adresse email',
-                'attr' => ['class' => 'form-control']
-            ])
-            ->add('nomArtiste', TextType::class, [
-                'label' => 'Modifier votre nom d\'artiste',
                 'attr' => ['class' => 'form-control']
             ])
             // ->add('plainPassword', RepeatedType::class, [
