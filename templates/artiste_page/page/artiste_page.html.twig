@@ -49,8 +49,9 @@
         <h4>Avis</h4>
 
         {% for commentaire in user.commentaires %}
-          {{ commentaire.message }}
-        {% endfor %}
+
+        <p>{{ commentaire.message }}</p>
+
 
       </div>
 
