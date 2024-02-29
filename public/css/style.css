@@ -50,16 +50,16 @@ html{
     scroll-behavior: smooth;
 }
 
-/* body{
-    height: 100%;
+body {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
 
-} */
-
-/* #content{
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-} */
+.wrapper{
+    flex: 1;
+}
 
 h1{
     color: rgb(170, 170, 235);
@@ -129,7 +129,7 @@ nav a{
   /* Container */
 
 /* Définition des styles */
-.container {
+#content {
     padding: 6em;
 }
 
@@ -153,9 +153,10 @@ nav a{
 
 #home-hero{
     width: 100%;
-    height: 93vh;
+    min-height: 100vh;
     background-image: linear-gradient(rgba(200, 202, 195, 0.3), rgba(200, 202, 195, 0.3));
     position: relative;
+    top: 0;
     padding: 0 5%;
     display: flex;
     align-items: center;
@@ -163,7 +164,7 @@ nav a{
     text-align: center;
     box-sizing: border-box;
     overflow: hidden;
-
+    object-fit: cover;
 }
 
 #home-hero h1{
@@ -227,7 +228,6 @@ nav a{
 
 #home-artistes{
     width: 100%;
-    height: 60vh;
     padding: 6em;
     display: flex;
     flex-direction: column;
@@ -245,6 +245,7 @@ nav a{
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    gap: 20px;
 }
 
 #artistes-card{
@@ -342,7 +343,6 @@ nav a{
 
 #home-albums{
     width: 100%;
-    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -441,7 +441,6 @@ width: 500px;
 
 #home-infos{
     width: 100%;
-    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -492,8 +491,7 @@ width: 500px;
 
 .artiste-container{
     display: flex;
-    height: 100vh;
-    width: 80%; 
+    width: 70%; 
     flex-direction: column;
     margin: auto;
     background: var(--color-background-grey-0);
@@ -502,22 +500,21 @@ width: 500px;
 
 .artiste-header{
     width: 100%;
+    position: relative;
+    height: 300px;
+
 }
 
 .artiste-aside figure{
-    /* margin-bottom: 20px;
-    position: relative;
     top: -79px;
-    left: 1123px; */
+    right: 0; 
     width: 200px
 }
 
-.artiste-header img{
+.artiste-header .artiste-couverture img{
     height: 300px;
     width: 100%;
-    object-fit: cover;
     z-index: 2;
-    position: relative;
     object-fit: cover;
     box-shadow:rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
@@ -530,14 +527,17 @@ width: 500px;
 
 }
 .artiste-aside{
+    position: absolute;
+    top: 236px;
+    right: 30px;
     display: flex;
-    justify-content: space-between;
-    height: 50px;
+    flex-direction: column;
+    width: 200px;
+    text-align: center;
 }
 
 .artiste-aside h1{
     font-size: var(--font-size-title);
-    text-align: center;
     color: var(--color-background-brown-3);
 }
 .artiste-titre{
@@ -552,7 +552,6 @@ width: 500px;
     align-self: baseline;
     gap: 20px;
     font-size: var(--font-size-link);
-    padding-left: 20px;
 }
 
 .artiste-liens a:hover{
@@ -560,23 +559,18 @@ width: 500px;
     text-decoration: none;
 }
 
-.artiste-header h1{
-    color: var(--color-text-1);
-    align-self: end;
-}
 
-.artiste-figure{
-    position: relative;
-    position: relative;
-    top: -100px;
-    right: 30px;
-}
 
 .artiste-main{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     padding: 10px;
+    gap: 30px;
+    min-height: 50vh;
+}
+
+#artiste-biographie{
+    width: 50%;
 }
 
 
@@ -663,10 +657,7 @@ footer{
     display: flex;
     flex-direction: column;
     padding: 2em;
-    margin-top: 6em;
     font-size: 20px;
-    /* position: absolute;
-    bottom: 0px; */
 }
 
 #footer-sites{

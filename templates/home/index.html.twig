@@ -3,22 +3,24 @@
 {% block title %}Home Sonotown{% endblock %}
 
 {% block body %}
-
-<section id="home-hero">
-
-    <video autoplay loop muted plays-inline id="back-video">
-            <source src="{{ asset('video/video.mp4') }}" type="video/mp4">
-    </video>
-
-    <div id="home-content">
-
-        <h1>Sonotown</h1>
-
-        <p>Le site qui te permet de découvrir des musiciens indépendants</p>
-
-        <a href="#home-infos">En savoir plus</a>
-        
-    </div>
+<section id="hero-content">
+    <section id="home-hero">
+    
+        <video autoplay loop muted plays-inline id="back-video">
+                <source src="{{ asset('video/video.mp4') }}" type="video/mp4">
+        </video>
+    
+        <div id="home-content">
+    
+            <h1>Sonotown</h1>
+    
+            <p>Le site qui te permet de découvrir des musiciens indépendants</p>
+    
+            <a href="#home-infos">En savoir plus</a>
+            
+        </div>
+    
+    </section>
 
 </section>
 

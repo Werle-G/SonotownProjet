@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\ProfilType;
 use Cocur\Slugify\Slugify;
 use App\Form\RoleArtisteType;
+use App\Repository\CommentaireRepository;
 use Doctrine\DBAL\Types\Types;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
@@ -94,13 +95,15 @@ class RoleArtisteController extends AbstractController
 
 
     #[Route('/page/{id}', name: 'artiste_page')]
-    public function artiste_page(UserRepository $userRepository, $id): Response
+    public function artiste_page(CommentaireRepository $commentaireRepository, UserRepository $userRepository, $id): Response
     {
 
         $user = $userRepository->findOneBy(["id" => $id]);
+        $commentaires = $commentaireRepository->findOneBy(["id" => $id]);
 
         return $this->render('artiste_page/page/artiste_page.html.twig', [
             'user' => $user,
+            'commentaires' => $commentaires,
         ]);
     }
 
