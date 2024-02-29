@@ -1,7 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* font-family: Roboto, sans-serif; */
+    font-family: Mulish, sans-serif;
+    /* font-family: Gowun sans-serif; */
+
+    
+
+}
+
+:root{
+
+    /* Couleurs titres */
+    --color-title: rgb(89 89 89);
+    --color-title-p: #A8906F;
+
+    /* Couleurs texte */
+
+    --color-text-1:#7d7d7c;
+    --color-text-2:;
+
+    /* Variable de gris du plus clair au plus foncé */
+    --color-background-grey-0: #f5f5f5;
+    --color-background-grey-1: #C8CAC3;
+    --color-background-grey-2: #BDB7A7;
+
+    /* Variable de brun du plus clair au plus foncé */
+    --color-background-brown-1: #B3A38B;
+    --color-background-brown-2: #A8906F;
+    --color-background-brown-3: #9D7C53;
+
+    /* Font-size */
+    --font-size-link: 30px;
+    --font-size-title: 40px
+
 }
 
 /* Html */
@@ -10,6 +50,17 @@ html{
     scroll-behavior: smooth;
 }
 
+/* body{
+    height: 100%;
+
+} */
+
+/* #content{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+} */
+
 h1{
     color: rgb(170, 170, 235);
 }
@@ -17,6 +68,10 @@ h1{
 a{
     text-decoration: none;
     color: inherit;
+}
+
+li{
+    list-style: none;
 }
 
 
@@ -47,8 +102,8 @@ nav ul{
 }
 
 nav a{
-    color: black;
-    font-size: 20px;
+    color: var(--color-text-2);
+    font-size: 40px;
 }
 
 /* Burger profil param */
@@ -77,12 +132,6 @@ nav a{
 .container {
     padding: 6em;
 }
-
-/* #home-hero {
-    padding: 6em;
-} */
-
-
 
 /* Home */
 
@@ -113,10 +162,12 @@ nav a{
     justify-content: center;
     text-align: center;
     box-sizing: border-box;
+    overflow: hidden;
+
 }
 
 #home-hero h1{
-    font-size: 120px;
+    font-size: 190px;
     color: #fff;
     font-weight: 600;
     transition: 0.5s;
@@ -133,11 +184,11 @@ nav a{
     text-decoration: none;
     display: inline-block;
     color: #fff;
-    font-size: 20px;
+    font-size: 40px;
     border: 2px solid #fff;
-    border-radius: 40px;
+    border-radius: 50px;
     margin-top: 20px;
-    padding: 10px 15px;
+    padding: 10px 25px;
     transition: 0.5s;
 }
 
@@ -148,7 +199,7 @@ nav a{
 
 #home-hero p{
     color: #fff;
-    font-size: 17px;
+    font-size: 25px;
 }
 
 #back-video{
@@ -168,11 +219,11 @@ nav a{
 @media (max-aspect-ratio: 16/9){
     #back-video{
         width: auto;
-        height: 100%;
+        /* height: 100%; */
     }
 }
 
-/* Home artistes */
+/* Home nouveaux artistes */
 
 #home-artistes{
     width: 100%;
@@ -182,6 +233,7 @@ nav a{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    gap: 80px;
 }
 
 #home-artistes h2, #home-albums h3, #home-infos h5{
@@ -196,8 +248,8 @@ nav a{
 }
 
 #artistes-card{
-    height: 250px;
-    width: 200px;
+    height: 400px;
+    width: 300px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 10px;
     display: flex;
@@ -219,8 +271,10 @@ nav a{
 #card-image img{
     z-index: 2;
     position: relative;
-    transition: 0.2 ease-in-out;
-
+    width : 400px;
+    height: 400px;
+    object-fit: cover;
+    /* object-fit : s'juste à la taille du contenair , si l'image est plus grandre , elle est rogné */
 }
 
 #card-image img:hover{
@@ -252,8 +306,15 @@ nav a{
     right: 0;
     z-index: 5;
     text-align: center;
-
+    color: rgb(233 227 227);
+    font-size: 40px
 }
+
+#card-image h3:hover{
+    color: white;
+    cursor: pointer;
+}
+
 
 #card-separation{
     height: 0.1em;
@@ -274,6 +335,7 @@ nav a{
 .card-ligne{
     display: flex;
     justify-content: space-between;
+    font-size: 22px;
 }
 
 /* Home albums */
@@ -283,19 +345,20 @@ nav a{
     height: 80vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 30px;
+    gap: 60px;
 }
 
 #home-albums-content{
     display: flex;
-    height: 100%;
     gap: 30px;
+    justify-content: center;
 }
 
-#home-albums-text{
-
+#albums-content-text{
+    display: flex;
+    justify-content: center;
 }
 
 /* Slider */
@@ -370,37 +433,37 @@ width: 500px;
 /* Home album text */
 
 #home-albums-text{
-    width: 50%;
+    width: 30%;
 }
 
 
-/* Home infos */
+/* Home Qui sommes nous ? */
 
 #home-infos{
     width: 100%;
-    height: 70vh;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     gap: 50px;
-    padding: 6em 6em 0 6em;
+    padding: 6em;
 }
 
 #home-infos-container{
     width: 100%;
     display: flex;
-    gap: 50px;
-    padding-bottom: 6em;
+    gap: 80px;
+    justify-content: center;
 }
 
 #home-infos h6, #home-albums h4, #home-artistes h2{
-    color: rgb(107 107 107);
-    font-size: 35px;
+    color: var(--color-title);
+    font-size: 40px;
 }
 
 #home-infos-container figure{
-    width: 100%;
+    width: 40%;
     margin-bottom: 0px;
 }
 
@@ -409,35 +472,109 @@ width: 500px;
 }
 
 #home-infos-text{
-    width: 50%;
+    width: 30%;
     height: auto;
 }
 
-#home-albums-text h5{
-    font-size: 25px;
-    color: #A8906F;
+#home-albums-text h5, #home-infos-text h7{
+    font-size: 30px;
+    color: var(--color-title-p);
+    margin-bottom: 0.5rem;
+}
+
+#home-albums-text p, #home-infos-text p{
+    color: var(--color-text-1);
+    font-size: 20px;
 }
 
 /* Page artiste Profil */
 
+
 .artiste-container{
     display: flex;
-    width: 100%; 
-    padding: 20px 30px 0px 30px;
-}
-
-.artiste-album{
-    display: flex;
+    height: 100vh;
+    width: 80%; 
     flex-direction: column;
-    width: 70%;
-    gap: 10px;
+    margin: auto;
+    background: var(--color-background-grey-0);
+    box-shadow:rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .artiste-header{
+    width: 100%;
+}
+
+.artiste-aside figure{
+    /* margin-bottom: 20px;
+    position: relative;
+    top: -79px;
+    left: 1123px; */
+    width: 200px
+}
+
+.artiste-header img{
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+    z-index: 2;
+    position: relative;
+    object-fit: cover;
+    box-shadow:rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.artiste-aside img{
+    width: 200px;
+    height: 200px;
+    border: #ffff solid 2px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+.artiste-aside{
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 30%;
+    justify-content: space-between;
+    height: 50px;
+}
+
+.artiste-aside h1{
+    font-size: var(--font-size-title);
+    text-align: center;
+    color: var(--color-background-brown-3);
+}
+.artiste-titre{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.artiste-liens{
+    display: flex;
+    align-self: baseline;
+    gap: 20px;
+    font-size: var(--font-size-link);
+    padding-left: 20px;
+}
+
+.artiste-liens a:hover{
+    color: var(--color-background-grey-1);
+    text-decoration: none;
+}
+
+.artiste-header h1{
+    color: var(--color-text-1);
+    align-self: end;
+}
+
+.artiste-figure{
+    position: relative;
+    position: relative;
+    top: -100px;
+    right: 30px;
+}
+
+.artiste-main{
+    display: flex;
+    justify-content: space-between;
 }
 
 
@@ -454,22 +591,22 @@ width: 500px;
     width: 50%;
 }
 
-.artiste-titre{
+/* .artiste-titre{
     display: flex;
     justify-content: space-between;
-}
+} */
 
-.artiste-titre div span:last-child{
+/* .artiste-titre div span:last-child{
     padding-left: 10px;
-}
+} */
 
 /* Page artiste Post */
 
 
-.artiste-post{
+/* .artiste-post{
     display: flex;
     flex-direction: column;
-}
+} */
 
 
 /* Page artiste Détail Concerts */
@@ -514,4 +651,67 @@ width: 500px;
     display: flex;
     justify-content: space-between;
     padding: 10px;
+}
+
+
+footer{
+    width: 100%;
+    height: auto;
+    background: var(--color-background-grey-1);
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    margin-top: 6em;
+    font-size: 20px;
+    /* position: absolute;
+    bottom: 0px; */
+}
+
+#footer-sites{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#footer-sites p{
+    margin-bottom: 0px;
+}
+
+#footer-bottom {
+    margin-top: 10px;
+}
+
+#footer-compagine{
+    gap: 20px;
+}
+
+#footer-sonotown{
+    display: flex; 
+    flex-direction: column;
+    width: 30%;
+    gap: 10px;
+}
+
+#footer-categorie{
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#footer-bottom{
+    display: flex;
+    justify-content: space-between;
+    padding: 2em;
+}
+
+
+#footer-liens-utiles{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#footer-copyright{
+    text-align: center;
 }

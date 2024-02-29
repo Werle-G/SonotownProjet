@@ -4,46 +4,58 @@
 
 {% block body %}
 
-{% if is_granted('ROLE_ARTISTE') %}
-<a href="{{ path('artiste_page_edit', {'id': app.user.id}) }}">Éditer le profil artiste</a>
+{# {% if is_granted('ROLE_ARTISTE') %} #}
+{# <a href="{{ path('artiste_page_edit', {'id': app.user.id}) }}">Éditer le profil artiste</a> #}
   
-{% endif %}
+{# {% endif %} #}
+
 
 <div class="artiste-container">
 
-  <figure>
-    <img style="width:100px; height:100px"   src="{{asset('uploads/images/' ~ user.imageCouverture)}}" alt="">
-</figure>
 
-  <h1>Page de l'artiste</h1>
+  <div class="artiste-header">
+      <figure>
+        <img src="{{asset('uploads/images/' ~ user.imageCouverture)}}" alt="">
+      </figure>
 
-      <div class="artiste-album">
+      <div class="artiste-aside">
         
-        <h2>Discographie artiste</h2>
+        <div class="artiste-liens">
+          <div class="artiste-album">
+            <a href="{{ path('artiste_all_album_per_artiste', {'idArtiste': user.id}) }}">Discographie artiste</a>
+          </div>
+          <div class="artiste-concert">
+            <a href="{{ path('all_concert_per_artiste', {'id': user.id}) }}">Concerts artiste</a>
+          </div>
+        </div>
+        <div class="artiste-figure">
 
-        <a href="{{ path('artiste_all_album_per_artiste', {'idArtiste': user.id}) }}">Discographie</a>
+          <figure>
+              <img src="{{asset('uploads/images/' ~ user.avatar)}}" alt="">
+          </figure>
+  
+          <h1>{{ user.pseudo }}</h1>
+
+        </div>
 
       </div>
+  </div>
 
-      <div class="artiste-concert">
+</div>
 
-      <h3>Concerts</h3>
-      
-      <a href="{{ path('all_concert_per_artiste', {'id': user.id}) }}">Voir concert</a><br>
 
-      </div>
 
-      <div class="artiste-post">
+  <div class="artiste-main">
+
+    <p>{{ user.biographie}}</p>
+
+    {# <div class="artiste-avis">
 
       <h4>Avis</h4>
 
+    </div> #}
 
-
-      </div>
-
-      {% include "artiste_page/page/artiste_page_header.html.twig" %}
-
-
+  </div>
 </div>
 
 {% endblock %}

@@ -2,42 +2,51 @@
 
     <h4>Les meilleurs albums</h4>
 
-    <div id="home-albums-content">
-        
-        {# Container caroussel #}
-        <button id="left" class="btn"><figure class="btn-slider">
-            <img src="{{ asset('images/chevron-left-solid.svg')}}" alt="">
+    <div id="albums-content-text">
 
-        </figure>
-    </button>
-        
-        <div class="carousel">
-
-            <div class="image-container" id="imgs">
-                
-                {% for album in albums %}
-                
-                    <figure>
-                        <img  src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="">
-                    </figure>
-                
-                {% endfor %}
+        <div id="home-albums-content">
+            
+    
+            {# Container caroussel #}
+            <button id="left" class="btn"><figure class="btn-slider">
+                <img src="{{ asset('images/chevron-left-solid.svg')}}" alt="">
+    
+            </figure>
+            </button>
+    
+    
+            
+            <div class="carousel">
+    
+                <div class="image-container" id="imgs">
+                    
+                    {% for album in albums %}
+                    
+                        <figure>
+                            <img  src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="">
+                        </figure>
+                    
+                    {% endfor %}
+                </div>
             </div>
+    
+            <button id="right" class="btn">
+                <figure class="btn-slider">
+                
+                <img src="{{ asset('images/chevron-right-solid.svg')}}" alt="">
+    
+                </figure>
+            </button>
+         </div>   
+    
+        <div id="home-albums-text">
+        
+            <h5>Derniers albums</h5>
+        
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ab fuga aliquid et quia at doloribus culpa neque quam nulla</p>
+        
         </div>
 
-        <button id="right" class="btn"><figure class="btn-slider">
-            
-            <img src="{{ asset('images/chevron-right-solid.svg')}}" alt="">
-
-        </figure></button>
-        
-
-    <div id="home-albums-text">
-    
-        <h5>Derniers albums</h5>
-    
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ab fuga aliquid et quia at doloribus culpa neque quam nulla</p>
-    
     </div>
 
 </section>

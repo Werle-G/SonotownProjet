@@ -35,9 +35,10 @@
                 <div id="card-image">
 
                     <figure>
-    
+                        <a href="{{ path('artiste_page', {'id': user.id}) }}">
                         <img src="{{asset('uploads/images/' ~ user.avatar)}}"  alt="{{ user.nomArtiste }}">
-    
+                        </a>
+
                     </figure>
 
                     <h3>{{ user.nomArtiste }}</h3>
@@ -89,5 +90,7 @@
     </div>
 
 </section>
+
+
 
 {% endblock %}
