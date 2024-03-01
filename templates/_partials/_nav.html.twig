@@ -1,10 +1,10 @@
-<nav>
+{# <nav>
     <ul>
 	    <li><a href="{{ path('app_home') }}">Sonotown</a></li>
 
         {% if app.user %}
 
-            {# Si l'utilisateur est admin #}
+            Si l'utilisateur est admin
 
             {% if is_granted('ROLE_ADMIN') %}
 
@@ -22,29 +22,83 @@
             {% elseif is_granted('ROLE_ARTISTE')%}
 
             {# Si l'utilisateur est artiste #}
-
+{# 
                 <li><a href="{{ path('artiste_all_album')}}">Albums</a></li>
                 <li><a href="{{ path('app_logout') }}">Logout</a></li>
-                <li><a href="{{ path('artiste_site')}}">Profil</a></li>  
+                <li><a href="{{ path('artiste_site')}}">Profil</a></li>   #}
 
-            {% else %}
+            {# {% else %} #}
 
             {# Si l'utilisateur est user #}
 
-                <li><a href="{{ path('all_artiste')}}">Artiste</a></li>
+                {# <li><a href="{{ path('all_artiste')}}">Artiste</a></li>
                 <li><a href="{{ path('artiste_all_album')}}">Albums</a></li>
                 <li><a href="{{ path('user_profil') }}">Profil</a></li>  
-                <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                <li><a href="{{ path('app_logout') }}">Logout</a></li> #}
 
-            {% endif %}
+            {# {% endif %} #}
             
-        {% else %}
+        {# {% else %} #}
               
-            <li><a href="{{ path('all_artiste')}}">Artiste</a></li>
+            {# <li><a href="{{ path('all_artiste')}}">Artiste</a></li>
             <li><a href="{{ path('artiste_all_album')}}">Albums</a></li>
             <li><a href="{{ path('app_register')}}">Register</a></li>    
-            <li><a href="{{ path('app_login')}}">Login</a></li>    
+            <li><a href="{{ path('app_login')}}">Login</a></li>     #}
 
-        {% endif %}
+        {# {% endif %}
     </ul>
-</nav>
+</nav>   #}
+
+
+
+        <nav>
+            <ul>
+                <li><a  class="active" href="{{ path('app_home') }}">Sonotown</a></li>
+
+                {% if app.user %}
+
+                {# Si l'utilisateur est admin #}
+
+                {% if is_granted('ROLE_ADMIN') %}
+
+                {# <div class="container">  #}
+                    {# <nav class="navbar"> #}
+                        <li><a href="{{ path('admin_index') }}">Paramètre</a></li>
+                        <li><a href="{{ path('show_profil')}}">Profil</a></li>  
+                        <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                        {# <div class="hamburger"> #}
+                            {# <span class="bar">O</span> #}
+                        {# </div> #}
+                    {# </nav> #}
+                {# </div>      #}
+
+                {% elseif is_granted('ROLE_ARTISTE')%}
+
+                {# Si l'utilisateur est artiste #}
+
+                    <li><a href="{{ path('artiste_all_album')}}">Albums</a></li>
+                    <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                    <li><a href="{{ path('artiste_site')}}">Profil</a></li>  
+
+                {% else %}
+
+                {# Si l'utilisateur est user #}
+
+                    <li><a href="{{ path('all_artiste')}}">Artiste</a></li>
+                    <li><a href="{{ path('artiste_all_album')}}">Albums</a></li>
+                    <li><a href="{{ path('user_profil') }}">Profil</a></li>  
+                    <li><a href="{{ path('app_logout') }}">Logout</a></li>
+
+                {% endif %}
+                
+            {% else %}
+                
+                <li><a href="{{ path('all_artiste')}}">Artiste</a></li>
+                <li><a href="{{ path('artiste_all_album')}}">Albums</a></li>
+                <li><a href="{{ path('app_register')}}">Register</a></li>    
+                <li><a href="{{ path('app_login')}}">Login</a></li>    
+
+
+            {% endif %}
+            </ul>
+        </nav>

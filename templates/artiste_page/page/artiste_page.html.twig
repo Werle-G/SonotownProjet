@@ -11,51 +11,67 @@
 
 
 <div class="artiste-container">
+
     <div class="artiste-header">
+
+      {# Artiste-container gauche #}
       <div class="artiste-couverture">
-          <figure>
-              <img src="{{asset('uploads/images/' ~ user.imageCouverture)}}" alt="">
-          </figure>
-      </div>
+        <h1>{{ user.pseudo }}</h1>
+
+        <h2>Biographie</h2>
+        <p>{{ user.biographie}}</p>
+
+        <div id="artiste-link">
+          <div class="btn-suivre">
+            <a href="">Suivre</a>
+          </div>
+          <div class="artiste-page-link">
+            <a href="{{ path('artiste_all_album_per_artiste', {'idArtiste': user.id}) }}">Albums</a>
+            <a href="{{ path('all_concert_per_artiste', {'id': user.id}) }}">Concerts</a>
+          </div>
+        </div>
+
+        <div class="artiste-reseau">
+          <a href=""><img src="{{ asset('images/facebook-f.svg')}}" alt=""></a>
+          <a href=""><img src="{{ asset('images/twitter.svg')}}" alt=""></a>
+          <a href=""><img src="{{ asset('images/spotify.svg')}}" alt=""></a>
+        </div>
+
+      </div> 
+
       <div class="artiste-aside">
-          <figure>
-              <img src="{{asset('uploads/images/' ~ user.avatar)}}" alt="">
-          </figure>
-          <h1>{{ user.pseudo }}</h1>
+        <figure>
+          <img src="{{asset('uploads/images/' ~ user.avatar)}}" alt="">
+        </figure>
       </div>
+
     </div>
+
     <div class="artiste-main">
       
       <div class="artiste-liens">
         <div class="artiste-album">
-          <a href="{{ path('artiste_all_album_per_artiste', {'idArtiste': user.id}) }}">Discographie</a>
         </div>
         <div class="artiste-concert">
-          <a href="{{ path('all_concert_per_artiste', {'id': user.id}) }}">Concerts</a>
         </div>
       </div>
       
       <div id="artiste-biographie">
 
-        <h3>Date création groupe</h3>
-        <p>{{ user.dateCreationGroupe | date("m/d/Y")}}</p>
-
-        <h2>Biographie</h2>
-        <p>{{ user.biographie}}</p>
       </div>
+      
+    </div>
+    {# <div class="artiste-avis">
+      
+      <h4>Avis</h4> #}
+{# 
+      {% for commentaire in user.commentaires %}
 
-      <div class="artiste-avis">
-        
-        <h4>Avis</h4>
+      <p>{{ commentaire.message }}</p>
 
-        {% for commentaire in user.commentaires %}
+      {% endblock %} #}
 
-        <p>{{ commentaire.message }}</p>
-
-
-      </div>
-
-  </div>
+    {# </div> #}
 </div>
 
 
