@@ -4,63 +4,13 @@
 
 {% block body %}
 
-{# {% if is_granted('ROLE_ARTISTE') %} #}
-{# <a href="{{ path('artiste_page_edit', {'id': app.user.id}) }}">Éditer le profil artiste</a> #}
-  
-{# {% endif %} #}
 
 
-<div class="artiste-container">
 
-    <div class="artiste-header">
 
-      {# Artiste-container gauche #}
-      <div class="artiste-couverture">
-        <h1>{{ user.pseudo }}</h1>
+    {% include "artiste_page/page/artiste_page_header.html.twig" %}
 
-        <h2>Biographie</h2>
-        <p>{{ user.biographie}}</p>
 
-        <div id="artiste-link">
-          <div class="btn-suivre">
-            <a href="">Suivre</a>
-          </div>
-          <div class="artiste-page-link">
-            <a href="{{ path('artiste_all_album_per_artiste', {'idArtiste': user.id}) }}">Albums</a>
-            <a href="{{ path('all_concert_per_artiste', {'id': user.id}) }}">Concerts</a>
-          </div>
-        </div>
-
-        <div class="artiste-reseau">
-          <a href=""><img src="{{ asset('images/facebook-f.svg')}}" alt=""></a>
-          <a href=""><img src="{{ asset('images/twitter.svg')}}" alt=""></a>
-          <a href=""><img src="{{ asset('images/spotify.svg')}}" alt=""></a>
-        </div>
-
-      </div> 
-
-      <div class="artiste-aside">
-        <figure>
-          <img src="{{asset('uploads/images/' ~ user.avatar)}}" alt="">
-        </figure>
-      </div>
-
-    </div>
-
-    <div class="artiste-main">
-      
-      <div class="artiste-liens">
-        <div class="artiste-album">
-        </div>
-        <div class="artiste-concert">
-        </div>
-      </div>
-      
-      <div id="artiste-biographie">
-
-      </div>
-      
-    </div>
     {# <div class="artiste-avis">
       
       <h4>Avis</h4> #}
@@ -72,7 +22,6 @@
       {% endblock %} #}
 
     {# </div> #}
-</div>
 
 
 {% endblock %}

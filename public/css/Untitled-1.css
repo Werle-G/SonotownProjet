@@ -1,0 +1,107 @@
+/* Slider */
+
+
+
+.carousel img {
+    height: 500px;
+    object-fit: cover;
+    width: 500px;
+}
+  
+.carousel {
+box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+height: 500px;
+overflow: hidden;
+width: 500px;
+}
+
+#left, #right{
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(91, 91, 91, 0.3);
+    color: #fff;
+}
+
+.btn-slider{
+    position: relative;
+    /* top: 250px; */
+    width: 20px;
+}
+
+#left{
+    position: relative;
+    left: 50px;
+    top: 225px;
+    z-index: 5; 
+}
+
+#right{
+    position: relative;
+    right: 50px;
+    top: 225px;
+    z-index: 5; 
+}
+
+.image-container {
+    display: flex;
+    transform: translateX(0);
+    transition: transform 0.5s ease-in-out;
+}
+  
+.btn {
+    background-color: #C8CAC3;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.8rem;
+    width: 49.5%;
+}
+
+.btn img{
+    color: #BDB7A7;
+
+}
+  
+.btn:hover {
+    opacity: 0.9;
+}
+  
+
+Code javascript carousel
+
+const imgs = document.querySelector('#imgs')
+// const leftBtn = document.querySelector('#left')
+// const rightBtn = document.querySelector('#right')
+// const img = imgs.querySelectorAll('img')
+// const IMG_CONTAINER_WIDTH = 500
+// const DELAY = 4000
+
+// let idx = 0
+// let interval = setInterval(run, DELAY)
+
+// function run() {
+//   idx++
+//   changeImage()
+// }
+
+// function changeImage() {
+//   if (idx > img.length - 1) idx = 0
+//   else if (idx < 0) idx = img.length - 1
+
+//   imgs.style.transform = `translateX(${-idx * IMG_CONTAINER_WIDTH}px)`
+// }
+
+// function resetInterval() {
+//   clearInterval(interval)
+//   interval = setInterval(run, DELAY)
+// }
+
+// function handleButtonClick(direction) {
+//   idx += direction
+//   changeImage()
+//   resetInterval()
+// }
+
+// rightBtn.addEventListener('click', () => handleButtonClick(1))
+// leftBtn.addEventListener('click', () => handleButtonClick(-1))

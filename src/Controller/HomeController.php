@@ -20,7 +20,7 @@ class HomeController extends AbstractController
         $users = $userRepository->findAllUserByDate('["ROLE_ARTISTE"]');
 
         // La méthode findBy prend en premier argument un critère, un ordre de recherche et permet de limiter le nombre d'objets souhaité.
-        $albums = $albumRepository->findBy([], ["dateSortieAlbum" => 'ASC'], limit:8);
+        $albums = $albumRepository->findBy([], ["dateSortieAlbum" => 'ASC'], limit:3);
 
         return $this->render('home/index.html.twig', [
             'users' => $users,
