@@ -1,20 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-
-
 @import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+/* Définition des styles généraux */
 
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* font-family: Roboto, sans-serif; */
     font-family: Mulish, sans-serif;
-    /* font-family: Gowun sans-serif; */
-
-    
-
 }
 
 :root{
@@ -42,9 +34,12 @@
     --font-size-link: 30px;
     --font-size-title: 40px;
     --font-size-text: 20px;
+
+    /* Gap */
+    --gap-20: 20px;
+    --gap-80: 80px;
 }
 
-/* Html */
 
 html{
     scroll-behavior: smooth;
@@ -57,109 +52,120 @@ body {
 	min-height: 100vh;
 }
 
-.wrapper{
+
+/* Permet de fixer le footer en bas de page */
+
+#content{
     flex: 1;
 }
-/* 
-h1{
-    color: rgb(170, 170, 235);
-} */
+
+.padding{
+    padding: 6em;
+}
+
+.padding-2{
+    padding: 6em 12em 6em 12em;
+}
 
 a{
     text-decoration: none;
     color: inherit;
 }
 
-li{
+a:hover{
+    text-decoration: none;
+}
+
+ul{
     list-style: none;
 }
 
+/* Header */
 
-/* Nav */
 
-
-nav{
+header{
     position: fixed;
     top: 0;
     left: 0;
-    padding: 20px 8%;
     display: flex;
     align-items: center; 
     width: 100%;
-    height: 7vh;
+    height: 80px;
     z-index: 900;
+    transition: .3s ease-in-out;
+    margin: auto;
+}
+
+#nav{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px;
+    padding: 0 3em;
+    height: 80px;
+    justify-content: space-between;
+}
+
+#nav a{
+    color: #fff;
+    font-size: 40px;
     transition: .3s ease-in-out;
 }
 
-.sticky{
-    background: var(--color-background-grey-1);
-    z-index: 910;
-    height: 7vh;
-}
-
-nav ul{
-    display: flex;
-    justify-content: space-between;
-    list-style: none;
-    padding-left: 0px;
-    margin-bottom: 0px;
-    width: 100%;
-}
-
-nav a:hover, nav a.active{
+#nav a:hover, #nav a.active{
     color: var(--color-background-brown-2);
-    text-decoration: none;
     background: none;
 }
 
-nav a{
-    color: #fff;
-    text-shadow: ;
-    font-size: 40px;
-    text-decoration: none;
-    transition: .3s ease-in-out;
+#logo-search-bar{
+    display: flex;
+    gap: var(--gap-20);
+    align-items: center;
 }
 
-/* Définition des styles */
-#content {
-    padding: 6em;
+.search-bar{
+    height: 40px;
+    width: auto;
+    font-size: var(--font-size-text);
+    background: var(--color-background-grey-0);
+    border-radius: 8px;
+    padding-left: 10px;
+    border: 0;
+    outline: none;
 }
 
-/* Home padding */
 
-.padding{
-    padding: 6em;
+
+
+#nav ul{
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    gap: var(--gap-20);
 }
 
-.padding-top{
-    padding-top: 12em;
+/* Classe qui fait apparaitre le header en scrollant */
 
+.sticky{
+    background: var(--color-background-grey-1);
+    z-index: 900;
 }
+
 
 /* Home */
 
-
-#home-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-}
-
-/*  Background home video */
+/* Home-hero */
 
 #home-hero{
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     background-image: linear-gradient(rgba(200, 202, 195, 0.3), rgba(200, 202, 195, 0.3));
     position: relative;
     top: 0;
-    padding: 0 5%;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    box-sizing: border-box;
     overflow: hidden;
     object-fit: cover;
 }
@@ -173,9 +179,16 @@ nav a{
 
 #home-hero h1:hover{
     -webkit-text-stroke: 2px #fff;
-    font-size: 120px;
+    font-size: 190px;
     color: transparent;
     font-weight: 600;
+}
+
+#home-hero-logo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #home-hero a{
@@ -190,7 +203,7 @@ nav a{
     transition: 0.5s;
 }
 
-#home-hero a:hover{
+.home-hero a:hover{
     background:rgba(0, 0, 0, 0.5);
     color: #cdcdcd;
 }
@@ -207,6 +220,8 @@ nav a{
     z-index: -1;
 }
 
+/*  Background home video */
+
 @media (min-aspect-ratio: 16/9){
     #back-video{
         width: 100%;
@@ -217,35 +232,27 @@ nav a{
 @media (max-aspect-ratio: 16/9){
     #back-video{
         width: auto;
-        /* height: 100%; */
+        height: 100%;
     }
 }
 
-/* Home nouveaux artistes */
+/* Home artiste (nouveaux artistes) */
 
-#home-artistes{
-    width: 100%;
-    padding: 6em;
+#home-artiste{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
     align-items: center;
-    gap: 80px;
+    gap: var(--gap-80);
 }
 
-#home-artistes h2, #home-albums h3, #home-infos h5{
-    text-align: center;
-}
-
-#home-artistes-content{
-    width: 100%;
+#home-artiste-content{
     display: flex;
-    justify-content: space-around;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
 }
 
-#artistes-card{
+.artiste-card{
     height: 400px;
     width: 300px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -255,7 +262,7 @@ nav a{
     border: rgb(230, 230, 230) solid 0.1em;
 }
 
-#card-image{
+.card-image{
     height: 70%;
     position: relative;
     top: 0px;
@@ -266,7 +273,7 @@ nav a{
     z-index: 1; 
 }
 
-#card-image img{
+.card-image img{
     z-index: 2;
     position: relative;
     width : 400px;
@@ -275,7 +282,7 @@ nav a{
     /* object-fit : s'juste à la taille du contenair , si l'image est plus grandre , elle est rogné */
 }
 
-#card-image img:hover{
+.card-image img:hover{
     background: rgba(0, 0, 0, 0.6);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -286,17 +293,17 @@ nav a{
     transition: opacity 0.3s ease;
 }
 
-#card-image:hover {
+.card-image:hover {
     background: rgba(0, 0, 0, 0.6); 
 }
 
 
-#card-image:hover img {
+.card-image:hover img {
     opacity: 0.5; 
 }
 
 
-#card-image h3 {
+.card-image h3 {
     position: absolute;
     bottom: 0;
     top: 80%;
@@ -308,20 +315,20 @@ nav a{
     font-size: 40px
 }
 
-#card-image h3:hover{
+.card-image h3:hover{
     color: white;
     cursor: pointer;
 }
 
 
-#card-separation{
+.card-separation{
     height: 0.1em;
     width: 100%;
     background: rgb(230, 230, 230);
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-#card-header{
+.card-header{
     height: 30%;
     display: flex;
     flex-direction: column;
@@ -336,9 +343,9 @@ nav a{
     font-size: 22px;
 }
 
-/* Home albums */
+/* Home album */
 
-#home-albums{
+#home-album{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -347,7 +354,7 @@ nav a{
     gap: 60px;
 }
 
-#home-albums-content{
+#home-album-content{
     display: flex;
     flex-direction: column;
     width: 600px;
@@ -365,7 +372,7 @@ nav a{
     padding: 0px
 }
 
-#home-albums-content img {
+#home-album-content img {
     vertical-align: middle;
     border-style: none;
     width: 600px;
@@ -373,7 +380,7 @@ nav a{
     object-fit: cover;
 }
 
-#home-albums-content figure {
+#home-album-content figure {
     margin: 0;
     width: 600px;
 }
@@ -424,7 +431,7 @@ nav a{
 
 
 
-#albums-content-text{
+#album-content-text{
     display: flex;
     justify-content: center;
     gap: 88px;
@@ -434,14 +441,14 @@ nav a{
 
 /* Home album text */
 
-#home-albums-text{
+#home-album-text{
     width: 600px;
 }
 
 
 /* Home Qui sommes nous ? */
 
-#home-infos{
+#home-info{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -451,68 +458,57 @@ nav a{
     padding: 6em;
 }
 
-#home-infos-container{
+#home-info-container{
     width: 100%;
     display: flex;
     gap: 80px;
     justify-content: center;
 }
 
-#home-infos h6, #home-albums h4, #home-artistes h2{
+#home-info h6, #home-album h4, #home-artiste h2{
     color: var(--color-title);
     font-size: 40px;
 }
 
-#home-infos-container figure{
+#home-info-container figure{
     width: 40%;
     margin-bottom: 0px;
 }
 
-#home-infos-container img{
+#home-info-container img{
     width: 100%;
 
 }
 
-#home-infos-text{
+#home-info-text{
     width: 30%;
     height: auto;
 }
 
-#home-albums-text h5, #home-infos-text h7{
+#home-album-text h5, #home-info-text h7{
     font-size: 30px;
     color: var(--color-title-p);
     margin-bottom: 0.5rem;
 }
 
-#home-albums-text p, #home-infos-text p{
+#home-album-text p, #home-info-text p{
     color: var(--color-text-1);
     font-size: 20px;
 }
 
-/* Page artiste Profil */
 
+
+/* Page artiste Profil */
 
 .artiste-container{
     display: flex;
     flex-direction: column;
-    /* margin: auto; */
+    min-height: 100vh;
     background: var(--color-background-brown-1);
-    /* box-shadow:rgba(149, 157, 165, 0.2) 0px 8px 24px; */
-
-
-}
-
-/* Modif artiste page  */
-
-.edit-artiste{
-    font-size: var(--font-size-text);
-    position: relative;
-    top: -8px;
-    align-self: flex-end;
 }
 
 .artiste-header{
-    width: 100%;
+    width: 80%;
     height: auto;
     position: relative;
     top: 0;
@@ -520,47 +516,48 @@ nav a{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 170px;
-    padding: 12em 6em 6em 6em;
+    gap: var(--gap-20);
     flex-wrap: wrap;
-    align-items: flex-start;
+    padding: 3em 0;
+    margin: auto;
 }
 
-.artiste-couverture{
-    width: 40%;
-    justify-content: center;
-    gap: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.artiste-info{
+    flex: 1 40%;
     align-items: flex-start;
+    max-width: 100%;
 }
 
-.artiste-couverture h1{
+.artiste-info h1{
     font-size: var(--font-size-title);
     color: var(--color-background-brown-3);
     text-shadow:5px 3px 6px #d9d7d7;;
 }
 
-.artiste-couverture p{
+.artiste-info p{
     font-size: var(--font-size-text);
 
 }
 
 .artiste-aside .avatar img{
-    width: 400px;
-    height: 400px;
+    max-width: 400px;
+    min-height: 400px;
+    height: auto;
     border: #ffff solid 2px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin: 0;
+    object-fit: cover;
 }
 
+.avatar figure{
+    max-width: 100%;
+}
 
 .artiste-aside{
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 400px;
+    max-width: 100%;
 }
 
 #artiste-link{
@@ -575,12 +572,13 @@ nav a{
 
 #artiste-link .btn-suivre{
     background: #f9f9f9;
-    border-radius: 97px;
+    border-radius: 10px;
     border: none;
     color: white;
     padding: 0 38px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     text-decoration: none;
+    position: relative;
 }
 
 #artiste-link .btn-suivre a{
@@ -641,14 +639,14 @@ nav a{
 }
 
 
-.artiste-reseau img{
-    width: 30px;
+.artiste-reseau svg{
+    width: 35px;
     height: 30px;
 }
 
 .artiste-reseau img:hover{
     color: white;
-    z-index: 2;
+    z-index: 35px;
 }
 
 
@@ -658,67 +656,15 @@ nav a{
     align-items: center;
 }
 
-#footer-socials {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 20px;
-}
 
-.footer-icon {
-    width: 40px;
-    height: 40px;
-    margin: 0 20px;
-    border: 2px solid #5F6064;
-    border-radius: 50%; /* cercle */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-}
+
 
 .artiste-reseau img{
     fill: currentColor !important;
 }
 
 
-/* .artiste-header{
-    width: 100%;
-    position: relative;
-    height: 300px;
 
-}
-
-.artiste-aside figure{
-    top: -79px;
-    right: 0; 
-    width: 200px
-}
-
-.artiste-header .artiste-couverture img{
-    height: 300px;
-    width: 100%;
-    z-index: 2;
-    object-fit: cover;
-    box-shadow:rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
-
-.artiste-aside img{
-    width: 200px;
-    height: 200px;
-    border: #ffff solid 2px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-
-}
-.artiste-aside{
-    position: absolute;
-    top: 236px;
-    right: 30px;
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-    text-align: center;
-} */
 
 .artiste-aside h1{
     font-size: var(--font-size-title);
@@ -749,14 +695,27 @@ nav a{
     display: flex;
     flex-direction: column;
     padding: 10px;
-    gap: 30px;
-    /* min-height: 50vh; */
+    height: 200px;
 }
 
 #artiste-biographie{
     width: 50%;
 }
 
+
+/* Modif artiste page  */
+
+.edit-artiste{
+    font-size: var(--font-size-text);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.edit-artiste a{
+    display: flex;
+    align-self: flex-end;
+}
 
 /* Page artiste Détail album */
 
@@ -770,24 +729,6 @@ nav a{
     flex-direction: column;
     width: 50%;
 }
-
-/* .artiste-titre{
-    display: flex;
-    justify-content: space-between;
-} */
-
-/* .artiste-titre div span:last-child{
-    padding-left: 10px;
-} */
-
-/* Page artiste Post */
-
-
-/* .artiste-post{
-    display: flex;
-    flex-direction: column;
-} */
-
 
 /* Page artiste Détail Concerts */
 
@@ -805,32 +746,25 @@ nav a{
 }
 
 
-/* Genre Musical Page Ajout/modification */
+/* Footer */
 
-.genreMusical-container{
+#footer-socials {
     display: flex;
-    flex-direction: column;
-    width: 100%; 
-    padding: 20px 30px 0px 30px;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.genreMusical-header{
+.footer-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 20px;
+    border: 2px solid #5F6064;
+    border-radius: 50%; /* cercle */
     display: flex;
+    justify-content: center;
     align-items: center;
-    margin: auto;
-    gap: 20px;
-}
-
-.genreMusical-main{
-    display: flex;
-    flex-direction: column;
-    padding-top: 20px;
-}
-
-.genreMusical-ligne{
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
+    text-decoration: none;
 }
 
 
@@ -892,3 +826,36 @@ footer{
 #footer-copyright{
     text-align: center;
 }
+
+
+
+
+
+/* Genre Musical Page Ajout/modification */
+
+.genreMusical-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+    padding: 20px 30px 0px 30px;
+}
+
+.genreMusical-header{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    gap: 20px;
+}
+
+.genreMusical-main{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.genreMusical-ligne{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+

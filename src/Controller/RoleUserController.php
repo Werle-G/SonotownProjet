@@ -28,51 +28,45 @@ class RoleUserController extends AbstractController
     }
     
     #[Route('/profil/edit/{id}', name: 'user_profil_edit')]
-    public function user_profil_edit($id, Request $request,UserRepository $userRepository, EntityManagerInterface $entityManager, User $user): Response
+    public function userProfilEdit($id, Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
-
-        // Si l'utilisateur est connecté
+        // Vérifier si l'utilisateur est connecté
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $userSession = $this->getUser(); 
+        $userBdd = $userRepository->findOneBy(['id' => $id]);
         
-        $userbdd = $userRepository->findOneBy(['id' => $id]);
-        
-        if($userSession == $userbdd) {
-            
+        if ($userSession == $userBdd) {
             $form = $this->createForm(RoleUserType::class, $userSession);
             
             $form->handleRequest($request);
             
             if ($form->isSubmitted() && $form->isValid()) {
-                
                 $user = $form->getData();
                 
                 $entityManager->persist($user);
                 $entityManager->flush();
                 
                 return $this->redirectToRoute('user_profil');
-                
             }
         }
         
         return $this->render('user_page/user_profil_edit.html.twig', [
             'form' => $form->createView(),
-            'user' => $user,
+            'user' => $userSession,
         ]);
     }
 
     #[Route('/profil/user', name: 'user_profil')]
-    public function user_profil(): Response
+    public function userProfil(): Response
     {
-        // Si l'utilisateur est connecté
+        // Vérifier si l'utilisateur est connecté
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
     
         $userSession = $this->getUser();
     
         return $this->render('user_page/user_profil.html.twig', [
-            'user' => $userSession ,
+            'user' => $userSession,
         ]);
     }
-
 }

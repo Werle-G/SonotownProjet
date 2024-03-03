@@ -28,13 +28,12 @@ class ConcertController extends AbstractController
         ]);
     }
 
-    // Ajouter, éditer un concert
+    // Ajouter ou éditer un concert
     #[Route('/artiste/concert/{id}/edit', name: 'edit_concert')]
     #[Route('/artiste/concert/new', name: 'new_concert')]
-    public function new_edit_concert(Concert $concert = null, Request $request, EntityManagerInterface $entityManager, PictureService $pictureService): Response
+    public function newEditConcert(Concert $concert = null, Request $request, EntityManagerInterface $entityManager, PictureService $pictureService): Response
     {
-
-        if(!$concert) {
+        if (!$concert) {
             $concert = new Concert();  
             $concert->setUser($this->getUser());
         } 
@@ -44,21 +43,18 @@ class ConcertController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // On va récupérer les images
+            // Récupérer les images
             $images = $form->get('imageConcerts')->getData();
 
-            foreach($images as $image){
-                // On défnit le dossier de destination
+            foreach ($images as $image) {
+                // Définir le dossier de destination
                 $folder = 'Concerts';
-
-                // On appelle le service d'ajout
+                // Appeler le service d'ajout
                 $fichier = $pictureService->add($image, $folder, 300, 300);
 
                 $img = new ImageConcert();
                 $img->setNomImage($fichier);
                 $concert->addImageConcert($img);
-
             }
 
             $entityManager->persist($concert);
@@ -76,7 +72,7 @@ class ConcertController extends AbstractController
     
     // Supprimer un concert
     #[Route('/concert/{id}/delete', name: 'delete_concert')]
-    public function delete_concert(Concert $concert, EntityManagerInterface $entityManager): Response
+    public function deleteConcert(Concert $concert, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($concert);
         $entityManager->flush();
@@ -84,12 +80,11 @@ class ConcertController extends AbstractController
         return $this->redirectToRoute('app_concert');
     }
 
-    // Tout les concerts de l'artiste
+    // Tous les concerts de l'artiste
     #[Route('/artiste/concert/{id}', name: 'all_concert_per_artiste')]
-    public function show($id, ConcertRepository $concertRepository,UserRepository $userRepository): Response
+    public function showConcertsByArtist($id, ConcertRepository $concertRepository, UserRepository $userRepository): Response
     {
-
-        $user = $userRepository->findBy(["id" => $id]);
+        $user = $userRepository->find($id);
         $concerts = $concertRepository->findBy(["user" => $user]);
         
         return $this->render('artiste_page/concert/all_concert_per_artiste.html.twig', [
@@ -98,9 +93,9 @@ class ConcertController extends AbstractController
         ]);
     }
 
-       // Détails d'un concert de l'artiste
+    // Détails d'un concert de l'artiste
     #[Route('/artiste/detail/concert/{idConcert}', name: 'detail_concert')]
-    public function detail_concert($idConcert, ConcertRepository $concertRepository): Response
+    public function detailConcert($idConcert, ConcertRepository $concertRepository): Response
     {
         $concert = $concertRepository->findOneBy(['id' => $idConcert]);
         

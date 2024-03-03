@@ -24,12 +24,11 @@ class GenreMusicalController extends AbstractController
     }
 
     #[Route('/genre/musical/detail/{id}', name: 'detail_genre_musical')]
-    public function detail_genre_musical(GenreMusical $genreMusical, UserRepository $userRepository, AlbumRepository $albumRepository, $id)
+    public function detailGenreMusical(GenreMusical $genreMusical, UserRepository $userRepository, AlbumRepository $albumRepository, $id): Response
     {
-
         $albums = $albumRepository->findBy(["genreMusicals" => $id]);
         $users = $userRepository->findBy(["genreMusical" => $id]);
-
+    
         return $this->render('genre_musical/show.html.twig', [
             'genreMusical' => $genreMusical,
             'albums' => $albums,

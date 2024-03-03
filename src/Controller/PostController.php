@@ -24,9 +24,9 @@ class PostController extends AbstractController
 
     #[Route('/post/new', name: 'new_post')]
     #[Route('/post/{id}/edit', name: 'edit_post')]
-    public function new_edit(Post $post = null, Request $request, EntityManagerInterface $entityManager): Response
+    public function newEdit(Post $post = null, Request $request, EntityManagerInterface $entityManager): Response
     {
-        if(!$post) {
+        if (!$post) {
             $post = new Post();  
         } 
 
@@ -35,7 +35,6 @@ class PostController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-
             $post = $form->getData();
             $entityManager->persist($post);
             $entityManager->flush();
@@ -44,8 +43,8 @@ class PostController extends AbstractController
         }
 
         return $this->render('post/new.html.twig', [
-            'formAddPost' => $form,
-            'edit' => $post->getId()
+            'formAddPost' => $form->createView(),
+            'edit' => $post ? $post->getId() : null
         ]);
     }
 
@@ -59,14 +58,11 @@ class PostController extends AbstractController
     }
 
     #[Route('/post/{id}', name: 'show_post')]
-    public function show(User $user, PostRepository $postRepository):Response
+    public function show(Post $post): Response
     {
-
-        $posts = $postRepository->findBy(["user" => $user]);
-        
         return $this->render('post/show.html.twig', [
             'user' => $this->getUser(),
-            'posts' => $posts,
+            'post' => $post,
         ]);
     }
 }

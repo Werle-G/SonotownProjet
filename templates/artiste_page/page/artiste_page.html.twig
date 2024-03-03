@@ -5,23 +5,23 @@
 {% block body %}
 
 
+<div class="artiste-container padding-2">
 
+  {% include "artiste_page/page/_header.html.twig" %}
 
-
-    {% include "artiste_page/page/artiste_page_header.html.twig" %}
-
-
-    {# <div class="artiste-avis">
+  <div class="artiste-main">
       
-      <h4>Avis</h4> #}
-{# 
-      {% for commentaire in user.commentaires %}
+    <div class="artiste-liens">
+    <div class="artiste-album">
+    </div>
+    <div class="artiste-concert">
+    </div>
+    </div>
+    
+    <div id="artiste-biographie">
 
-      <p>{{ commentaire.message }}</p>
+    </div>
 
-      {% endblock %} #}
-
-    {# </div> #}
-
+</div>
 
 {% endblock %}

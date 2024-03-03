@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/* Définition des styles généraux */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Mulish, sans-serif;
+}
+
+:root{
+
+    /* Couleurs titres */
+    --color-title: rgb(89 89 89);
+    --color-title-p: #A8906F;
+
+    /* Couleurs texte */
+
+    --color-text-1:#7d7d7c;
+    --color-text-white: #dddcdc;
+
+    /* Variable de gris du plus clair au plus foncé */
+    --color-background-grey-0: #f5f5f5;
+    --color-background-grey-1: #C8CAC3;
+    --color-background-grey-2: #BDB7A7;
+
+    /* Variable de brun du plus clair au plus foncé */
+    --color-background-brown-1: #c8bcac;
+    --color-background-brown-2: #A8906F;
+    --color-background-brown-3: #9D7C53;
+
+    /* Font-size */
+    --font-size-link: 30px;
+    --font-size-title: 40px;
+    --font-size-text: 20px;
+
+    /* Gap */
+    --gap-20: 20px;
+    --gap-80: 80px;
+}
+
+
+html{
+    scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+
+/* Permet de fixer le footer en bas de page */
+
+#content{
+    flex: 1;
+}
+
+.padding{
+    padding: 6em;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+ul{
+    list-style: none;
+}
+
+

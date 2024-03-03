@@ -3,14 +3,15 @@
 {% block title %}Home Sonotown{% endblock %}
 
 {% block body %}
-<section id="hero-content">
-    <section id="home-hero">
+
+
+<section id="home-hero">
     
         <video autoplay loop muted plays-inline id="back-video">
                 <source src="{{ asset('video/video.mp4') }}" type="video/mp4">
         </video>
     
-        <div id="home-content">
+        <div id="home-hero-logo">
     
             <h1>Sonotown</h1>
     
@@ -19,23 +20,20 @@
             <a href="#home-infos">En savoir plus</a>
             
         </div>
-    
-    </section>
 
 </section>
 
-{# <section id="home-artistes" class="home-padding"> #}
-<section id="home-artistes" class="padding">
+<section id="home-artiste" class="padding">
 
     <h2>Les nouveaux artistes</h2>
 
-    <div id="home-artistes-content">
+    <div id="home-artiste-content">
 
         {% for user in users %}
 
-            <div id="artistes-card">
+            <div class="artiste-card">
 
-                <div id="card-image">
+                <div class="card-image">
 
                     <figure>
                         <a href="{{ path('artiste_page', {'id': user.id}) }}">
@@ -48,10 +46,10 @@
     
                 </div>
 
-                <div id="card-separation"></div>
+                <div class="card-separation"></div>
 
 
-                <div id="card-header">
+                <div class="card-header">
 
                     <div class="card-ligne"><span>Followers</span><span>{{ user.followers | length }}</span></div>
     
@@ -72,17 +70,17 @@
 {% include "home/carrousel.html.twig" %}
 
 
-<section id="home-infos">
+<section id="home-info" class="padding">
 
     <h6>Qui sommes-nous ?</h6>
 
-    <div id="home-infos-container">
+    <div id="home-info-container">
 
         <figure>
             <img src="{{ asset('images/synthesizer.jpg')}}" alt="Synthétiseur">
         </figure>
     
-        <div id="home-infos-text">
+        <div id="home-info-text">
     
             <h7>Explication du site</h7>
         

@@ -4,6 +4,10 @@
 
 {% block body %}
 
+<div class="artiste-container padding">
+
+    {% include "artiste_page/page/_header.html.twig" %}
+
     <h1>Discographie</h1>
 
     <a href="{{ path('artiste_new_album') }}">Ajouter un album</a><br>
@@ -14,4 +18,5 @@
 
     {% endfor %}
 
+</div>
 {% endblock %}
