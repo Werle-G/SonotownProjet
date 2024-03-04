@@ -63,6 +63,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'required' => true,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devez acceptez les conditions d\'utilisations',
@@ -71,6 +72,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('ageLegal', CheckboxType::class, [
                 'mapped' => false,
+                'required' => true,
                 'constraints' => [
                     new IsTrue([
                     'message' => 'En cochant cette case, vous confirmer avoir 15 ans',
