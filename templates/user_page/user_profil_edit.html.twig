@@ -3,7 +3,8 @@
 {% block title %}Modifier profil{% endblock %}
 
 {% block body %}
-<div class="container">
+
+<section class="padding-9">
 
     {% for flash_error in app.flashes('warning') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
@@ -13,6 +14,6 @@
 
     {{ form(form) }}
     
-</div>
+</section>
 
 {% endblock %}

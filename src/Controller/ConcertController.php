@@ -98,9 +98,55 @@ class ConcertController extends AbstractController
     public function detailConcert($idConcert, ConcertRepository $concertRepository): Response
     {
         $concert = $concertRepository->findOneBy(['id' => $idConcert]);
+
+        $user = $concert->getUser();
+
         
         return $this->render('artiste_page/concert/detail_concert.html.twig', [
             'concert' => $concert,
+            'user' => $user,
         ]);
     }
 }
+// #[Route('/artiste/{idArtiste}/concert/{idConcert}/edit', name: 'edit_concert')]
+// #[Route('/artiste/{idArtiste}/concert/new', name: 'new_concert')]
+// public function newEditConcert(Concert $concert = null, Request $request, EntityManagerInterface $entityManager, PictureService $pictureService, $idArtiste): Response
+// {
+//     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+//     if (!$concert) {
+//         $concert = new Concert();  
+//         $user = $this->getUser();
+//     } 
+
+//     $form = $this->createForm(ConcertType::class, $concert);
+
+//     $form->handleRequest($request);
+
+//     if ($form->isSubmitted() && $form->isValid()) {
+//         // Récupérer les images
+//         $images = $form->get('imageConcerts')->getData();
+
+//         foreach ($images as $image) {
+//             // Définir le dossier de destination
+//             $folder = 'Concerts';
+//             // Appeler le service d'ajout
+//             $fichier = $pictureService->add($image, $folder, 300, 300);
+
+//             $img = new ImageConcert();
+//             $img->setNomImage($fichier);
+//             $concert->addImageConcert($img);
+//         }
+
+//         $entityManager->persist($concert);
+//         $entityManager->flush();
+
+//         return $this->redirectToRoute('all_concert_per_artiste', ['idArtiste' => $idArtiste, 'idConcert' => $idConcert]);
+//     }
+
+//     return $this->render('artiste_page/concert/new_edit_concert.html.twig', [
+//         'form' => $form->createView(),
+//         'edit' => $concert->getId(),
+//         'concert' => $concert,
+//     ]);
+// }

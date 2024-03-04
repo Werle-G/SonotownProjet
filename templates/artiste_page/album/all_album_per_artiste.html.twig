@@ -4,19 +4,34 @@
 
 {% block body %}
 
-<div class="artiste-container padding">
+<section class="artiste padding-9">
 
     {% include "artiste_page/page/_header.html.twig" %}
 
-    <h1>Discographie</h1>
+    <div class="artiste-album">
 
-    <a href="{{ path('artiste_new_album') }}">Ajouter un album</a><br>
+        
+        <h1>Discographie</h1>
+    
+        <a href="{{ path('artiste_new_album') }}">Ajouter un album</a><br>
+    
+        <div id="album-pochette">
 
-    {% for album in albums %}
+        {% for album in albums %}
+    
+            <a href="{{ path('artiste_detail_album', {'idAlbum': album.id}) }}">
+            <figure>
+                <img style="width:100px; height:100px"   src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="">
+            </figure>
+            <p>{{ album.nomAlbum }}</p>
+            </a>
 
-        <a href="{{ path('artiste_detail_album', {'idAlbum': album.id}) }}">{{ album.nomAlbum }}</a>
+        {% endfor %}
 
-    {% endfor %}
+        </div>
 
-</div>
+    </div>
+
+</section>
+
 {% endblock %}

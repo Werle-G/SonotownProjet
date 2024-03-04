@@ -108,11 +108,12 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
          * Called when authentication is needed, but it's not sent.
          * This redirects to the 'login'.
          */
-        public function start(Request $request, AuthenticationException $authException = null)
+        public function start(Request $request, AuthenticationException $authException = null): Response
         {
-            return new RedirectResponse(
-                '/connect/', // might be the site, where users choose their oauth provider
-                Response::HTTP_TEMPORARY_REDIRECT
-            );
+            // return new RedirectResponse(
+            //     '/connect/', // might be the site, where users choose their oauth provider
+            //     Response::HTTP_TEMPORARY_REDIRECT
+            // );
+            return new RedirectResponse('/login');
         }
 }

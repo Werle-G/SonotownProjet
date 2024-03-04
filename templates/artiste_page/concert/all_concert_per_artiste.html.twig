@@ -5,11 +5,13 @@
 {% block body %}
 
 
-<div class="artiste-container padding">
+<section class="artiste padding-9">
 
     {% include "artiste_page/page/_header.html.twig" %}
 
-    <h1>Liste des concerts</h1>
+    <div class="artiste-concert">
+        <h1>Liste des concerts</h1>
+
 
     <a href="{{ path('new_concert')}}">Ajouter un concert</a><br>
 
@@ -18,5 +20,7 @@
         <a href="{{ path('detail_concert', {'idConcert': concert.id}) }}">{{ concert.lieu }}</a><br>
 
     {% endfor %}
-</div>
+    </div>
+</section>
+
 {% endblock %}

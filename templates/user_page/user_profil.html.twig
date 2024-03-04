@@ -4,7 +4,8 @@
 
 {% block body %}
 
-    <div class="container">
+<section class="padding-9">
+
 
         <a href="{{ path('user_profil_edit', {'id': app.user.id}) }}">Éditer le profil</a>
         
@@ -12,6 +13,6 @@
         
         Nom utilisateur : {{ user.pseudo }}
 
-    </div>
+</section>
 
 {% endblock %}

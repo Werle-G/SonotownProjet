@@ -101,8 +101,11 @@ class AlbumController extends AbstractController
     {
         $album = $albumRepository->findOneBy(['id' => $idAlbum]);
 
+        $user = $album->getUser();
+
         return $this->render('artiste_page/album/detail_album.html.twig', [
             'album' => $album,
+            'user' => $user,
         ]);
     }
 }

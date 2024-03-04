@@ -4,12 +4,11 @@
 
 {% block body %}
 
-<div class="artiste-container">
+<section class="artiste padding-9">
 
-  <a href="{{ path('artiste_all_album_per_artiste', {'idArtiste': album.user.id}) }}">Discographie</a>
+  {% include "artiste_page/page/_header.html.twig" %}
 
-
-      <div class="artiste-album">
+  <div class="artiste-album">
 
         <h1>Détail de l'album {{ album.nomAlbum}}</h1>
 
@@ -30,9 +29,10 @@
 
         {% endfor %}
         
-      </div>
 
-</div>
+    </div>
+
+</section>
 
 
 {% endblock %}

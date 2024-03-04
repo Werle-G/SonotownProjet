@@ -4,9 +4,9 @@
 
 {% block body %}
 
-<div class="padding padding-top">
+<section class="login padding-9">
 
-    <form method="post">
+    <form id="login-form"  method="post">
     
         {# Si jamais il y a une erreur d'authentification #}
         {% if error %}
@@ -29,15 +29,18 @@
         <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
         >
-    
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-        <button><a href="{{ path('app_forgot_password_request')}}">Reset</a></button>
+        <div id="login-btn">
+
+            <button class="btn btn-lg btn-primary" type="submit">
+                Sign in
+            </button>
+            <a href="{{ path('app_forgot_password_request')}}">Mot de passe oublié ?</a>
+            
+        </div>
     </form>
+    
+    <a href="{{ path('connect_google_start')}}">Connectez vous avec votre compte google</a>
 
-    {# <a href="{{ path('connect_google_start')}}">Connectez vous avec votre compte google</a> #}
-
-</div>
+</section>
 
 {% endblock %}

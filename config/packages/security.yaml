@@ -17,7 +17,9 @@ security:
             lazy: true
             provider: app_user_provider
             entry_point: App\Security\AppLoginFormAuthenticator
-            custom_authenticator: App\Security\GoogleAuthenticator
+            custom_authenticators:
+                - App\Security\AppLoginFormAuthenticator
+                - App\Security\GoogleAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout

@@ -13,68 +13,24 @@ class Reseau
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $twitter = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $facebook = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $spotify = null;
-
-    #[ORM\OneToOne(inversedBy: 'reseau', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
+    #[ORM\Column(length: 255)]
+    private ?string $nomSite = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTwitter(): ?string
+    public function getNomSite(): ?string
     {
-        return $this->twitter;
+        return $this->nomSite;
     }
 
-    public function setTwitter(?string $twitter): static
+    public function setNomSite(string $nomSite): static
     {
-        $this->twitter = $twitter;
+        $this->nomSite = $nomSite;
 
         return $this;
     }
 
-    public function getFacebook(): ?string
-    {
-        return $this->facebook;
-    }
-
-    public function setFacebook(?string $facebook): static
-    {
-        $this->facebook = $facebook;
-
-        return $this;
-    }
-
-    public function getSpotify(): ?string
-    {
-        return $this->spotify;
-    }
-
-    public function setSpotify(?string $spotify): static
-    {
-        $this->spotify = $spotify;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 }

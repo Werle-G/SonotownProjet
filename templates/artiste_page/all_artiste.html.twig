@@ -4,12 +4,14 @@
 
 {% block body %}
 
-
+<section class="all_artiste padding-9">
 
     <h1>Liste des Artistes</h1>
     
     {% for user in users %}
         <a href="{{ path('artiste_page', {'id': user.id}) }}">{{ user.nomArtiste }}</a>
     {% endfor %}
+
+</section>
 
 {% endblock %}

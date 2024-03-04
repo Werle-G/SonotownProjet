@@ -4,11 +4,15 @@
 
 {% block body %}
 
+<section class="artiste padding-9">
+
+    {% include "artiste_page/page/_header.html.twig" %}
+
+    <div class="artiste-concert">
+
     <h1>{{ concert.lieu }}</h1>
 
     {{ concert.descriptionConcert }} <br>
-
-
 
     {% for imageConcert in concert.imageConcerts %}
 
@@ -19,5 +23,7 @@
     <a href="{{ path('edit_concert', {'id': concert.id}) }}">Editer concert</a><br>
     <a href="{{ path('delete_concert', {'id': concert.id}) }}">Delete concert</a>
 
+    </div>
+</section>
 
 {% endblock %}
