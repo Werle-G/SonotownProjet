@@ -16,93 +16,189 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 #[Route('/artiste', name: 'artiste_')]
 class AlbumController extends AbstractController
 {
-    // Tous les albums
+    // Methode qui renvoie la vue de tout les albums.
+    // Prend en argument AlbumRepository, cette classe permet de récuperer les données de l'entité Album
+    // Response : renvoie une réponse HTTP
+
     #[Route('/', name: 'all_album')]
     public function index(AlbumRepository $albumRepository): Response
     {
+        // Albums stocke les données de AlbumRepository
+        // Ces données sont récupérées via la méthode findAll() de la classe AlbumRepository
         $albums = $albumRepository->findAll();
+
+        // Renvoie la vue de index.html.twig contenu dans le dossier album
+        // En paramètre la variable $albums est utilisés pour pouvoir afficher les alubms dans la vue
         return $this->render('album/index.html.twig', [
             'albums' => $albums,
         ]);
     }
 
-    // Ajouter/Modifier des albums
+    // Album $album = null : si l'Id d'un album n'est pas récupéré, la variable est null et on crée un nouvel objet en utilisant la condition  if(!album)
+    // Request $request : effectue la requete
+    // EntityManagerInterface communique avec les entités
+    // Autowire prend en argument le chemin du dossier photo et se récupère via la variable $photoDir ( dont le type est une chaine de charactère (string , le type est précisé pour ne pas rentrer de valeurs éronnées) )
+    // Response : renvoie une réponse HTTP
+
+    // Méthode qui permet d'ajouter ou d'éditer un album
+    // la route edit prend l'id de l'album 
     #[Route('/{id}/edit', name: 'edit_album')]
     #[Route('/new', name: 'new_album')]
     public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir): Response
     {
+
+        // Si l'utilisateur à le rôle artiste
         $this->denyAccessUnlessGranted('ROLE_ARTISTE');
         
+        // Si l'album n'existe pas
         if (!$album) {
+
+            // Un nouvel object Album est instancié
             $album = new Album();
+
+            // L'utilisateur est récupéré et récupéré dans l'objet album
             $album->setUser($this->getUser());
+
+            // La méthode addPiste ajouter un nouvel objet Piste 
             $album->addPiste(new Piste());
         }
 
+        // form stocke le formulaire crée en appellant la méthode createForm, cette méthode prend en argument la classe
+        // AlbumType ainsi que l'objet Album
         $form = $this->createForm(AlbumType::class, $album);
+
+        // Form récupère les données de la requète en prenant en argument l'objet requete
         $form->handleRequest($request);
 
+        // Si le formulaire a été soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // On stocke les données recupérées dans la variable $album
             $album = $form->getData();
 
+            // Si dans le tableau $form la propriété 'avatar' existe. On stocke la photo dans la variable $photo
+            // et on rentre dans la condition
             $photo = $form['photo']->getData();
+
             if ($photo) {
+
+                // uniqid génère un identifiant unique 
+                // photo récupère l'extension en utilisant la méthode guessExtension de la classe File utilisées dans le formulaire RoleArtisteType
+                // fileName stocke la concatenation de uniqid et de photo
                 $fileName = uniqid().'.'.$photo->guessExtension();
+
+                // photo déplace déplace $fileName dans le dossier précisé dans la variable $photoDir.
+                // move prend en premier argument, le dossier de redirection et le fichier
                 $photo->move($photoDir, $fileName);
+
+                // $album modifie le nom du fichier contenu dans l'oject album
                 $album->setImageAlbum($fileName);
             }
 
+            // On boucle les pistes $album récupéré via la méthode getPistes de la classe Album
+            // On attribue un alias pour pouvoir récupérer chaque piste du tableau
             foreach ($album->getPistes() as $piste) {
+
+                // On attribue un abum à une piste en mettant en argument l'album crée ou édité
                 $piste->setAlbum($album);
+
+                // entityManager persiste les pistes via la méthode persist
                 $entityManager->persist($piste);
             }
 
+            // On persiste l'album
             $entityManager->persist($album);
+
+            // On execute la requete en base de donnée après avoir préparé la requète via la méthode persist 
             $entityManager->flush();
 
+            // Redirige vers la vue 'artiste_detail_album' avec en paramètre l'id de l'album récupéré avec la méthode getId de
+            // l'object album
             return $this->redirectToRoute('artiste_detail_album', ['idAlbum' => $album->getId()]);
+
         }
 
+        // Retourne la vue de formulaire. Prend en argument la vue, la variable form du formulaire, et la variable edit pour la fo
+        // fonction édition 
         return $this->render('artiste_page/album/new_edit_album.html.twig', [
+
+            // createView : méthode de la classe formInterface qui crée la vue du formulaire
             'form' => $form->createView(),
+
+            // edit : variable qui affiche l'album à éditer.
+            // Récupère l'Id de l'album via la méthode getId de la classe Album
             'edit' => $album->getId(),
+
         ]);
     }
 
-    // Supprimer un album
+    // Fonction pour supprimer un album
+    // route qui prend en paramètre l'id de l'album 
+    // Méthode qui prend en argument l'objet Album, la classe EnityManagerInterface
+    // Response : renvoie une réponse HTTP
     #[Route('/{id}/delete', name: 'delete_album')]
     public function deleteAlbum(Album $album, EntityManagerInterface $entityManager): Response
     {
+        // La méthode remove d'EntityManager selectionne l'objet
         $entityManager->remove($album);
+
+        // Flush execute la requete
         $entityManager->flush();
 
+        // Redirection vers la page app_album après effacement de la bdd 
         return $this->redirectToRoute('app_album');
     }
 
-    // Discographie d'un artiste
+    // Méthode qui affiche tout les albums qu'un artiste
+    // Prend en argument l'id de l'utilisateur
+    // AlbumRepository récupère les albums
+    // UserRepository récupère les utilisteurs
+    // Response : renvoie une réponse HTTP
     #[Route('/album/{id}', name: 'all_album_per_artiste')]
     public function allAlbumPerArtiste(AlbumRepository $albumRepository, UserRepository $userRepository, $id): Response
     {
+
+        // On récupère l'utilisateur en appellant la méthode find de UserRepository
+        // Cette méthode prend en argument l'id de la route mise en argument de la fonction allAlbumPerArtiste
         $user = $userRepository->find($id);
+
+        // On récupère les albums de l'utilisateur en utilisant la méthode findBy de AlbumRepository
+        // Cette méthode prend en premier argument le user
+        // La méthode findBy prend en 1er argument un critère (équivalent à WHERE en SQL), ensuite un tableau (ORDER BY, GROUP BY en SQL), une limit ( par exemple 'limit:2') et un offset (spécifie le décalage à partir de combien les résultats doivent être
+        // retournés ( offset:10), par défaut sa valeur est $offset = null))
         $albums = $albumRepository->findBy(["user" => $user]);
 
+
+        // Renvoie la vue des albums par artiste
         return $this->render('artiste_page/album/all_album_per_artiste.html.twig', [
+
+            // Prend un tableau de paramètre contenant les variables $albums et $user récupérés 
             'albums' => $albums,
             'user' => $user,
         ]);
     }
 
+    // La méthode detailAlbum prend en argument la classe AlbumRepository ainsi que l'id de l'album 
+    // Reponse renvoie une réponse HTTP
+    
     // Détails d'un album d'un artiste
     #[Route('/detail/{idAlbum}', name: 'detail_album')]
     public function detailAlbum($idAlbum, AlbumRepository $albumRepository): Response
     {
+
+        // On récupère l'album via la méthode findOneBy de AlbumRepository
+        // On prend en argument l'id de l'album
         $album = $albumRepository->findOneBy(['id' => $idAlbum]);
 
+        // On stocke l'utilisateur dans $user en récupèrant l'user de l'album avec la méthode getUser de la classe Album
         $user = $album->getUser();
 
+        // Renvoie la vue du detail de l'album en utilisant la méthode rendre
+        // Cette méthode prend en argument la vue et un tableau de paramètre content l'objet Album et User
         return $this->render('artiste_page/album/detail_album.html.twig', [
             'album' => $album,
             'user' => $user,

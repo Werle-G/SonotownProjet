@@ -15,46 +15,77 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
-
 class ConcertController extends AbstractController
 {
+
+    // Méthode qui permet d'afficher tout les concerts
+    // Prend en argument la classe ConcertRepository et renvoie une réponse HTTP avec la classe Response 
     #[Route('/concert', name: 'app_concert')]
     public function index(ConcertRepository $concertRepository): Response
     {
+
+        // On récupère dans la variable $concerts tout les concerts en appellant la méthode findAll de la classse ConcertRepository
+        // La méthode findAll() récupère tout les concerts sans distinctions
         $concerts = $concertRepository->findAll();
+
+        // Renvoie la vue en appellant la méthode render.
+        // Prend un tableau contenant la varaible $concerts
         return $this->render('concert/index.html.twig', [
             'concerts' => $concerts,
         ]);
     }
 
-    // Ajouter ou éditer un concert
+    // Elle prend en argument , l'Id pour récupérer le concert
+    // La classe EntityManagerInterface est la classe fille (hérite) de ObjectManager. 
+    // La classe Response renvoie une réponse HTTP
+    // La classe Request effectue la requete
+    // Concert $concert = null : si l'Id d'un concert n'est pas récupéré, la variable est null et on crée un nouvel objet en utilisant la condition  if(!concert)
+    // PictureService : classe qui permet de 
+
+    // Cette méthode édite ou un ajoute un concert
     #[Route('/artiste/concert/{id}/edit', name: 'edit_concert')]
     #[Route('/artiste/concert/new', name: 'new_concert')]
     public function newEditConcert(Concert $concert = null, Request $request, EntityManagerInterface $entityManager, PictureService $pictureService): Response
     {
+
+        // Si concert n'existe pas
         if (!$concert) {
+
+            // On instancie un nouvel objet Concert
             $concert = new Concert();  
+
+            // On récupère l'utilisateur et on l'attribue à l'objet concert via la méthode setUser de la classe Concert
             $concert->setUser($this->getUser());
         } 
 
+        // la variable form stocke le formulaire crée en appellant la méthode createForm, cette méthode prend en argument la classe
+        // ConcertType ainsi que l'objet Concert
         $form = $this->createForm(ConcertType::class, $concert);
 
+        // Form récupère les données de la requète en prenant en argument l'objet requete
         $form->handleRequest($request);
 
+        // Si le formulaire a été soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer les images
+
+            // On récupère les images du formulaire en récupérant d'abord les données du formulaire
+            // et on stocke les images dans la variable $images
             $images = $form->get('imageConcerts')->getData();
 
+            // On parcourt le tableau d'images
             foreach ($images as $image) {
-                // Définir le dossier de destination
+
+                // On définit le dossier de destination
                 $folder = 'Concerts';
-                // Appeler le service d'ajout
+
+                // On appelle le service d'ajout de la classe PictureService
+                // En premier argument, l'image récupérée, le dossier de 
                 $fichier = $pictureService->add($image, $folder, 300, 300);
 
                 $img = new ImageConcert();
                 $img->setNomImage($fichier);
                 $concert->addImageConcert($img);
+
             }
 
             $entityManager->persist($concert);
