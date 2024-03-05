@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reseau{% endblock %}
+
+{% block body %}
+
+
+<section class="padding-9">
+
+    <div classe="reseau-table">
+
+        <div class="table-th">
+
+            {% if edit %}
+
+                <h1>Editer</h1>
+
+            {% else %}
+
+            <h1>Ajouter un nouveau reseau</h1>
+            
+            {% endif %}
+            
+            </div>
+
+            <div class="table-tfoot">
+
+                <p>{{ form(form) }}</p>
+
+            </div>
+            
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

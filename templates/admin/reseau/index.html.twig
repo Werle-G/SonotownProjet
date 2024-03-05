@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sites internet{% endblock %}
+
+{% block body %}
+
+<section class="padding-9">
+
+    <div class="reseau-table">
+
+    <div class="table-th">
+        <h1>Sites internet</h1>
+
+        <a href="{{ path('admin_new_reseau') }}">Ajouter un nouveau reseau</a><br>
+    </div>
+
+    {% for reseau in reseaux %}
+
+        <div class="table-td"><p>{{ reseau.nomSite }}</p>
+            <span>
+
+                <a href="{{ path('admin_edit_reseau', {'id': reseau.id}) }}">Modifier</a>
+                <a href="{{ path('admin_delete_reseau', {'id': reseau.id}) }}">Supprimer</a>
+
+            </span>
+        </div>
+        
+    {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

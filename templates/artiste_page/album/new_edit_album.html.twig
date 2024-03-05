@@ -4,18 +4,21 @@
 
 {% block body %}
 
-        {% if edit %}
-        <h1>Editer l'album</h1>
-        {% else %}
-        <h1>Créer un nouvel album</h1>
-        {% endif %}
+<section class="padding-9">
 
-        {{ form_start(form) }}
+    {% if edit %}
+    <h1>Editer l'album</h1>
+    {% else %}
+    <h1>Créer un nouvel album</h1>
+    {% endif %}
+    
+    {{ form_start(form) }}
+
         {{ form_row(form.nomAlbum) }}
         {{ form_row(form.description) }}
         {{ form_label(form.photo, 'Télécharge une photo d\'album') }}
         {{ form_widget(form.photo) }}
-
+        
         {{ form_row(form.dateSortieAlbum) }}
         {{ form_row(form.nbPistes) }}
         <div class="form-group">
@@ -27,5 +30,11 @@
         </div>
         {{ form_row(form.pistes) }}
         {{ form_row(form.valider) }}
+        
     {{ form_end(form) }}
+
+</section>
+
+
+
 {% endblock %}

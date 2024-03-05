@@ -102,6 +102,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $hostedDomain = null;
 
+    #[ORM\OneToMany(targetEntity: Site::class, mappedBy: 'user')]
+    private Collection $sites;
+
     public function __construct()
     {
         
@@ -122,6 +125,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->repondres = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->aimerAlbums = new ArrayCollection();
+        $this->sites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -592,6 +596,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setHostedDomain(?string $hostedDomain): static
     {
         $this->hostedDomain = $hostedDomain;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Site>
+     */
+    public function getSites(): Collection
+    {
+        return $this->sites;
+    }
+
+    public function addSite(Site $site): static
+    {
+        if (!$this->sites->contains($site)) {
+            $this->sites->add($site);
+            $site->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSite(Site $site): static
+    {
+        if ($this->sites->removeElement($site)) {
+            // set the owning side to null (unless already changed)
+            if ($site->getUser() === $this) {
+                $site->setUser(null);
+            }
+        }
 
         return $this;
     }

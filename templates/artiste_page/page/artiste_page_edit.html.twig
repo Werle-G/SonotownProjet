@@ -4,35 +4,43 @@
 
 {% block body %}
 
-<div class="container">
-
-  <h1>Modifier page artiste</h1>
-
+<section class="padding-9">
 
   {% if edit %}
-  <h1>Editer l'album</h1>
-  {% else %}
-  <h1>Créer un nouvel album</h1>
+
+    <h1>Modifier page artiste</h1>
+
+    {% else %}
+
   {% endif %}
 
-  {{ form_start(form) }}
-  {{ form_label(form.couverture, 'Télécharge une photo de couverture') }}
-  {{ form_widget(form.couverture) }}
-  {{ form_label(form.avatar, 'Télécharge une photo de profil') }}
-  {{ form_widget(form.avatar) }}
-  {{ form_row(form.pseudo) }}
-  {{ form_row(form.nomArtiste) }}
-
-  {{ form_row(form.dateCreationGroupe) }}
-  {{ form_row(form.biographie) }}
-  {{ form_row(form.reseau) }}
-  {{ form_row(form.valider) }}
-{{ form_end(form) }}
+  {# <a href="{{ path('new_site')}}">Ajouter un site</a> #}
+  
+    {{ form_start(formEdit) }}
 
 
 
+      {{ form_label(formEdit.avatar, 'Télécharge une photo de profil') }}
+      {{ form_widget(formEdit.avatar) }}
+      {{ form_row(formEdit.pseudo) }}
+      {{ form_row(formEdit.nomArtiste) }}
+  
+      {{ form_row(formEdit.dateCreationGroupe) }}
+      {{ form_row(formEdit.biographie) }}
 
-</div>
+      {# {{ form_row(formEdit.sites) }} #}
+
+      {% for site in formEdit.sites %}
+        {{ site.}}
+      {% endfor %}
+
+      {{ form_row(formEdit.valider) }}
+    {{ form_end(formEdit) }}
+
+    {# {% include "artiste_page/page/_form_site.html.twig" %} #}
+
+</section>
+
 
 
 {% endblock %}

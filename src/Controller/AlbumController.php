@@ -32,7 +32,7 @@ class AlbumController extends AbstractController
     // Ajouter/Modifier des albums
     #[Route('/{id}/edit', name: 'edit_album')]
     #[Route('/new', name: 'new_album')]
-    public function newEditAlbum(Album $album = null, Request $request, EntityManagerInterface $entityManager, string $photoDir): Response
+    public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ARTISTE');
         

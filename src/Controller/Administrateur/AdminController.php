@@ -19,7 +19,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/utilisateurs', name: 'utilisateurs')]
-    public function show_utilisateurs(UserRepository $userRepository): Response
+    public function showUtilisateurs(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
 

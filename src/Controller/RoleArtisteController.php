@@ -37,7 +37,7 @@ class RoleArtisteController extends AbstractController
     }
 
      #[Route('/page/edit/{id}', name: 'artiste_page_edit')]
-    public function artistePageEdit($id, Request $request, UserRepository $userRepository, string $photoDir, EntityManagerInterface $entityManager): Response
+    public function artistePageEdit($id, Request $request, UserRepository $userRepository, #[Autowire('%photo_dir%')]string $photoDir, EntityManagerInterface $entityManager): Response
     {
         // Vérifier si l'utilisateur est connecté
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -46,11 +46,15 @@ class RoleArtisteController extends AbstractController
         $userBdd = $userRepository->findOneBy(['id' => $id]);
 
         if ($userSession == $userBdd) {
+
+
             $form = $this->createForm(RoleArtisteType::class, $userSession);
         
             $form->handleRequest($request);
-        
+
             if ($form->isSubmitted() && $form->isValid()) {
+
+
                 $user = $form->getData();
 
                 if ($photo = $form['avatar']->getData()) {
@@ -59,11 +63,13 @@ class RoleArtisteController extends AbstractController
                     $user->setAvatar($fileName);
                 }
 
-                if ($photo = $form['couverture']->getData()) {
-                    $fileName = uniqid().'.'.$photo->guessExtension();
-                    $photo->move($photoDir, $fileName);
-                    $user->setImageCouverture($fileName);
-                }
+
+
+                // if ($photo = $form['couverture']->getData()) {
+                //     $fileName = uniqid().'.'.$photo->guessExtension();
+                //     $photo->move($photoDir, $fileName);
+                //     $user->setImageCouverture($fileName);
+                // }
 
                 $slugify = new Slugify();
                 $slug = $slugify->slugify($user->getNomArtiste());
@@ -75,9 +81,10 @@ class RoleArtisteController extends AbstractController
                 return $this->redirectToRoute('artiste_page', ['id' => $userSession->getId()]);
             }
         }
+
     
         return $this->render('artiste_page/page/artiste_page_edit.html.twig', [
-            'form' => $form->createView(),
+            'formEdit' => $form->createView(),
             'edit' => $id,
         ]);
     }

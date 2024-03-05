@@ -118,6 +118,24 @@ ul{
     height: 100vh;
 }
 
+/* Section administrateur */
+
+.reseau-table{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-td{
+    display: flex;
+    justify-content: space-between;
+}
+
+.table-th{
+    display: flex;
+    align-items: center;
+}
+
 /* Header */
 
 

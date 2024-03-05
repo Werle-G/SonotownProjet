@@ -4,6 +4,8 @@
 
 {% block body %}
 
+<section class="padding-9">
+
         <h1>Liste des Utilisateurs</h1>
 
         {% for user in users %}
@@ -11,5 +13,5 @@
             {{ user.pseudo }}
             
         {% endfor %}
-
+</section>
 {% endblock %}

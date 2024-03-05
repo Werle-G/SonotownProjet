@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin/genre/musical', name: 'admin_')]
-
 class GenreMusicalController extends AbstractController
 {
     #[Route('/', name: 'genre_musical')]
@@ -28,7 +27,7 @@ class GenreMusicalController extends AbstractController
 
     #[Route('/new', name: 'new_genre_musical')]
     #[Route('/{id}/edit', name: 'edit_genre_musical')]
-    public function new_edit(GenreMusical $genreMusical = null, Request $request, EntityManagerInterface $entityManager): Response
+    public function newEdit(GenreMusical $genreMusical = null, Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');

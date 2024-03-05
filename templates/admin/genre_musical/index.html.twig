@@ -4,6 +4,8 @@
 
 {% block body %}
 
+<section class="padding-9">
+
     <h1>Genres musicaux</h1>
 
     <a href="{{ path('admin_new_genre_musical') }}">Ajouter un genre musical</a><br>
@@ -15,5 +17,6 @@
         <a href="{{ path('admin_delete_genre_musical', {'id': genreMusical.id}) }}">Supprimer</a><br>
 
     {% endfor %}
+</section>
 
 {% endblock %}
