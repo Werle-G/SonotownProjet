@@ -83,12 +83,15 @@ class ConcertController extends AbstractController
                 $fichier = $pictureService->add($image, $folder, 300, 300);
 
                 $img = new ImageConcert();
+
                 $img->setNomImage($fichier);
+
                 $concert->addImageConcert($img);
 
             }
 
             $entityManager->persist($concert);
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_home');
