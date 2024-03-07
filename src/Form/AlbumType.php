@@ -29,6 +29,7 @@ class AlbumType extends AbstractType
             ])
             ->add('description', TextType::class, [
                 'label' => 'Description',
+                'required' => false,
             ])
             ->add('photo', FileType::class, [
                 'label' => 'imageAlbum',
@@ -45,9 +46,11 @@ class AlbumType extends AbstractType
 
             ->add('dateSortieAlbum', DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
             ->add('nbPistes', IntegerType::class, [
+                'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
             ->add('genreMusicals', EntityType::class, [
@@ -59,11 +62,26 @@ class AlbumType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
+            // FileType 
+            // ->add('pistes', FileType::class, [
+            //     'label' => 'Piste audio',
+            //     'multiple' => true,
+            //     'mapped' => false,
+            //     'required' => false,
+            // ])
             ->add('pistes', CollectionType::class, [
                 'entry_type' => PisteType::class,
-                'allow_add' => true, 
+                'allow_add' => true,
                 'by_reference' => false, 
+                'label' => 'Pistes',
             ])
+            
+            // ->add('pistes', CollectionType::class, [
+            //     'entry_type' => PisteType::class,
+            //     'allow_add' => true,
+            //     'by_reference' => false, 
+            //     'label' => 'Pistes',
+            // ])
             ->add('valider', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-success'

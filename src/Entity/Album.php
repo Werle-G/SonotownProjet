@@ -42,7 +42,7 @@ class Album
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToMany(targetEntity: GenreMusical::class, inversedBy: 'albums')]
+    #[ORM\ManyToMany(targetEntity: GenreMusical::class, inversedBy: 'albums', cascade: ["persist"])]
     private Collection $genreMusicals;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'aimerAlbums')]

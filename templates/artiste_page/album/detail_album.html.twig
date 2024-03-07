@@ -27,6 +27,10 @@
             Nom du morceau {{ piste.titre }}<br>
             Durée du morceau {{ piste.duree }}
 
+            {# {{ dump(piste.audio) }} #}
+
+            <audio controls src="{{ asset('uploads/audios/' ~ piste.audio)}}"></audio>
+
         {% endfor %}
         
 

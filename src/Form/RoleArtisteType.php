@@ -52,11 +52,11 @@ class RoleArtisteType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'tinymce'],
             ])
-            ->add('sites', CollectionType::class, [
-                'entry_type' => SiteType::class,
-                'allow_add' => true, 
-                'by_reference' => false, 
-            ])
+            // ->add('sites', CollectionType::class, [
+            //     'entry_type' => SiteType::class,
+            //     'allow_add' => true, 
+            //     'by_reference' => false, 
+            // ])
             
             // ->add('sites', CollectionType::class, [
             //     'entry_type' => EmailType::class,

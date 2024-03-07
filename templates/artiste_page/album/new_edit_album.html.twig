@@ -21,6 +21,15 @@
         
         {{ form_row(form.dateSortieAlbum) }}
         {{ form_row(form.nbPistes) }}
+
+        {{ form_row(form.pistes) }}
+
+        {% for piste in form.pistes %}
+            
+            {# {{ piste.titre }} #}
+
+        {% endfor %}
+
         <div class="form-group">
             <label for="genreMusicals" class="control-label">Genres musicaux</label>
             <div id="genreMusicals" class="collection">
@@ -28,10 +37,12 @@
                 {{ form_widget(form.genreMusicals) }}
             </div>
         </div>
-        {{ form_row(form.pistes) }}
+
         {{ form_row(form.valider) }}
         
     {{ form_end(form) }}
+
+    
 
 </section>
 

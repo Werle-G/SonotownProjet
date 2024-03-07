@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/artiste', name: 'artiste_')]
 class AlbumController extends AbstractController
 {
+
     // Methode qui renvoie la vue de tout les albums.
     // Prend en argument AlbumRepository, cette classe permet de récuperer les données de l'entité Album
     // Response : renvoie une réponse HTTP
@@ -38,17 +39,12 @@ class AlbumController extends AbstractController
         ]);
     }
 
-    // Album $album = null : si l'Id d'un album n'est pas récupéré, la variable est null et on crée un nouvel objet en utilisant la condition  if(!album)
-    // Request $request : effectue la requete
-    // EntityManagerInterface communique avec les entités
-    // Autowire prend en argument le chemin du dossier photo et se récupère via la variable $photoDir ( dont le type est une chaine de charactère (string , le type est précisé pour ne pas rentrer de valeurs éronnées) )
-    // Response : renvoie une réponse HTTP
 
     // Méthode qui permet d'ajouter ou d'éditer un album
     // la route edit prend l'id de l'album 
     #[Route('/{id}/edit', name: 'edit_album')]
     #[Route('/new', name: 'new_album')]
-    public function new_edit(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir): Response
+    public function newEdit(Album $album = null, Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')]string $photoDir,  #[Autowire('%audio_dir%')]string $audioDir): Response
     {
 
         // Si l'utilisateur à le rôle artiste
@@ -57,15 +53,17 @@ class AlbumController extends AbstractController
         // Si l'album n'existe pas
         if (!$album) {
 
-            // Un nouvel object Album est instancié
+            // Un nouvel object Album est crée
             $album = new Album();
 
             // L'utilisateur est récupéré et récupéré dans l'objet album
             $album->setUser($this->getUser());
 
-            // La méthode addPiste ajouter un nouvel objet Piste 
+            // La méthode addPiste ajoute un nouvel objet Piste 
             $album->addPiste(new Piste());
         }
+
+
 
         // form stocke le formulaire crée en appellant la méthode createForm, cette méthode prend en argument la classe
         // AlbumType ainsi que l'objet Album
@@ -84,8 +82,12 @@ class AlbumController extends AbstractController
             // et on rentre dans la condition
             $photo = $form['photo']->getData();
 
-            if ($photo) {
+            
+            // $audio = $form->get('pistes')->getData();
+            // $brochureFile = $form->get('brochure')->getData();
+            dd($form->get('audio')->getData());
 
+            if ($photo) {
                 // uniqid génère un identifiant unique 
                 // photo récupère l'extension en utilisant la méthode guessExtension de la classe File utilisées dans le formulaire RoleArtisteType
                 // fileName stocke la concatenation de uniqid et de photo
@@ -97,18 +99,32 @@ class AlbumController extends AbstractController
 
                 // $album modifie le nom du fichier contenu dans l'oject album
                 $album->setImageAlbum($fileName);
+
+                // dd($album);
             }
 
-            // On boucle les pistes $album récupéré via la méthode getPistes de la classe Album
-            // On attribue un alias pour pouvoir récupérer chaque piste du tableau
-            foreach ($album->getPistes() as $piste) {
 
-                // On attribue un abum à une piste en mettant en argument l'album crée ou édité
-                $piste->setAlbum($album);
+            if($audio){
 
-                // entityManager persiste les pistes via la méthode persist
-                $entityManager->persist($piste);
+                $fileName = uniqid().'.'.$audio->guessExtension();
+
+                $audio->move($audioDir, $fileName);
+
+                $album->addPiste($audio);
+
+            //     // $audio->move($this->getParameter())
+            //     // foreach ($audio as $piste) {
+            //     //     $fileName = uniqid().'.'.$piste->getClientOriginalName();
+            //     //     $piste->setAlbum($fileName);
+            //     //     dd($piste);
+
+            //     //     $album->addPiste($piste);
+
+            //     //     $entityManager->persist($piste);
+            //     //     $entityManager->flush();
+            //     // }
             }
+            
 
             // On persiste l'album
             $entityManager->persist($album);
@@ -143,7 +159,8 @@ class AlbumController extends AbstractController
     #[Route('/{id}/delete', name: 'delete_album')]
     public function deleteAlbum(Album $album, EntityManagerInterface $entityManager): Response
     {
-        // La méthode remove d'EntityManager selectionne l'objet
+
+        // L'objet $album sera supprimé
         $entityManager->remove($album);
 
         // Flush execute la requete
@@ -204,4 +221,5 @@ class AlbumController extends AbstractController
             'user' => $user,
         ]);
     }
+
 }

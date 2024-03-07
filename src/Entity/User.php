@@ -102,6 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $hostedDomain = null;
 
+    // L'utilisateur à une collection de site qu'il renseigne dans le formulaire d'édition du profil
     #[ORM\OneToMany(targetEntity: Site::class, mappedBy: 'user')]
     private Collection $sites;
 

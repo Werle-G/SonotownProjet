@@ -52,31 +52,18 @@ function showSlides(n) {
   dots[slideIndex - 1].classList.add('active');
 }
 
-// const IMG_CONTAINER_WIDTH = 500
-// const DELAY = 4000
+// CollectionType Piste dans album
 
-// let idx = 0
-// let interval = setInterval(run, DELAY)
-
-// function run() {
-//   idx++
-//   changeImage()
-// }
-
-// function changeImage() {
-//   if (idx > img.length - 1) idx = 0
-//   else if (idx < 0) idx = img.length - 1
-
-//   imgs.style.transform = `translateX(${-idx * IMG_CONTAINER_WIDTH}px)`
-// }
-
-// function resetInterval() {
-//   clearInterval(interval)
-//   interval = setInterval(run, DELAY)
-// }
-
-// function handleButtonClick(direction) {
-//   idx += direction
-//   changeImage()
-//   resetInterval()
-// }
+$(document).ready(function() {
+  
+  $('#add-piste').click(function(e) {
+      e.preventDefault();
+      var pisteContainer = $('#pistes');
+      var index = pisteContainer.children().length;
+       // Obtenez le nombre actuel de champs de formulaire
+      var prototype = pisteContainer.data('prototype');
+      var newForm = prototype.replace(/__name__/g, index); 
+      // Remplacez les placeholders __name__ par l'index actuel
+      pisteContainer.append(newForm);
+  });
+});
