@@ -36,7 +36,7 @@
                 <div class="card-image">
 
                     <figure>
-                        <a href="{{ path('artiste_page', {'id': user.id}) }}">
+                        <a href="{{ path('artiste_page', {'slug': user.slug}) }}">
                         <img src="{{asset('uploads/images/' ~ user.avatar)}}"  alt="{{ user.nomArtiste }}">
                         </a>
 

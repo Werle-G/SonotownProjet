@@ -4,9 +4,6 @@ namespace App\Form;
 
 use App\Entity\Site;
 use App\Entity\User;
-use App\Entity\Album;
-use App\Entity\Reseau;
-use App\Entity\Concert;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,7 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -25,10 +21,6 @@ class RoleArtisteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pseudo', TextType::class, [
-                'label' => 'Changer de pseudo',
-                'required' => true
-            ])
             ->add('avatar', FileType::class, [
                 'label' => 'avatar',
                 'mapped' => false,
@@ -50,21 +42,19 @@ class RoleArtisteType extends AbstractType
             ->add('biographie', TextareaType ::class, [
                 'label' => 'Biographie',
                 'required' => false,
-                'attr' => ['class' => 'tinymce'],
             ])
-            // ->add('sites', CollectionType::class, [
-            //     'entry_type' => SiteType::class,
-            //     'allow_add' => true, 
-            //     'by_reference' => false, 
+            // ->add('sites', EntityType::class, [
+            //     'class' => Site::class, // Classe de votre entité Site
+            //     'choice_label' => 'nom', // Propriété de l'entité Site à afficher dans le champ de sélection
+            //     'multiple' => true, // Permettre à l'utilisateur de sélectionner plusieurs sites
+            //     'expanded' => false, // Afficher les options sous forme de liste déroulante
+            //     'required' => false, // Indiquer si le champ est obligatoire ou non
+            //     // Autres options si nécessaire
             // ])
-            
-            // ->add('sites', CollectionType::class, [
-            //     'entry_type' => EmailType::class,
-            //     'entry_options' => [
-            //         'attr' => ['class' => 'email-box'],
-            //     ],
-            // ])
-            ->add('valider', SubmitType::class, [
+            ->add('reseaus', CollectionType::class, [
+                'entry_type' => ReseauType::class,
+            ])
+            ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]

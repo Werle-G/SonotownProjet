@@ -4,11 +4,17 @@
 
     <div class="artiste-info">
 
-        <h1>{{ user.pseudo }}</h1>
+        <h1>{{ user.nomArtiste }}</h1>
 
         <h2>Biographie</h2>
 
         <p>{{ user.biographie}}</p>
+
+        {# {% for reseau in user.reseaus %}
+
+            {{ reseau.adresseEmail }}
+            
+        {% endfor %} #}
 
         <div id="artiste-link">
             <div class="btn-suivre">
@@ -16,8 +22,8 @@
             </div>
 
             <div class="artiste-page-link">
-                <a href="{{ path('artiste_all_album_per_artiste', {'id': user.id}) }}">Albums</a>
-                <a href="{{ path('all_concert_per_artiste', {'id': user.id}) }}">Concerts</a>
+                <a href="{{ path('albums_per_artiste', {'slug': user.slug}) }}">Albums</a>
+                <a href="{{ path('concerts_per_artiste', {'slug': user.slug}) }}">Concerts</a>
             </div>
         </div>
     </div> 
@@ -27,9 +33,9 @@
 
         <div class="edit-artiste">
     
-    {% if is_granted('ROLE_ARTISTE') and app.user.id == user.id %} 
+    {% if is_granted('ROLE_ARTISTE') and app.user.slug == user.slug %} 
 
-            <a href="{{ path('artiste_page_edit', {'id': app.user.id}) }}">Éditer le profil artiste</a>
+            <a href="{{ path('artiste_page_edit', {'slug': app.user.slug}) }}">Éditer le profil artiste</a>
 
     {% endif %}
 

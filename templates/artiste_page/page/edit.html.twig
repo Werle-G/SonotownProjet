@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Artiste{% endblock %}
+
+{% block body %}
+
+<section class="padding-9">
+
+
+    <h1>Modifier page artiste</h1>
+
+    {{ form_start(form) }}
+
+
+
+      {{ form_label(form.avatar, 'Télécharge une photo de profil') }}
+      {{ form_widget(form.avatar) }}
+      {# {{ form_row(form.pseudo) }} #}
+      {{ form_row(form.nomArtiste) }}
+  
+      {{ form_row(form.dateCreationGroupe) }}
+      {{ form_row(form.biographie) }}
+
+      {# {{ form_row(form.sites) }} #}
+      {# {{ form_row(form.dre) }} #}
+
+      {% for reseau in form.reseaus %}
+        {# {{ reseau.adresse }} #}
+      {% endfor %}
+      {{ form_end(form) }}
+
+
+    {# {% include "artiste_page/page/_form_site.html.twig" %} #}
+
+</section>
+
+
+
+{% endblock %}

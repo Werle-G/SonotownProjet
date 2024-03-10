@@ -31,7 +31,7 @@
         
                 {# Si l'utilisateur est user #}
         
-                    <li><a href="{{ path('all_artiste')}}">Artiste</a></li>
+                    {# <li><a href="{{ path('all_artiste')}}">Artiste</a></li> #}
                     {# <li><a href="{{ path('artiste_all_album')}}">Albums</a></li> #}
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
                     <li><a href="{{ path('user_profil') }}">Profil</a></li>  
@@ -40,8 +40,8 @@
             
             {% else %}
             
-            <li><a href="{{ path('all_artiste')}}">Artiste</a></li>
-            <li><a href="{{ path('artiste_all_album')}}">Albums</a></li>
+            {# <li><a href="{{ path('all_artiste')}}">Artiste</a></li> #}
+            {# <li><a href="{{ path('artiste_all_album')}}">Albums</a></li> #}
             <li><a href="{{ path('app_register')}}">Register</a></li>    
             <li><a href="{{ path('app_login')}}">Login</a></li>    
     

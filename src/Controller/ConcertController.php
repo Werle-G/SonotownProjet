@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+
 class ConcertController extends AbstractController
 {
 
@@ -115,13 +117,17 @@ class ConcertController extends AbstractController
     }
 
     // Tous les concerts de l'artiste
-    #[Route('/artiste/concert/{id}', name: 'all_concert_per_artiste')]
-    public function showConcertsByArtist($id, ConcertRepository $concertRepository, UserRepository $userRepository): Response
+    #[Route('/artiste/{slug}/concert/', name: 'concerts_per_artiste')]
+    public function concertsByArtist(
+        $slug, 
+        ConcertRepository $concertRepository, 
+        UserRepository $userRepository
+    ): Response
     {
-        $user = $userRepository->find($id);
+        $user = $userRepository->findonBy($slug);
         $concerts = $concertRepository->findBy(["user" => $user]);
         
-        return $this->render('artiste_page/concert/all_concert_per_artiste.html.twig', [
+        return $this->render('artiste_page/concert/concerts_per_artiste.html.twig', [
             'user' => $user,
             'concerts' => $concerts,
         ]);

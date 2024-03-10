@@ -18,8 +18,10 @@
           <img style="width:100px; height:100px"   src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="">
         </figure>
 
-        <a href="{{ path('artiste_edit_album', {'id': album.id}) }}">Edit album</a>
-        <a href="{{ path('artiste_delete_album', {'id': album.id}) }}">Delete album</a>
+        {% if album.user == app.user %}
+        <a href="{{ path('album_edit', {'slug': user.slug, 'albumId': album.id}) }}">Edit album</a>
+        <a href="{{ path('album_delete', {'slug': user.slug, 'albumId': album.id}) }}">Delete album</a>
+        {% endif %}
         {% for piste in album.pistes %}
 
         <h2>Pistes de l'album</h2>

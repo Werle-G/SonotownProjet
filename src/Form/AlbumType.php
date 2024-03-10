@@ -41,9 +41,6 @@ class AlbumType extends AbstractType
                     ])
                 ],
             ])
-                // Pour ajouter image: 
-                // constraints : max size => 
-
             ->add('dateSortieAlbum', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
@@ -62,26 +59,17 @@ class AlbumType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            // FileType 
-            // ->add('pistes', FileType::class, [
-            //     'label' => 'Piste audio',
-            //     'multiple' => true,
-            //     'mapped' => false,
-            //     'required' => false,
-            // ])
             ->add('pistes', CollectionType::class, [
                 'entry_type' => PisteType::class,
                 'allow_add' => true,
-                'by_reference' => false, 
-                'label' => 'Pistes',
+                'allow_delete' => true,
+                'prototype' => true,
+                'by_reference' => false,
+                'entry_options' => ['label' => false],
+                'attr' => [
+                    'data-controller' => 'form-collection'
+                ]
             ])
-            
-            // ->add('pistes', CollectionType::class, [
-            //     'entry_type' => PisteType::class,
-            //     'allow_add' => true,
-            //     'by_reference' => false, 
-            //     'label' => 'Pistes',
-            // ])
             ->add('valider', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-success'

@@ -9,17 +9,18 @@
     {% include "artiste_page/page/_header.html.twig" %}
 
     <div class="artiste-album">
-
         
         <h1>Discographie</h1>
     
-        <a href="{{ path('artiste_new_album') }}">Ajouter un album</a><br>
-    
+        {% if user.slug == app.user %}
+        <a href="{{ path('album_new') }}">Ajouter un album</a><br>
+        {% endif %}
+        
         <div id="album-pochette">
 
         {% for album in albums %}
     
-            <a href="{{ path('artiste_detail_album', {'idAlbum': album.id}) }}">
+            <a href="{{ path('album_detail', {'slug': user.slug, 'albumId': album.id}) }}">
             <figure>
                 <img style="width:100px; height:100px"   src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="">
             </figure>

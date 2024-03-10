@@ -17,14 +17,16 @@ class Reseau
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nomSite = null;
+    private ?string $adresse = null;
 
-    #[ORM\OneToMany(targetEntity: Site::class, mappedBy: 'reseau')]
-    private Collection $sites;
+    #[ORM\ManyToOne(inversedBy: 'reseaus', cascade: ['persist'])]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reseaus')]
+    private ?Site $site = null;
 
     public function __construct()
     {
-        $this->sites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -32,46 +34,45 @@ class Reseau
         return $this->id;
     }
 
-    public function getNomSite(): ?string
+    public function getAdresse(): ?string
     {
-        return $this->nomSite;
+        return $this->adresse;
     }
 
-    public function setNomSite(string $nomSite): static
+    public function setAdresse(string $adresse): static
     {
-        $this->nomSite = $nomSite;
+        $this->adresse = $adresse;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Site>
-     */
-    public function getSites(): Collection
+    public function getUser(): ?user
     {
-        return $this->sites;
+        return $this->user;
     }
 
-    public function addSite(Site $site): static
+    public function setUser(?user $user): static
     {
-        if (!$this->sites->contains($site)) {
-            $this->sites->add($site);
-            $site->setReseau($this);
-        }
+        $this->user = $user;
 
         return $this;
     }
 
-    public function removeSite(Site $site): static
+    public function getSite(): ?Site
     {
-        if ($this->sites->removeElement($site)) {
-            // set the owning side to null (unless already changed)
-            if ($site->getReseau() === $this) {
-                $site->setReseau(null);
-            }
-        }
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): static
+    {
+        $this->site = $site;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->adresse;
     }
 
 }

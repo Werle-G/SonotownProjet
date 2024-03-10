@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-// use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -95,15 +94,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToMany(targetEntity: Album::class, mappedBy: 'aimerAlbums')]
     private Collection $aimerAlbums;
-
+        
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $googleId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $hostedDomain = null;
 
-    // L'utilisateur à une collection de site qu'il renseigne dans le formulaire d'édition du profil
-    #[ORM\OneToMany(targetEntity: Site::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Reseau::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $reseaus;
+
+    #[ORM\ManyToMany(targetEntity: Site::class, inversedBy: 'users')]
     private Collection $sites;
 
     public function __construct()
@@ -126,6 +127,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->repondres = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->aimerAlbums = new ArrayCollection();
+        $this->reseaus = new ArrayCollection();
         $this->sites = new ArrayCollection();
     }
 
@@ -602,6 +604,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return Collection<int, Reseau>
+     */
+    public function getReseaus(): Collection
+    {
+        return $this->reseaus;
+    }
+
+    public function addReseau(Reseau $reseau): static
+    {
+        if (!$this->reseaus->contains($reseau)) {
+            $this->reseaus->add($reseau);
+            $reseau->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReseau(Reseau $reseau): static
+    {
+        if ($this->reseaus->removeElement($reseau)) {
+            // set the owning side to null (unless already changed)
+            if ($reseau->getUser() === $this) {
+                $reseau->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection<int, Site>
      */
     public function getSites(): Collection
@@ -613,7 +645,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->sites->contains($site)) {
             $this->sites->add($site);
-            $site->setUser($this);
         }
 
         return $this;
@@ -621,13 +652,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeSite(Site $site): static
     {
-        if ($this->sites->removeElement($site)) {
-            // set the owning side to null (unless already changed)
-            if ($site->getUser() === $this) {
-                $site->setUser(null);
-            }
-        }
+        $this->sites->removeElement($site);
 
         return $this;
     }
+
 }

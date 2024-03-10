@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SiteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SiteRepository::class)]
@@ -14,52 +16,100 @@ class Site
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adresse = null;
+    private ?string $nom = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sites')]
-    private ?Reseau $reseau = null;
+    #[ORM\OneToMany(targetEntity: Reseau::class, mappedBy: 'site')]
+    private Collection $reseaus;
 
-    #[ORM\ManyToOne(inversedBy: 'sites')]
-    private ?User $user = null;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'sites')]
+    private Collection $users;
+
+
+    public function __construct()
+    {
+        $this->reseaus = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAdresse(): ?string
+    public function getNom(): ?string
     {
-        return $this->adresse;
+        return $this->nom;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setNom(string $nom): static
     {
-        $this->adresse = $adresse;
+        $this->nom = $nom;
 
         return $this;
     }
 
-    public function getReseau(): ?Reseau
+    /**
+     * @return Collection<int, Reseau>
+     */
+    public function getReseaus(): Collection
     {
-        return $this->reseau;
+        return $this->reseaus;
     }
 
-    public function setReseau(?Reseau $reseau): static
+    public function addReseau(Reseau $reseau): static
     {
-        $this->reseau = $reseau;
+        if (!$this->reseaus->contains($reseau)) {
+            $this->reseaus->add($reseau);
+            $reseau->setSite($this);
+        }
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function removeReseau(Reseau $reseau): static
     {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
+        if ($this->reseaus->removeElement($reseau)) {
+            // set the owning side to null (unless already changed)
+            if ($reseau->getSite() === $this) {
+                $reseau->setSite(null);
+            }
+        }
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeSite($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom; 
+    }
+
+    
+
 }

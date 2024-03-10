@@ -20,13 +20,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/artiste')]
+#[Route('/artiste', name: 'artiste_')]
 class RoleArtisteController extends AbstractController
 {
 
     // La méthode index affiche les utilisateurs selon le rôle artiste. 
-    // Elle prend en argument la classe UserRepository pour récupérer les utilisateurs
-    #[Route('/', name: 'all_artiste')]
+    // #[Route('/', name: 'all_artiste')]
     public function index(UserRepository $userRepository): Response
     {
 
@@ -42,14 +41,8 @@ class RoleArtisteController extends AbstractController
     }
 
     // Cette méthode édite la page artiste
-    // Elle prend en argument , l'Id pour récupérer l'utilisateur, la classe Request fournit les superglobales
-    // La classe UserRepository récupère les informations de l'utilisateur
-    // Autowire prend en argument le chemin du dossier photo et se récupère via la variable $photoDir ( dont le type est une chaine de charactère (string , le type est précisé pour ne pas rentrer de valeurs éronnées) )
-    // La classe EntityManagerInterface est la classe fille (hérite) de ObjectManager. 
-    // La classe Response renvoie une réponse HTTP
-    // La classe Request effectue la requete
-    #[Route('/page/edit/{id}', name: 'artiste_page_edit')]
-    public function artistePageEdit($id, Request $request, UserRepository $userRepository, #[Autowire('%photo_dir%')]string $photoDir, EntityManagerInterface $entityManager): Response
+    #[Route('/page/edit/{slug}', name: 'page_edit')]
+    public function pageEdit($slug, Request $request, UserRepository $userRepository, #[Autowire('%photo_dir%')]string $photoDir, EntityManagerInterface $entityManager): Response
     {
         // $this représente la classe RolArtisteController, elle refuse l'accès aux personnes non authentifiés
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -58,7 +51,7 @@ class RoleArtisteController extends AbstractController
         $userSession = $this->getUser(); 
 
         // On stocke les donnée de l'utilisateur dans la variable userBdd. La variable $userRepository récupère l'attribut id et prend l'id de l'utilisateur dans la route de la fonction artistePageEdit.
-        $userBdd = $userRepository->findOneBy(['id' => $id]);
+        $userBdd = $userRepository->findOneBy(['slug' => $slug]);
 
         // Si l'utilisateur de la session est identique à l'utilisateur récupéré dans la base de donnée
         if ($userSession == $userBdd) {
@@ -113,58 +106,36 @@ class RoleArtisteController extends AbstractController
                 // L'utilisateur est redirigé vers sa page artiste.
                 // La méthode redirectToRoute prend en argument la route à atteindre ainsi que l'Id indiqué dans la route pour renvoyer 
                 // l'utilisateur vers sa page.
-                return $this->redirectToRoute('artiste_page', ['id' => $userSession->getId()]);
+
+                return $this->redirectToRoute('artiste_page');
             }
         }
 
     
-        return $this->render('artiste_page/page/artiste_page_edit.html.twig', [
-            'formEdit' => $form->createView(),
-            'edit' => $id,
+        return $this->render('artiste_page/page/edit.html.twig', [
+            'form' => $form->createView(),
+            'slug' => $userBdd->getId(),
+            // 'sessionId' => $session->getId()
         ]);
     }
 
-    // #[Route('/{id}', name: 'artiste_page')]
-    // public function artistePage(UserRepository $userRepository, $id): Response
-    // {
-    //     $user = $userRepository->findOneBy(["id" => $id]);
-    //     // $commentaires = $commentaireRepository->findBy(["user" => $user]);
-        
-    //     return $this->render('artiste_page/page/artiste_page.html.twig', [
-    //         'user' => $user,
-    //         // 'commentaires' => $commentaires,
-    //     ]);
-    // }
-
-    // #[Route('/page', name: 'artiste_site')]
-    // public function artisteSite(): Response
-    // {
-    //     // Vérifier si l'utilisateur est connecté
-    //     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-    
-    //     $userSession = $this->getUser();
-    
-    //     return $this->render('artiste_page/page/artiste_page.html.twig', [
-    //         'user' => $userSession,
-    //     ]);
-    // }
-
-    #[Route('/page', name: 'artiste_site')]
-    #[Route('/{id}', name: 'artiste_page')]
-    public function artistePage(UserRepository $userRepository, $id = null): Response
+    #[Route('/', name: 'site')]
+    #[Route('/{slug}', name: 'page')]
+    public function artisteSitePage(UserRepository $userRepository, $slug = null): Response
     {
+        
+        if ($slug) {
+            
+            $user = $userRepository->findOneBy(["slug" => $slug]);
 
-        // Si l'id est renseigné, on récupère l'utilisateur correspondant
-        if ($id !== null) {
-
-            $user = $userRepository->findOneBy(["id" => $id]);
         } else {
- 
+            
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
             $user = $this->getUser();
         }
 
-        return $this->render('artiste_page/page/artiste_page.html.twig', [
+        return $this->render('artiste_page/page/show.html.twig', [
             'user' => $user,
         ]);
     }
