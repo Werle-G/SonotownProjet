@@ -20,8 +20,8 @@
         
     {% endfor %}
     <br>
-    <a href="{{ path('edit_concert', {'id': concert.id}) }}">Editer concert</a><br>
-    <a href="{{ path('delete_concert', {'id': concert.id}) }}">Delete concert</a>
+    <a href="{{ path('edit_concert', {'slug': user.slug, 'id': concert.id}) }}">Editer concert</a><br>
+    <a href="{{ path('delete_concert', {'slug': user.slug, 'id': concert.id}) }}">Delete concert</a>
 
     </div>
 </section>

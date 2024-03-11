@@ -28,8 +28,6 @@ class GoogleController extends AbstractController
     public function connectCheckAction(Request $request, ClientRegistry $clientRegistry)
     {
 
-        // return $this->redirectToRoute('app_home'); 
-
         $client = $clientRegistry->getClient('google');
 
         try {

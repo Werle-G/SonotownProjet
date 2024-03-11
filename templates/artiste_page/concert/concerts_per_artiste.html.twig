@@ -13,11 +13,11 @@
         <h1>Liste des concerts</h1>
 
 
-    <a href="{{ path('new_concert')}}">Ajouter un concert</a><br>
+    <a href="{{ path('new_concert', {'slug': user.slug })}}">Ajouter un concert</a><br>
 
-    {% for concert in concerts %}
+    {% for concert in user.concerts %}
 
-        <a href="{{ path('detail_concert', {'idConcert': concert.id}) }}">{{ concert.lieu }}</a><br>
+        <a href="{{ path('detail_concert', {'slug': user.slug, 'id': concert.id}) }}">{{ concert.lieu }}</a><br>
 
     {% endfor %}
     </div>

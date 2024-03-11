@@ -26,7 +26,6 @@ class ConcertType extends AbstractType
             ->add('dateConcert', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date concert',
-                'attr' => ['class' => 'form-control']
             ])
             ->add('descriptionConcert', TextType::class, [
                 'label' => 'Description concert',
@@ -36,6 +35,7 @@ class ConcertType extends AbstractType
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
+                // 'attr' => ['class' => 'form-control-file']
             ])
             ->add('valider', SubmitType::class, [
                 'attr' => [
