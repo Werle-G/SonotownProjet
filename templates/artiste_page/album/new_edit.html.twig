@@ -33,8 +33,7 @@
                 {{ form_widget(form.genreMusicals) }}
             </div>
         </div>
-        <h3>Sites</h3>
-        <h2>Programme de la session :</h2>
+        <h2>Ajouter des morceaux</h2>
   
         <div id="formulaire">
             <div class="form-group row form-piste">
@@ -42,6 +41,8 @@
                 {# &nbsp; : espace insécable (espace qui ne peut être ignoré par navigateur) #}
                 <div id="piste-fields-list" class="col-sm-10 remove-collection-widget"
                     data-prototype="{{ form_widget(form.pistes.vars.prototype)|e }}"
+                    {# propriété pistes dans le formulaire #}
+                    {# Permet d'ajouter un élément add #}
   
                     {# Modèle type #}
                     data-album="{{albumId}}"
@@ -65,7 +66,7 @@
                 <button type="button" 
                     class="add-another-collection-widget button  btn btn-secondary"
                     {# crée nouveau bouton add #}
-                    data-list-selector="#piste-fields-list">Ajouter un nouveau module</button>
+                    data-list-selector="#piste-fields-list">Ajouter un nouveau morceau</button>
                     {# Attribut données contenant sélecteur liste associé au bouton (j.s) #}
             </div> 
         </div>

@@ -1,6 +1,6 @@
 // Scripts jQuery / JavaScript généraux
 $(document).ready(function() { // Une fois que le document (base.html.twig) HTML/CSS a bien été complètement chargé...
-    // add-collection-widget.js : fonction permettant d'ajouter un nouveau bloc "programme" au sein d'une session (pour agrandir la collection)
+    // add-collection-widget.js : fonction permettant d'ajouter un nouveau bloc "piste" au sein de Album (pour agrandir la collection)
     $('.add-another-collection-widget').click(function (e) {
         var list = $($(this).attr('data-list-selector'))
         // Récupération du nombre actuel d'élément "programme" dans la collection (à défaut, utilisation de la longueur de la collection)
@@ -12,7 +12,7 @@ $(document).ready(function() { // Une fois que le document (base.html.twig) HTML
         // Remplacement des séquences génériques "__name__" utilisées dans les parties "id" et "name" du prototype
         // par un numéro unique au sein de la collection de "programmes" : ce numéro sera la valeur du compteur
         // courant (équivalent à l'index du prochain champ, en cours d'ajout).
-        // Au final, l'attribut ressemblera à "user[programmes][n°]"
+        // Au final, l'attribut ressemblera à "album[pistes][n°]"
         newWidget = newWidget.replace(/__name__/g, counter)
         // Ajout également des attributs personnalisés "class" et "value", qui n'apparaissent pas dans le prototype original 
         newWidget = newWidget.replace(/><input type="hidden"/, ' class="borders"><input type="hidden" value="'+album+'"')
@@ -30,7 +30,7 @@ $(document).ready(function() { // Une fois que le document (base.html.twig) HTML
     })
     // fonction permettant l'ajout d'un bouton "Supprimer ce module" dans un bloc "programme", et d'enregistrer l'évenement "click" associé
     function addDeleteLink($piste) {
-        var $removeFormButton = $('<div class="block"><button type="button" class="button btn btn-secondary">Supprimer ce module</button></div>');
+        var $removeFormButton = $('<div class="block"><button type="button" class="button btn btn-secondary">Supprimer ce morceau</button></div>');
         $piste.append($removeFormButton)
     
         $removeFormButton.on('click', function(e) {
@@ -38,7 +38,7 @@ $(document).ready(function() { // Une fois que le document (base.html.twig) HTML
         })
     }
     // remove-session.js : fonction permettant de demander la confirmation de suppression d'une session
-    $('.remove-session-confirm').on('click', function(e) {
+    $('.remove-album-confirm').on('click', function(e) {
         e.preventDefault()
         let id=$(this).data('id')
         let href=$(this).attr('href')

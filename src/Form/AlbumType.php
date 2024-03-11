@@ -7,9 +7,10 @@ use App\Entity\Album;
 use App\Form\PisteType;
 use App\Entity\GenreMusical;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -59,17 +60,46 @@ class AlbumType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('pistes', CollectionType::class, [
-                'entry_type' => PisteType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-                'by_reference' => false,
-                'entry_options' => ['label' => false],
-                'attr' => [
-                    'data-controller' => 'form-collection'
-                ]
-            ])
+            // Collection attend l'élément qu'elle entrera dans le form. ce n'est pas obligatoire que ce soit un autre form/ peut être une entité
+            // ->add('pistes', CollectionType::class, [
+            //     // entry_type : prend un formulaire piste
+            //     'entry_type' => PisteType::class,
+            //     // autoriser ajouter
+            //     'allow_add' => true,
+            //     // autoriser delete
+            //     'allow_delete' => true,
+            //     // permet d'ajouter un object en javascript/ autoriser ajout d'un nouvel élément dans l'entité album qui seront persisté grâce au cascade persist sur l'élément piste. activer data_prototype qui sera un attribut html qu'on pourra manipuler en js.
+            //     'prototype' => true,
+            //     // by_reference => false :car Album n'a pas de setPiste mais c'est Piste qui contient un setAlbum
+            //     // Piste est propriétaire de la relation
+            //     // Pour éviter un mapping false, on est obligé de rajouter by_reference false
+            //     'by_reference' => false,
+            //     // 
+            //     'entry_options' => ['label' => false],
+            //     // 'attr' => [
+            //     //     'data-controller' => 'form-collection'
+            //     // ]
+            // ])
+            // ->add('pistes', FileType::class, [
+            //     'label' => 'Image de la recette',
+            //     'attr' => ['class' => 'form-control'],
+            //     'multiple' => true,
+            //     'mapped' => false,
+            //     'required' => false,
+            //     'constraints' => [
+            //         new All ([
+            //             'constraints' => [
+            //                 new File ([
+            //                     'maxSize' => '15254k',
+            //                     'mimeTypes' => [
+            //                         'audio/mp3'
+            //                     ],
+            //                     'mimeTypesMessage' => 'Please upload une image valide',
+            //                 ]),
+            //             ]                    
+            //         ])
+            //     ],
+            // ])
             ->add('valider', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-success'

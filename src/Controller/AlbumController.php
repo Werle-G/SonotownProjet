@@ -7,6 +7,8 @@ use App\Entity\Piste;
 use App\Form\AlbumType;
 use App\Repository\UserRepository;
 use App\Repository\AlbumRepository;
+use App\Service\AudioService;
+use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,14 +36,15 @@ class AlbumController extends AbstractController
     }
 
 
-    // Méthode qui permet d'ajouter ou d'éditer un album
+    // Méthode qui permet d'éditer un album
     #[Route('/artiste/{slug}/album/{albumId}/edit', name: 'album_edit')]
     public function edit(
         $slug, 
         $albumId, 
         Request $request,
         AlbumRepository $albumRepository, 
-        EntityManagerInterface $entityManager, 
+        EntityManagerInterface $entityManager,
+        AudioService $audioService, 
         #[Autowire('%photo_dir%')]string $photoDir,  
         #[Autowire('%audio_dir%')]string $audioDir
     ): Response
@@ -68,12 +71,13 @@ class AlbumController extends AbstractController
             // Si dans le tableau $form la propriété 'avatar' existe. On stocke la photo dans la variable $photo
             // et on rentre dans la condition
             $photo = $form['photo']->getData();
-
             
             // $audio = $form->get('pistes')->getData();
             // $brochureFile = $form->get('brochure')->getData();
 
             if ($photo) {
+
+                // dd($photo);
                 // uniqid génère un identifiant unique 
                 // photo récupère l'extension en utilisant la méthode guessExtension de la classe File utilisées dans le formulaire RoleArtisteType
                 // fileName stocke la concatenation de uniqid et de photo
@@ -88,31 +92,58 @@ class AlbumController extends AbstractController
 
             }
 
-            $audioFiles = $form->get('pistes')->getData();
+            // dd($form['pistes']->getData());
+            // if($form['pistes']->getData()){
 
-            foreach ($audioFiles as $audioFile) {
-                // Générez un nom de fichier unique pour chaque piste audio
-                $audioFileName = uniqid().'.'.$audioFile->guessExtension();
-            
-                // Déplacez le fichier audio vers le répertoire approprié
-                $audioFile->move($audioDir, $audioFileName);
-            
-                // Créez une nouvelle instance de piste audio et associez-la à l'album
-                $piste = new Piste();
-                $piste->setAudio($audioFileName); // Supposez que setSon est la méthode pour stocker le nom du fichier audio
-            
-                // Ajoutez la piste à l'album
-                $album->addPiste($piste);
-            
-                // Persistez la piste
-                $entityManager->persist($piste);
-            }
+                $pistes = $form['pistes']->getData();
+    // 
+    dd($pistes);
+                // dd($pistes);
+                // dd($pistes);
+                    foreach($pistes as $key => $pist){
+                        $folder = 'audios';
+                        
+                        $fichier = $audioService->add($pist, $folder, 300, 300);
 
+                        $piste = new Piste();
+        
+                        // $img->setNomImage($fichier);
+        
+                        // $concert->addImageConcert($img);
+                        // dd($piste);
+                        // $audio = $piste->getAudio();
+
+                        // $test = pathinfo($audio);
+                        // dd($test);
+                        // $test = pathinfo($audio(['basename']));
+                        
+                        // $fileName = uniqid().'.'.$audio->guessExtension();
+                        // dd($fileName);
+
+                        // $audio->move($audioDir, $fileName);
+        
+                        // $piste = new Piste();
+
+                        $piste->setAudio($fichier);
+                        
+                        // dd($fileName);
+
+                        $album->addPiste($piste);
+
+                        
+                    }
+                // }
+
+                dd($album);
+            
             // On persiste l'album
             $entityManager->persist($album);
+            
+            // dd($album);
 
             // On execute la requete en base de donnée après avoir préparé la requète via la méthode persist 
             $entityManager->flush();
+
 
             // Redirige vers la vue 'artiste_detail_album' avec en paramètre l'id de l'album récupéré avec la méthode getId de
             // l'object album
