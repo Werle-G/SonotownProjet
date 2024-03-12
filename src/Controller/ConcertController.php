@@ -129,6 +129,8 @@ class ConcertController extends AbstractController
             // et on stocke les images dans la variable $images
             $images = $form->get('imageConcerts')->getData();
 
+            dd($images);
+
             // On parcourt le tableau d'images
             foreach ($images as $image) {
 

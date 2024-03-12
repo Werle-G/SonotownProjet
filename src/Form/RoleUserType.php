@@ -7,10 +7,13 @@ use App\Entity\Album;
 use App\Entity\GenreMusical;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -30,6 +33,23 @@ class RoleUserType extends AbstractType
                 'label' => 'Modifier votre adresse email',
                 'attr' => ['class' => 'form-control']
             ])
+            ->add('avatar', FileType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '15254k', // Taille maximale du fichier
+                        'mimeTypes' => [ // Types MIME autorisés
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG ou GIF).',
+                    ]),
+                ]
+            ])
+
             // ->add('plainPassword', RepeatedType::class, [
             //     'type' => PasswordType::class,
             //     'mapped' => false,

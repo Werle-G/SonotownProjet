@@ -25,7 +25,7 @@ class Piste
     #[ORM\Column(nullable: true)]
     private ?int $duree = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $audio = null;
 
     #[Vich\UploadableField(mapping: 'audios', fileNameProperty: 'audio')]

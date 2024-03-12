@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil utilisateur{% endblock %}
+
+{% block body %}
+
+<section class="padding-9">
+
+        <a href="{{ path('user_profil_edit', {'id': app.user.id}) }}">Éditer le profil</a>
+
+        <h1>Profil utilisateur</h1>
+
+        Nom utilisateur : {{ user.pseudo }}
+
+</section>
+
+{% endblock %}

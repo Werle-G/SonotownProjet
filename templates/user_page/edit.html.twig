@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier profil{% endblock %}
+
+{% block body %}
+
+<section class="padding-9">
+
+    {% for flash_error in app.flashes('warning') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <h1>Modifier Profil</h1>
+
+    {{ form(form) }}
+    
+</section>
+
+{% endblock %}

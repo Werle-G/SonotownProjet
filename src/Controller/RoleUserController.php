@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\RoleUserType;
 use App\Repository\UserRepository;
+use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,13 @@ class RoleUserController extends AbstractController
     }
     
     #[Route('/profil/edit/{id}', name: 'user_profil_edit')]
-    public function userProfilEdit($id, Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function userProfilEdit(
+        $id, 
+        Request $request, 
+        UserRepository $userRepository, 
+        EntityManagerInterface $entityManager,
+        PictureService $pictureService,
+    ): Response
     {
         // Vérifier si l'utilisateur est connecté
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -39,21 +46,30 @@ class RoleUserController extends AbstractController
             
             if ($form->isSubmitted() && $form->isValid()) {
                 $user = $form->getData();
+
+
+                $avatar = $form['avatar']->getData();
+
+                $folder = 'avatar';
+
+                // On appelle le service d'ajout de la classe PictureService
+                // En premier argument, l'image récupérée, le dossier de 
+                $pictureService->add($avatar, $folder, 300, 300);
                 
                 $entityManager->persist($user);
                 $entityManager->flush();
                 
-                return $this->redirectToRoute('user_profil');
+                return $this->redirectToRoute('profil');
             }
         }
         
-        return $this->render('user_page/user_profil_edit.html.twig', [
+        return $this->render('user_page/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $userSession,
         ]);
     }
 
-    #[Route('/profil/user', name: 'user_profil')]
+    #[Route('/profil/user', name: 'profil')]
     public function userProfil(): Response
     {
         // Vérifier si l'utilisateur est connecté
@@ -61,7 +77,7 @@ class RoleUserController extends AbstractController
     
         $userSession = $this->getUser();
     
-        return $this->render('user_page/user_profil.html.twig', [
+        return $this->render('user_page/profil.html.twig', [
             'user' => $userSession,
         ]);
     }

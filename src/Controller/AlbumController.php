@@ -92,35 +92,32 @@ class AlbumController extends AbstractController
 
             }
 
-            // dd($form['pistes']->getData());
-            // if($form['pistes']->getData()){
-
-            // dd($audioService);
-            // $audioFiles = $form->get('pistes')->getData();
+            dd($album);
 
             $audioFiles = $form['pistes']->getData();
 
-            foreach($audioFiles as $index => $piste){
-
-                $audioData = $form['pistes'][$index]['audio']->getData();
-
-                // dd($audioData);
-
-                $folder = 'audios';
-                
-                $fichier = $audioService->add($audioData, $folder);
-    
-                $piste = new Piste();
-    
-                $piste->setAudio($fichier);
-                // $piste->setTitre($fichier);
-                // $piste->setDuree('1');
-    
-                $album->addPiste($piste);
-            
+            foreach ($pistes as $piste) {
+                $audioFile = $piste['audio'];
+                echo $audioFile;
             }
 
-                
+            dd($audioFiles);
+
+            foreach ($audioFiles as $index => $piste) {
+
+                $audioData = $form['pistes'][$index]['audio']->getData();
+                $folder = 'audios';
+            
+                foreach ($audioData as $audio) {
+                    $fichier = $audioService->add($audio, $folder);
+            
+                    $son = new Piste();
+                    $son->setAudio($fichier);
+            
+                    // Ajoutez la piste à l'album
+                    $album->addPiste($son);
+                }
+            }
                 
                 // dd($pistes);
                 // foreach($pistes as $piste){
@@ -151,11 +148,11 @@ class AlbumController extends AbstractController
         
                         // $piste = new Piste();
 
-                        $piste->setAudio($fichier);
+                        // $piste->setAudio($fichier);
                         
                         // dd($fileName);
 
-                        $album->addPiste($piste);
+                        // $album->addPiste($piste);
 
                         
                 // }
