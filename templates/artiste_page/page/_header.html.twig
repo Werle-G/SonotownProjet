@@ -35,7 +35,7 @@
     
     {% if is_granted('ROLE_ARTISTE') and app.user.slug == user.slug %} 
 
-            <a href="{{ path('artiste_page_edit', {'slug': app.user.slug}) }}">Éditer le profil artiste</a>
+            <a href="{{ path('artiste_profil_edit', {'slug': app.user.slug}) }}">Éditer le profil artiste</a>
 
     {% endif %}
 

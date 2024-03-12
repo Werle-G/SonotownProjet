@@ -41,7 +41,7 @@ class RoleArtisteController extends AbstractController
     }
 
     // Cette méthode édite la page artiste
-    #[Route('/page/edit/{slug}', name: 'page_edit')]
+    #[Route('/page/edit/{slug}', name: 'profil_edit')]
     public function pageEdit($slug, Request $request, UserRepository $userRepository, #[Autowire('%photo_dir%')]string $photoDir, EntityManagerInterface $entityManager): Response
     {
         // $this représente la classe RolArtisteController, elle refuse l'accès aux personnes non authentifiés

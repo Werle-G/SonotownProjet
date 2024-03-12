@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discographie{% endblock %}
+
+{% block body %}
+
+<section class="all_album padding-9">
+
+    <h1>Liste des albums</h1>
+    
+    
+    {% for album in albums %}
+    
+        <a href="{{ path('artiste_detail_album', {'idAlbum': album.id}) }}">{{ album.nomAlbum }}</a>
+    
+    {% endfor %}
+
+</section>
+
+
+{% endblock %}

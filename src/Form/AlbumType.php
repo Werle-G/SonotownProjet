@@ -61,42 +61,44 @@ class AlbumType extends AbstractType
                 ]
             ])
             // Collection attend l'élément qu'elle entrera dans le form. ce n'est pas obligatoire que ce soit un autre form/ peut être une entité
-            // ->add('pistes', CollectionType::class, [
-            //     // entry_type : prend un formulaire piste
-            //     'entry_type' => PisteType::class,
-            //     // autoriser ajouter
-            //     'allow_add' => true,
-            //     // autoriser delete
-            //     'allow_delete' => true,
-            //     // permet d'ajouter un object en javascript/ autoriser ajout d'un nouvel élément dans l'entité album qui seront persisté grâce au cascade persist sur l'élément piste. activer data_prototype qui sera un attribut html qu'on pourra manipuler en js.
-            //     'prototype' => true,
-            //     // by_reference => false :car Album n'a pas de setPiste mais c'est Piste qui contient un setAlbum
-            //     // Piste est propriétaire de la relation
-            //     // Pour éviter un mapping false, on est obligé de rajouter by_reference false
-            //     'by_reference' => false,
-            //     // 
-            //     'entry_options' => ['label' => false],
-            //     // 'attr' => [
-            //     //     'data-controller' => 'form-collection'
-            //     // ]
-            // ])
+            ->add('pistes', CollectionType::class, [
+                // entry_type : prend un formulaire piste
+                'entry_type' => PisteType::class,
+                // autoriser ajouter
+                'allow_add' => true,
+                // autoriser delete
+                'allow_delete' => true,
+                // permet d'ajouter un object en javascript/ autoriser ajout d'un nouvel élément dans l'entité album qui seront persisté grâce au cascade persist sur l'élément piste. activer data_prototype qui sera un attribut html qu'on pourra manipuler en js.
+                'prototype' => true,
+                // by_reference => false :car Album n'a pas de setPiste mais c'est Piste qui contient un setAlbum
+                // Piste est propriétaire de la relation
+                // Pour éviter un mapping false, on est obligé de rajouter by_reference false
+                'by_reference' => false,
+                // 
+                'entry_options' => ['label' => false],
+                // 'attr' => [
+                //     'data-controller' => 'form-collection'
+                // ]
+            ])
             // ->add('pistes', FileType::class, [
-            //     'label' => 'Image de la recette',
+            //     'label' => 'Piste de l\'album',
             //     'attr' => ['class' => 'form-control'],
             //     'multiple' => true,
             //     'mapped' => false,
             //     'required' => false,
             //     'constraints' => [
-            //         new All ([
+            //         new All([
             //             'constraints' => [
-            //                 new File ([
-            //                     'maxSize' => '15254k',
-            //                     'mimeTypes' => [
-            //                         'audio/mp3'
+            //                 new File([
+            //                     'maxSize' => '15254k', 
+            //                     'mimeTypes' => [ 
+            //                         'audio/mpeg',
+            //                         'audio/mp3',
+            //                         'audio/x-mpeg-3', 
             //                     ],
-            //                     'mimeTypesMessage' => 'Please upload une image valide',
+            //                     'mimeTypesMessage' => 'Veuillez télécharger un fichier audio valide (MP3).',
             //                 ]),
-            //             ]                    
+            //             ]
             //         ])
             //     ],
             // ])

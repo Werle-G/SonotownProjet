@@ -95,17 +95,44 @@ class AlbumController extends AbstractController
             // dd($form['pistes']->getData());
             // if($form['pistes']->getData()){
 
-                $pistes = $form['pistes']->getData();
-    // 
-    dd($pistes);
-                // dd($pistes);
-                // dd($pistes);
-                    foreach($pistes as $key => $pist){
-                        $folder = 'audios';
-                        
-                        $fichier = $audioService->add($pist, $folder, 300, 300);
+            // dd($audioService);
+            // $audioFiles = $form->get('pistes')->getData();
 
-                        $piste = new Piste();
+            $audioFiles = $form['pistes']->getData();
+
+            foreach($audioFiles as $index => $piste){
+
+                $audioData = $form['pistes'][$index]['audio']->getData();
+
+                // dd($audioData);
+
+                $folder = 'audios';
+                
+                $fichier = $audioService->add($audioData, $folder);
+    
+                $piste = new Piste();
+    
+                $piste->setAudio($fichier);
+                // $piste->setTitre($fichier);
+                // $piste->setDuree('1');
+    
+                $album->addPiste($piste);
+            
+            }
+
+                
+                
+                // dd($pistes);
+                // foreach($pistes as $piste){
+                    
+                //     dd($piste);
+                //         // $fileName = uniqid().'.'.$pist->guessExtension();
+                //         // dd($pist);
+                //         $folder = 'audios';
+                        
+                //         $fichier = $audioService->add($pist, $folder, 300, 300);
+
+                //         $piste = new Piste();
         
                         // $img->setNomImage($fichier);
         
@@ -131,7 +158,6 @@ class AlbumController extends AbstractController
                         $album->addPiste($piste);
 
                         
-                    }
                 // }
 
                 dd($album);

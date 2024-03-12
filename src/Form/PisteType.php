@@ -27,44 +27,29 @@ class PisteType extends AbstractType
             ->add('duree', IntegerType::class, [
                 'label' => 'Durée du morceau',
             ])
-            // ->add('audio', FileType::class, [
-            //     'label' => '',
-            //     'attr' => ['class' => 'form-control'],
-            //     'multiple' => false,
-            //     // 'mapped' => false,
-            //     'required' => false,
-                
-                 
-            //             'constraints' => [
-            //                 new File ([
-            //                     'maxSize' => '100000k',
-            //                     // 'mimeTypes' => [
-            //                     //     'audio/mp3'
-            //                     // ],
-            //                     // 'mimeTypesMessage' => 'Please upload une image valide',
-            //                 ]),
-            //             ]                    
-                    
-                
-            // ])
-            ->add('audio', FileType::class,[
-                'label' => false,
-                'multiple' => false,
+            // VichUploader
+            // ->add('audioFile', FileType::class)
+            ->add('audio', FileType::class, [
+                'label' => 'Piste de l\'album',
+                'attr' => ['class' => 'form-control'],
+                'multiple' => true,
                 'mapped' => false,
                 'required' => false,
-                new All ([
-                    'constraints' => [
-                        new File ([
-                            'maxSize' => '1000000k',
-                            'mimeTypes' => [
-                                'audio/mp3',
-        
-                            ],
-                            'mimeTypesMessage' => 'Please upload une image valide',
-                        ]),
-                    ]                    
-                ])
-               
+                'constraints' => [
+                    new All([
+                        'constraints' => [
+                            new File([
+                                'maxSize' => '15254k', 
+                                'mimeTypes' => [ 
+                                    'audio/mpeg',
+                                    'audio/mp3',
+                                    'audio/x-mpeg-3', 
+                                ],
+                                'mimeTypesMessage' => 'Veuillez télécharger un fichier audio valide (MP3).',
+                            ]),
+                        ]
+                    ])
+                ],
             ])
         ;
     }

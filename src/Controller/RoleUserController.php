@@ -2,18 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Form\ProfilType;
 use App\Form\RoleUserType;
-use Cocur\Slugify\Slugify;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 class RoleUserController extends AbstractController
@@ -37,6 +32,7 @@ class RoleUserController extends AbstractController
         $userBdd = $userRepository->findOneBy(['id' => $id]);
         
         if ($userSession == $userBdd) {
+
             $form = $this->createForm(RoleUserType::class, $userSession);
             
             $form->handleRequest($request);

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Genre{% endblock %}
+
+{% block body %}
+
+    <h1>Genre</h1>
+
+    {% for album in genreMusical.albums %}
+        {{ album.nomAlbum}}
+    {% endfor %}
+
+    {% for user in users %}
+        {{ user.pseudo}}
+    {% endfor %}
+
+
+
+{% endblock %}

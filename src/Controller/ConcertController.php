@@ -68,9 +68,11 @@ class ConcertController extends AbstractController
             // et on stocke les images dans la variable $images
             $images = $form->get('imageConcerts')->getData();
 
+            
             // On parcourt le tableau d'images
-                foreach ($images as $image) {
-
+            foreach ($images as $image) {
+                
+                // dd($image);
                     // On définit le dossier de destination
                     $folder = 'Concerts';
 
@@ -132,6 +134,8 @@ class ConcertController extends AbstractController
 
                 // On définit le dossier de destination
                 $folder = 'Concerts';
+
+                dd($image);
 
                 // On appelle le service d'ajout de la classe PictureService
                 // En premier argument, l'image récupérée, le dossier de 

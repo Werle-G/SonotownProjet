@@ -34,7 +34,15 @@
             </div>
         </div>
         <h2>Ajouter des morceaux</h2>
-  
+
+   
+        {# {{ form_row(form.pistes )}}
+
+        <div id="validate">{{ form_row(form.valider) }}</div>
+
+        {{ form_row(form._token) }} 
+        {{ form_end(form) }} #}
+
         <div id="formulaire">
             <div class="form-group row form-piste">
                 <div class="col-form-label col-sm-2">&nbsp;</div>
@@ -72,11 +80,11 @@
         </div>
         {# empêche l'apparition d'une légende "reseaus", si la collection est vide (en cas de création d'une nouvelle session) #}
         {% do form.pistes.setRendered %}
+
         <div id="validate">{{ form_row(form.valider) }}</div>
 
-        {{ form_row(form._token) }}
+        {{ form_row(form._token) }} 
         {{ form_end(form) }}
-    
 
 </section>
 

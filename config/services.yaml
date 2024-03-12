@@ -7,6 +7,7 @@ parameters:
     photo_dir: "%kernel.project_dir%/public/uploads/images"
     audio_dir: "%kernel.project_dir%/public/uploads/audios"
     images_directory: '%kernel.project_dir%/public/uploads/'
+    audios_directory: '%kernel.project_dir%/public/uploads/'
 
 
 services:
