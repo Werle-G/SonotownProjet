@@ -27,8 +27,6 @@ class PisteType extends AbstractType
             ->add('duree', IntegerType::class, [
                 'label' => 'Durée du morceau',
             ])
-            // VichUploader
-            // ->add('audioFile', FileType::class)
             ->add('audio', FileType::class, [
                 'label' => false,
                 'attr' => ['class' => 'form-control'],
@@ -46,6 +44,24 @@ class PisteType extends AbstractType
                     ]),
                 ]
             ])
+
+            // ->add('audio', FileType::class, [
+            //     // 'label' => false,
+            //     'attr' => ['class' => 'form-control'],
+            //     'mapped' => false,
+            //     'required' => false,
+            //     'constraints' => [
+            //         new File([
+            //             'maxSize' => '15254k', 
+            //             'mimeTypes' => [ 
+            //                 'audio/mpeg',
+            //                 'audio/mp3',
+            //                 'audio/x-mpeg-3', 
+            //             ],
+            //             'mimeTypesMessage' => 'Veuillez télécharger un fichier audio valide (MP3).',
+            //         ]),
+            //     ]
+            // ])
         ;
     }
 

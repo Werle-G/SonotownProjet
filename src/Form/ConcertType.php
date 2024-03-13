@@ -32,13 +32,6 @@ class ConcertType extends AbstractType
             ->add('descriptionConcert', TextType::class, [
                 'label' => 'Description concert',
             ])
-            // ->add('imageConcerts', FileType::class, [
-            //     'label' => false,
-            //     'multiple' => true,
-            //     'mapped' => false,
-            //     'required' => false,
-            //     // 'attr' => ['class' => 'form-control-file']
-            // ])
             ->add('imageConcerts', FileType::class, [
                 'label' => false,
                 'multiple' => true,
@@ -48,8 +41,8 @@ class ConcertType extends AbstractType
                     new All([
                         'constraints' => [
                             new File([
-                                'maxSize' => '15254k', // Taille maximale du fichier
-                                'mimeTypes' => [ // Types MIME autorisés
+                                'maxSize' => '15254k',  
+                                'mimeTypes' => [  
                                     'image/jpeg',
                                     'image/png',
                                     'image/gif',

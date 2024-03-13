@@ -28,9 +28,9 @@ class Piste
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $audio = null;
 
-    #[Vich\UploadableField(mapping: 'audios', fileNameProperty: 'audio')]
-    // #[Assert]
-    private ?File $audioFile = null;
+    // #[Vich\UploadableField(mapping: 'audio', fileNameProperty: 'audio')]
+    // // #[Assert]
+    // private ?File $audioFile = null;
 
     #[ORM\ManyToOne(targetEntity: Album::class, inversedBy: 'pistes')]
     // #[ORM\ManyToOne(targetEntity: Album::class, inversedBy: 'pistes', cascade: ["persist"])]

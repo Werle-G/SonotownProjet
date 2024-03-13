@@ -17,7 +17,7 @@ class CommentaireType extends AbstractType
         $builder
             ->add('message')
             ->add('dateCreation')
-            ->add('ban')
+            // ->add('ban')
             ->add('commenter', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',

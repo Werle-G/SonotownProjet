@@ -68,6 +68,7 @@ class AlbumController extends AbstractController
             // On stocke les données recupérées dans la variable $album
             $album = $form->getData();
 
+            // dd($album);
             // Si dans le tableau $form la propriété 'avatar' existe. On stocke la photo dans la variable $photo
             // et on rentre dans la condition
             $photo = $form['photo']->getData();
@@ -75,6 +76,7 @@ class AlbumController extends AbstractController
             // $audio = $form->get('pistes')->getData();
             // $brochureFile = $form->get('brochure')->getData();
 
+            // dd($photo);
             if ($photo) {
 
                 // dd($photo);
@@ -92,32 +94,30 @@ class AlbumController extends AbstractController
 
             }
 
-            dd($album);
-
+            
             $audioFiles = $form['pistes']->getData();
 
-            foreach ($pistes as $piste) {
-                $audioFile = $piste['audio'];
-                echo $audioFile;
-            }
-
-            dd($audioFiles);
-
-            foreach ($audioFiles as $index => $piste) {
-
-                $audioData = $form['pistes'][$index]['audio']->getData();
-                $folder = 'audios';
-            
-                foreach ($audioData as $audio) {
-                    $fichier = $audioService->add($audio, $folder);
-            
+            if($audioFiles){
+                
+                foreach ($audioFiles as $index => $piste) {
+    
+    
+                
+                    $audioData = $form['pistes'][$index]['audio']->getData();
+    
+                    $folder = 'audios';
+                    $fichier = $audioService->add($audioData, $folder);
+    
                     $son = new Piste();
-                    $son->setAudio($fichier);
-            
-                    // Ajoutez la piste à l'album
+    
+    
+                    $album->getPistes($son = $piste->setAudio($fichier));
+    
                     $album->addPiste($son);
+    
                 }
             }
+            
                 
                 // dd($pistes);
                 // foreach($pistes as $piste){
@@ -157,12 +157,13 @@ class AlbumController extends AbstractController
                         
                 // }
 
-                dd($album);
+                // dd($album);
+
+
             
             // On persiste l'album
             $entityManager->persist($album);
             
-            // dd($album);
 
             // On execute la requete en base de donnée après avoir préparé la requète via la méthode persist 
             $entityManager->flush();
