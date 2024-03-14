@@ -35,9 +35,11 @@ class AudioService
         return $fichier;
     }
 
-    public function delete(string $fichier, ?string $folder = '')
+    public function delete($fichier, $folder)
     {
+
         if ($fichier !== 'default.mp3') {
+
             $success = false;
 
             $path = $this->params->get('audios_directory') . $folder;

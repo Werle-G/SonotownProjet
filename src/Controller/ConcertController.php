@@ -129,7 +129,7 @@ class ConcertController extends AbstractController
             // et on stocke les images dans la variable $images
             $images = $form->get('imageConcerts')->getData();
 
-            dd($images);
+            // dd($images);
 
             // On parcourt le tableau d'images
             foreach ($images as $image) {
@@ -137,7 +137,7 @@ class ConcertController extends AbstractController
                 // On définit le dossier de destination
                 $folder = 'Concerts';
 
-                dd($image);
+                // dd($image);
 
                 // On appelle le service d'ajout de la classe PictureService
                 // En premier argument, l'image récupérée, le dossier de 
@@ -170,8 +170,10 @@ class ConcertController extends AbstractController
     public function deleteImage(ImageConcert $imageConcert, Request $request, EntityManagerInterface $entityManager, PictureService $pictureService): JsonResponse
     {
 
+        dd($request);
         // On récupère le contenu de la requête
         $data = json_decode($request->getContent(), true);
+
 
         if($this->isCsrfTokenValid('delete' . $imageConcert->getId(), $data['_token'])){
             // Le token csrf valide

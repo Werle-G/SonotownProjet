@@ -27,6 +27,7 @@ class CommentaireController extends AbstractController
     #[Route('/artiste/{idArtiste}/new/commentaire', name: 'new_commentaire')]
     public function new_commentaire(Request $request, EntityManagerInterface $entityManager, $idArtiste): Response
     {
+        
         $commentaire = new Commentaire();
         $commentaire->setCommenter($this->getUser());
     

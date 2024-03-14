@@ -6,12 +6,9 @@ use App\Entity\Album;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PisteRepository;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: PisteRepository::class)]
-#[Vich\Uploadable]
 class Piste
 {
     #[ORM\Id]
@@ -28,10 +25,6 @@ class Piste
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $audio = null;
 
-    // #[Vich\UploadableField(mapping: 'audio', fileNameProperty: 'audio')]
-    // // #[Assert]
-    // private ?File $audioFile = null;
-
     #[ORM\ManyToOne(targetEntity: Album::class, inversedBy: 'pistes')]
     // #[ORM\ManyToOne(targetEntity: Album::class, inversedBy: 'pistes', cascade: ["persist"])]
     #[ORM\JoinColumn(nullable: false)]
@@ -39,8 +32,6 @@ class Piste
 
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'ajouter')]
     private Collection $playlists;
-
-
 
     public function __construct()
     {
@@ -123,23 +114,6 @@ class Piste
         if ($this->playlists->removeElement($playlist)) {
             $playlist->removeAjouter($this);
         }
-
-        return $this;
-    }
-
-
-    // VichUploader
-
-    public function getAudioFile(): ?File
-    {
-
-        return $this->audioFile;
-    }
-
-    public function setAudioFile(?File $audioFile): static
-    {
-
-        $this->audioFile = $audioFile;
 
         return $this;
     }

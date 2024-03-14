@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}    
+<h1>Editer l'album</h1>
+
+
+{% endblock %}
+
+{% block body %}
+
+<section class="padding-9">
+
+    <h1>Editer l'album</h1>
+    
+    {{ form_start(form) }}
+
+        {{ form_row(form.nomAlbum) }}
+        {{ form_row(form.description) }}
+        {{ form_label(form.photo, 'Télécharge une photo d\'album') }}
+        {{ form_widget(form.photo) }}
+        
+        {{ form_row(form.dateSortieAlbum) }}
+        {{ form_row(form.nbPistes) }}
+
+        <div class="form-group">
+            <label for="genreMusicals" class="control-label">Genres musicaux</label>
+            <div id="genreMusicals" class="collection">
+                {{ form_errors(form.genreMusicals) }}
+                {{ form_widget(form.genreMusicals) }}
+            </div>
+        </div>
+        <h2>Ajouter des morceaux</h2>
+
+   
+        {# {{ form_row(form.pistes )}}
+
+        <div id="validate">{{ form_row(form.valider) }}</div>
+
+        {{ form_row(form._token) }} 
+        {{ form_end(form) }} #}
+
+        <div id="formulaire">
+            <div class="form-group row form-piste">
+                <div class="col-form-label col-sm-2">&nbsp;</div>
+                {# &nbsp; : espace insécable (espace qui ne peut être ignoré par navigateur) #}
+                <div id="piste-fields-list" class="col-sm-10 remove-collection-widget"
+                    data-prototype="{{ form_widget(form.pistes.vars.prototype)|e }}"
+                    {# propriété pistes dans le formulaire #}
+                    {# Permet d'ajouter un élément add #}
+  
+                    {# Modèle type #}
+                    data-album="{{albumId}}"
+  
+                    data-widget-tags="{{ '<p></p>'|e }}"
+                    {# chaque champ tags placés dans paragraphe #}
+                    data-widget-counter="{{ form.pistes|length }}">
+                    
+                    {# compteur champ #}
+                    {% for pisteField in form.pistes %}
+                    
+                    {# {{ dump(pisteField.vars.value.audio)}}  #}
+
+                    <p>
+                        {{ form_errors(pisteField) }}
+
+                        {% if pisteField.vars.value.audio %}
+                            
+                        <div class="audio-edit">
+                            <audio controls src="{{ asset('uploads/audios/' ~ pisteField.vars.value.audio ) }}"></audio>
+                            <a href="{{ path('delete_piste', {'albumId': albumId, 'nom': pisteField.vars.value.audio}) }}" data-delete data-token="{{ csrf_token('delete' ~ pisteField.vars.value.audio) }}">Supprimer piste</a> 
+                        </div>
+                        {% endif %}
+                        {# Affiche erreur éventuels liées au champ #}
+                        {{ form_widget(pisteField, {'attr': {'class': 'borders'}}) }}
+                        {# Affiche widget du champ formulaire avec classe CSS #}
+                    </p>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row flex-action">
+                <button type="button" 
+                    class="add-another-collection-widget button  btn btn-secondary"
+                    {# crée nouveau bouton add #}
+                    data-list-selector="#piste-fields-list">Ajouter un nouveau morceau</button>
+                    {# Attribut données contenant sélecteur liste associé au bouton (j.s) #}
+            </div> 
+        </div>
+        {# empêche l'apparition d'une légende "reseaus", si la collection est vide (en cas de création d'une nouvelle session) #}
+        {% do form.pistes.setRendered %}
+
+        <div id="validate">{{ form_row(form.valider) }}</div>
+
+        {{ form_row(form._token) }} 
+        {{ form_end(form) }}
+
+</section>
+
+
+
+{% endblock %}

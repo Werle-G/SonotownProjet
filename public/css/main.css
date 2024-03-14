@@ -758,6 +758,11 @@ header{
     width: 50%;
 }
 
+/* Artiste lecteur */
+
+#pause-button, #stop-button{
+    display: none;
+}
 
 /* Modif artiste page  */
 
