@@ -7,6 +7,8 @@ $(document).ready(function() { // Une fois que le document (base.html.twig) HTML
         var counter = list.data('widget-counter') || list.children().length
         // Récupération de l'identifiant de la user concernée, en cours de création/modification
         var album = list.data('album')
+
+        // console.log(album)
         // Extraction du prototype complet du champ (que l'on va adapter ci-dessous)
         var newWidget = list.attr('data-prototype')
         // Remplacement des séquences génériques "__name__" utilisées dans les parties "id" et "name" du prototype
@@ -37,6 +39,13 @@ $(document).ready(function() { // Une fois que le document (base.html.twig) HTML
             $piste.remove()
         })
     }
+
+
+
+
+// Partie à modifier 
+
+
     // remove-session.js : fonction permettant de demander la confirmation de suppression d'une session
     $('.remove-album-confirm').on('click', function(e) {
         e.preventDefault()

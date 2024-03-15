@@ -33,6 +33,7 @@
 
           Nom du morceau {{ piste.titre }}<br>
           Durée du morceau {{ piste.duree }}
+
           <div>
             <input type="range" id="track" min="0" value="0">
             <span id="elapsed">0:00</span> / <span id="track-time">1:00</span>
@@ -72,9 +73,22 @@
  
   <!-- Define the section for displaying details -->
   <div class="details">
+
     <div class="now-playing">PLAYING x OF y</div>
-    <div class="track-art"></div>
-    <div class="track-name">Track Name</div>
+
+    {% for piste in album.pistes %}
+    
+    {% set audioUrl = asset('uploads/audios/' ~ piste.audio) %}
+
+    {# {{ dump(audioUrl) }} #}
+
+    <div class="track-name information-piste" data-titre="{{ piste.titre|serialize(format = 'json')}}" data-path="{{ asset('uploads/audios/' ~ piste.audio)|serialize(format = 'json')}}">Track Name</div>
+
+    {# <div class="track-name js-information-piste" data-titre="{{ {'name': piste.titre, 'path': audioUrl} | json_encode }}">Track Name</div> #}
+    {% endfor %}
+
+  </div>
+    
     <div class="track-artist">Track Artist</div>
   </div>
 
@@ -110,29 +124,11 @@
 
 
 
-
 <script>
   
-  let tracks_list = [];
 
-</script>
-
-
-{% for piste in album.pistes %}
-
-<script>
-  
-  tracks_list.push( 
-      {
-        name: "{{ piste.titre }}",
-        path: "{{ asset('uploads/audios/' ~ piste.audio)}}"
-      });
-      console.log(tracks_list);
       
 </script>
-{# {{ dump(titre)}} #}
 
-{% endfor %}
-  
 
 {% endblock %}
