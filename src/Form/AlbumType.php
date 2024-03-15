@@ -80,28 +80,6 @@ class AlbumType extends AbstractType
                 //     'data-controller' => 'form-collection'
                 // ]
             ])
-            // ->add('pistes', FileType::class, [
-            //     'label' => 'Piste de l\'album',
-            //     'attr' => ['class' => 'form-control'],
-            //     'multiple' => true,
-            //     'mapped' => false,
-            //     'required' => false,
-            //     'constraints' => [
-            //         new All([
-            //             'constraints' => [
-            //                 new File([
-            //                     'maxSize' => '15254k', 
-            //                     'mimeTypes' => [ 
-            //                         'audio/mpeg',
-            //                         'audio/mp3',
-            //                         'audio/x-mpeg-3', 
-            //                     ],
-            //                     'mimeTypesMessage' => 'Veuillez télécharger un fichier audio valide (MP3).',
-            //                 ]),
-            //             ]
-            //         ])
-            //     ],
-            // ])
             ->add('valider', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-success'
