@@ -1,97 +1,21 @@
-//  On récupère tout les éléments necessaire à notre application
-const audio = document.querySelector("audio");
-const track = document.querySelector("#track");
-// elapsed : début du morceau
-const elapsed = document.querySelector("#elapsed");
-// trackTime : durée du morceau
-const trackTime = document.querySelector("#track-time");
-const playButton = document.querySelector("#play-button");
-const pauseButton = document.querySelector("#pause-button");
-const stopButton = document.querySelector("#stop-button");
-const volume = document.querySelector("#volume");
 
-const volumeValue = document.querySelector("#volume-value");
-
-// On récupère la durée du mp3
-// duration determine en secondes la longueur du support
-let duration = audio.duration;
-
-// Affiche la durée en secondes et en minutes
-trackTime.textContent = buildDuration(duration);
-
-// On gère le bouton play
-playButton.addEventListener("click", function(){
-    // démarre le morceau
-    audio.play();
-    audio.volume = volume.value
-    // affiche le bouton pause
-    pauseButton.style.display = "initial";
-    // affiche le bouton stop
-    stopButton.style.display = "initial";
-    // n'affiche pas le bouton play
-    this.style.display = "none";
-});
-
-// On gère le boutton pause
-pauseButton.addEventListener("click", function(){
-    // met en pause le morceau
-    audio.pause();
-    // affiche le bouton play
-    playButton.style.display = "initial";
-    // n'affiche pas le bouton pause
-    this.style.display = "none";
-});
-
-// On gère le bouton stop
-stopButton.addEventListener("click", function(){
-    // met en pause le morceau
-    audio.pause();
-    // revient au début du morceau
-    audio.currentTime = 0;
-    // affiche bouton play
-    playButton.style.display = "initial";
-    // n'affiche pas bouton pause
-    pauseButton.style.display = "none";
-    // n'affiche pas le bouton pause
-    this.style.display = "none";
-});
-
-// Fonction pour la barre défilement du morceau
-audio.addEventListener("timeupdate", function(){
-
-    track.value = this.currentTime;
-    elapsed.textContent = buildDuration(this.currentTime);
-});
-
-track.addEventListener("input", function(){
-    elapsed.textContent = buildDuration(this.value);
-    audio.currentTime = this.value;
-})
-
-volume.addEventListener("input", function(){
-    audio.volume = this.value;
-    volumeValue.textContent = this.value * 100 + "%";
-})
-
-// Fonction pour afficher la durée du morceau en minutes et secondes
-function buildDuration(duration){
-    let minutes = Math.floor(duration / 60);
-    let reste = duration % 60;
-    let secondes = Math.floor(reste);
-    secondes = String(secondes).padStart(2, "0");
-    return minutes + ":" + secondes;
-}
-
-
-// Multipiste  
-
-
-// Define the list of tracks that have to be played
-
-document.addEventListener('DOMContentLoaded', function() {
+var track_list = [];
     
     var trackElements = document.querySelectorAll('.information-piste');
     
+    let now_playing = document.querySelector(".now-playing");
+    let track_art = document.querySelector(".track-art");
+    let track_name = document.querySelector(".track-name");
+    let track_artist = document.querySelector(".track-artist");
+    
+    let playpause_btn = document.querySelector(".playpause-track");
+    let next_btn = document.querySelector(".next-track");
+    let prev_btn = document.querySelector(".prev-track");
+    
+    let seek_slider = document.querySelector(".seek_slider");
+    let volume_slider = document.querySelector(".volume_slider");
+    let curr_time = document.querySelector(".current-time");
+    let total_duration = document.querySelector(".total-duration");
     
     trackElements.forEach(function(trackElement) {
         var track = {
@@ -102,22 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
         track_list.push(track);
     });
     
-});
 // Select all the elements in the HTML page
 // and assign them to a variable
-let now_playing = document.querySelector(".now-playing");
-let track_art = document.querySelector(".track-art");
-let track_name = document.querySelector(".track-name");
-let track_artist = document.querySelector(".track-artist");
-
-let playpause_btn = document.querySelector(".playpause-track");
-let next_btn = document.querySelector(".next-track");
-let prev_btn = document.querySelector(".prev-track");
-
-let seek_slider = document.querySelector(".seek_slider");
-let volume_slider = document.querySelector(".volume_slider");
-let curr_time = document.querySelector(".current-time");
-let total_duration = document.querySelector(".total-duration");
 
 // Specify globally used values
 let track_index = 0;
@@ -126,40 +36,6 @@ let updateTimer;
 
 // Create the audio element for the player
 let curr_track = document.createElement('audio');
-// var track_list = [];
-
-var track_list = [{}];
-
-
-
-console.log(track_list)
-
-
-
-// let track_list = track_lists;
-
-let track_lists = [
-    {
-        name: "Night Owl",
-        artist: "Broke For Free",
-        image: "Image URL",
-        path: "Night_Owl.mp3"
-    }
-    // {
-    //     name: "Enthusiast",
-    //     artist: "Tours",
-    //     image: "Image URL",
-    //     path: "Enthusiast.mp3"
-    // },
-    // {
-    //     name: "Shipping Lanes",
-    //     artist: "Chad Crouch",
-    //     image: "Image URL",
-    //     path: "Shipping_Lanes.mp3",
-    // },
-];
-
-console.log(track_lists)
 
 function loadTrack(track_index) {
     // Clear the previous seek timer
@@ -171,12 +47,7 @@ function loadTrack(track_index) {
     curr_track.load();
    
     // Update details of the track
-    // track_art.style.backgroundImage = 
-    //    "url(" + track_list[track_index].image + ")";
     track_name.textContent = track_list[track_index].name;
-    // track_artist.textContent = track_list[track_index].artist;
-    now_playing.textContent = 
-       "PLAYING " + (track_index + 1) + " OF " + track_list.length;
    
     // Set an interval of 1000 milliseconds
     // for updating the seek slider
@@ -186,23 +57,7 @@ function loadTrack(track_index) {
     // using the 'ended' event
     curr_track.addEventListener("ended", nextTrack);
    
-    // Apply a random background color
-    random_bg_color();
   }
-   
-//   function random_bg_color() {
-//     // Get a random number between 64 to 256
-//     // (for getting lighter colors)
-//     let red = Math.floor(Math.random() * 256) + 64;
-//     let green = Math.floor(Math.random() * 256) + 64;
-//     let blue = Math.floor(Math.random() * 256) + 64;
-   
-//     // Construct a color with the given values
-//     let bgColor = "rgb(" + red + ", " + green + ", " + blue + ")";
-   
-//     // Set the background to the new color
-//     document.body.style.background = bgColor;
-//   }
    
   // Function to reset all values to their default
   function resetValues() {
@@ -224,7 +79,7 @@ function loadTrack(track_index) {
     isPlaying = true;
    
     // Replace icon with the pause icon
-    playpause_btn.innerHTML = '<i class="fa fa-pause-circle fa-5x"></i>';
+    playpause_btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="20px" height="20px"><path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"/></svg>';
   }
    
   function pauseTrack() {
@@ -233,7 +88,7 @@ function loadTrack(track_index) {
     isPlaying = false;
    
     // Replace icon with the play icon
-    playpause_btn.innerHTML = '<i class="fa fa-play-circle fa-5x"></i>';
+    playpause_btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="20px" height="20px"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/ ></svg>';
   }
    
   function nextTrack() {
@@ -303,3 +158,5 @@ function loadTrack(track_index) {
   }
 
   loadTrack(track_index);
+
+// });

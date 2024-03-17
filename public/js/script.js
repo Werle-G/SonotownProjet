@@ -8,14 +8,6 @@ window.addEventListener("scroll", function(){
 
 });
 
-
-
-// Contenair padding off
-
-
-
-
-
 let slideIndex = 1;
 showSlides(slideIndex);
 
