@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Album;
 use App\Entity\Piste;
 use App\Form\AlbumType;
 use App\Service\AudioService;
 use App\Service\PictureService;
+use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
 use App\Repository\AlbumRepository;
 use App\Repository\PisteRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -248,6 +249,7 @@ class AlbumController extends AbstractController
         $nom = $request->query->get('nom');
 
         $album = $albumRepository->find($albumId);
+        
         $pistes = $album->getPistes();
 
         foreach($pistes as $piste){
@@ -344,5 +346,47 @@ class AlbumController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    #[Route('artiste/{slug}/album/like{albumId}', name: 'like_album')]
+    public function likeAlbum(
+        $slug,
+        $albumId,
+        User $user,
+        AlbumRepository $albumRepository,
+        EntityManagerInterface $entityManager
+    )
+    {
+
+        $album = $albumRepository->find($albumId);
+
+        $user->addAimerAlbum($album);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]);
+    }
+
+    // #[Route('artiste/{slug}/album/{albumId}/playlist/{playlistId}/add/piste/{id}', name: 'add_piste_playlist')]
+    // public function removePiste(
+    //     $id, 
+    //     $slug,
+    //     $albumId,
+    //     $playlistId, 
+    //     PisteRepository $pisteRepository, 
+    //     PlaylistRepository $playlistRepository, 
+    //     EntityManagerInterface $entityManager
+    // )
+    // {
+
+    //     $playlist = $playlistRepository->find($playlistId);
+
+    //     $piste = $pisteRepository->find($id);
+
+    //     $playlist->removeAjouter($piste);
+
+    //     $entityManager->flush();
+
+    //     return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]);
+    // }
 
 }

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle playlist{% endblock %}
+
+{% block body %}
+
+<section class="padding-9">
+
+    {% if edit %}
+        <h1>Editer playlist</h1>
+    {% else %}
+        <h1>Ajouter une nouvelle playlist</h1>
+
+    {% endif %}
+
+    {{ form(form) }}
+
+</section>
+
+{% endblock %}

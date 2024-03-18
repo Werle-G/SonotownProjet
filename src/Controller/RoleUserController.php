@@ -69,6 +69,21 @@ class RoleUserController extends AbstractController
         ]);
     }
 
+    #[Route('/profil/user/{id}/follow/{userId}', name: 'profil_follow')]
+    public function follow($id, UserRepository $userRepository, Request $request): Response
+    {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $userSession = $this->getUser();
+
+        $userBdd = $userRepository->findOneBy(['id' => $id]);
+
+        return $this->redirectToRoute('');
+
+    }
+
+
     #[Route('/profil/user', name: 'profil')]
     public function userProfil(): Response
     {

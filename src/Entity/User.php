@@ -89,7 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'repondre')]
     private Collection $repondres;
 
-    #[ORM\OneToMany(targetEntity: Playlist::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Playlist::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
     private Collection $playlists;
 
     #[ORM\ManyToMany(targetEntity: Album::class, mappedBy: 'aimerAlbums')]

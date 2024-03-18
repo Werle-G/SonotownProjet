@@ -1,17 +1,23 @@
-{% extends 'base.html.twig' %}
+<section class="user-header padding-9">
 
-{% block title %}Profil utilisateur{% endblock %}
+        <div class="user-avatar">
 
-{% block body %}
+                <a href="{{ path('user_profil_edit', {'id': app.user.id}) }}">Éditer le profil</a>
 
-<section class="padding-9">
+                <figure class="user-avatar">
+                        <img src="{{asset('uploads/images/' ~ user.avatar)}}" alt="">
+                </figure>
 
-        <a href="{{ path('user_profil_edit', {'id': app.user.id}) }}">Éditer le profil</a>
+                <h1>{{ user.pseudo }}</h1>
 
-        <h1>Profil utilisateur</h1>
+        </div>
 
-        Nom utilisateur : {{ user.pseudo }}
+        <a href="">Albums</a>
+
+        <a href="{{ path('user_playlist', {'userId': user.id}) }}">Playlists</a>
+
+        <a href="">Concerts</a>
+
+        <a href="">Followers</a>
 
 </section>
-
-{% endblock %}

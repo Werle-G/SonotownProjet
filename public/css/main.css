@@ -191,8 +191,6 @@ header{
 }
 
 
-
-
 #nav ul{
     display: flex;
     align-items: center;
@@ -953,6 +951,7 @@ header{
 }
 
 .piste-titre{
+    position: relative;
     display: flex;
     justify-content: space-between;
 }
@@ -982,6 +981,65 @@ header{
     display: flex;
     justify-content: column;
     gap: 20px;
+}
+
+/* User page */
+
+.user-avatar img{
+    max-width: 200px;
+    min-height: 200px;
+    height: auto;
+    border: #ffff solid 2px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin: 0;
+    object-fit: cover;
+}
+
+.user-header{
+    background: var(--color-background-brown-1);
+}
+
+.user-playlist{
+    background: var(--color-background-brown-1);
+    padding: 0 6em 6em 6em;
+    display: flex;
+    flex-direction: column;
+}
+
+.playlist-title{
+    display: flex;
+    align-items: center;
+    padding-bottom: 3em;
+    gap: 20px;
+}
+
+.user-playlist-cards{
+    display: flex;
+    gap: 30px;
+}
+
+.user-playlist-card{
+    width: 260px;
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-background-grey-0);
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    gap: 10px;
+}
+
+
+
+#add-playlist{
+    /* display: none; */
+    position: absolute;
+    top: 0px;
+    right: -205px;
+    width: 200px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 

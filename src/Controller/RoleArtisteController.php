@@ -41,8 +41,8 @@ class RoleArtisteController extends AbstractController
     }
 
     // Cette méthode édite la page artiste
-    #[Route('/page/edit/{id}', name: 'profil_edit')]
-    public function pageEdit($id, Request $request, UserRepository $userRepository, #[Autowire('%photo_dir%')]string $photoDir, EntityManagerInterface $entityManager): Response
+    #[Route('/page/edit/{slug}', name: 'profil_edit')]
+    public function pageEdit($slug, Request $request, UserRepository $userRepository, #[Autowire('%photo_dir%')]string $photoDir, EntityManagerInterface $entityManager): Response
     {
         // $this représente la classe RolArtisteController, elle refuse l'accès aux personnes non authentifiés
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -51,7 +51,7 @@ class RoleArtisteController extends AbstractController
         $userSession = $this->getUser(); 
 
         // On stocke les donnée de l'utilisateur dans la variable userBdd. La variable $userRepository récupère l'attribut id et prend l'id de l'utilisateur dans la route de la fonction artistePageEdit.
-        $userBdd = $userRepository->find($id);
+        $userBdd = $userRepository->findOneBy(["slug" => $slug]);
 
         // Si l'utilisateur de la session est identique à l'utilisateur récupéré dans la base de donnée
         if ($userSession == $userBdd) {

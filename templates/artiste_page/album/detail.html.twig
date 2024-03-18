@@ -80,12 +80,32 @@
         {% for piste in album.pistes %}
         
         <div class="piste-titre">
+
           <span>
             {{ piste.titre }}
           </span>
+
           <span>
             {{ piste.duree }}
           </span>
+
+          
+          <div class="add"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15px" height="15px"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></a></div>
+          <div id="add-playlist">
+            
+            <span>Choisi une playlist</span>
+
+              {% for playlist in app.user.playlists %}
+
+              <span><a href="{{ path('add_piste_playlist', {'slug': user.slug, 'albumId': album.id, 'playlistId': playlist.id, 'id': piste.id}) }}">{{ playlist.nomPlaylist }}</a></span>
+
+              
+              {% endfor %}
+              
+              {# <a href="{{ path('new_playlist', {'userId': user.id, 'id': piste.id})}}">Nouvelle playlist</a> #}
+
+          </div>
+
         </div>
         
         {% endfor %}
@@ -99,11 +119,14 @@
       {% if album.user == app.user %}
       <a href="{{ path('album_edit', {'slug': user.slug, 'albumId': album.id}) }}">Edit album</a>
       <a href="{{ path('album_delete', {'slug': user.slug, 'albumId': album.id}) }}">Delete album</a>
+
       {% endif %}
 
       <figure>
         <img style="width:200px; height:200px"   src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="">
       </figure>
+
+      <a href="{{ path('like_album', {'slug'})}}">Aimer album</a>
 
 
     </div>

@@ -8,6 +8,9 @@ window.addEventListener("scroll", function(){
 
 });
 
+
+// Sliders
+
 let slideIndex = 1;
 showSlides(slideIndex);
 
