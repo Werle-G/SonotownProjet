@@ -11,6 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Repository\ConcertRepository;
+use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -42,7 +43,13 @@ class RoleArtisteController extends AbstractController
 
     // Cette méthode édite la page artiste
     #[Route('/page/edit/{slug}', name: 'profil_edit')]
-    public function pageEdit($slug, Request $request, UserRepository $userRepository, #[Autowire('%photo_dir%')]string $photoDir, EntityManagerInterface $entityManager): Response
+    public function pageEdit(
+        $slug, 
+        Request $request, 
+        UserRepository $userRepository, 
+        PictureService $pictureService, 
+        EntityManagerInterface $entityManager
+    ): Response
     {
         // $this représente la classe RolArtisteController, elle refuse l'accès aux personnes non authentifiés
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -69,22 +76,23 @@ class RoleArtisteController extends AbstractController
                 // On stocke les données recupérées dans la variable $user
                 $user = $form->getData();
 
-                // Si dans le tableau $form la propriété 'avatar' existe. On stocke la photo dans la variable $photo
-                // et on rentre dans la condition
-                if ($photo = $form['avatar']->getData()) {
+                $avatar = $form['avatar']->getData();
 
-                    // uniqid génère un identifiant unique 
-                    // photo récupère l'extension en utilisant la méthode guessExtension de la classe File utilisées dans le formulaire RoleArtisteType
-                    // fileName stocke la concatenation de uniqid et de photo
-                    $fileName = uniqid().'.'.$photo->guessExtension();
+                if($user){
 
-                    // photo déplace déplace $fileName dans le dossier précisé dans la variable $photoDir.
-                    // move prend en premier argument, le dossier de redirection et le fichier
-                    $photo->move($photoDir, $fileName);
-
-                    // $user modifie le nom du fichier contenu dans l'oject User
+                    $avatar = $form['avatar']->getData();
+    
+                    $folder = 'avatar';
+    
+                    // On appelle le service d'ajout de la classe PictureService
+                    // En premier argument, l'image récupérée, le dossier de 
+                    $fileName = $pictureService->add($avatar, $folder, 300, 300);
+    
                     $user->setAvatar($fileName);
                 }
+
+    
+    
 
                 // Un object Slugify est nouvellement crée et stocké dans la variableslugify
                 $slugify = new Slugify();
