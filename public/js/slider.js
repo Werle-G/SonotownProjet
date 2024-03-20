@@ -36,3 +36,5 @@ function showSlides(n) {
   dots[slideIndex - 1].classList.add('active');
 }
 
+
+console.log("hey")

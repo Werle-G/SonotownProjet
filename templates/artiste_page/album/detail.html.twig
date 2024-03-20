@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail Album{% endblock %}
+  {% block title %}Détail Album{% endblock %}
 
 {% block body %}
 
@@ -16,13 +16,12 @@
 
       {# <p>{{ album.nomAlbum}}</p> #}
 
-
       <div class="player">
-
-        {% for piste in album.pistes %}
         
-        {% set audioUrl = asset('uploads/audios/' ~ piste.audio) %}
-    
+        {% for piste in album.pistes %}
+
+
+        
         <div class="track-name information-piste" data-titre="{{ piste.titre|serialize(format = 'json')}}" data-path="{{ asset('uploads/audios/' ~ piste.audio)|serialize(format = 'json')}}"></div>
     
         {% endfor %}
@@ -73,6 +72,7 @@
           value="99" class="volume_slider" onchange="setVolume()">
         <i class="fa fa-volume-up"></i>
       </div> #}
+
       </div>
     
       <div class="album-piste">
@@ -88,17 +88,16 @@
           <span>
             {{ piste.duree }}
           </span>
-
           
-          <div class="add"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15px" height="15px"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></a></div>
+          <div class="add-piste" data-piste="{{ piste.id }}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15px" height="15px"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg></div>
+
           <div id="add-playlist">
             
             <span>Choisi une playlist</span>
 
               {% for playlist in app.user.playlists %}
 
-              <span><a href="{{ path('add_piste_playlist', {'slug': user.slug, 'albumId': album.id, 'playlistId': playlist.id, 'id': piste.id}) }}">{{ playlist.nomPlaylist }}</a></span>
-
+                <span><a href="{{ path('add_piste_playlist', {'slug': user.slug, 'albumId': album.id, 'playlistId': playlist.id, 'id': piste.id}) }}">{{ playlist.nomPlaylist }}</a></span>
               
               {% endfor %}
               
@@ -113,22 +112,40 @@
 
       </div>
 
+
     </div>
 
     <div class="album-pochette">
+      
       {% if album.user == app.user %}
-      <a href="{{ path('album_edit', {'slug': user.slug, 'albumId': album.id}) }}">Edit album</a>
-      <a href="{{ path('album_delete', {'slug': user.slug, 'albumId': album.id}) }}">Delete album</a>
+
+        <a href="{{ path('album_edit', {'slug': user.slug, 'albumId': album.id}) }}">Edit album</a>
+        
+        <a href="{{ path('album_delete', {'slug': user.slug, 'albumId': album.id}) }}">Delete album</a>
 
       {% endif %}
 
       <figure>
-        <img style="width:200px; height:200px"   src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="">
+        <img src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="pochette de l'album {{ album.nomAlbum }} de l'artiste {{ user.nomArtiste }}">
       </figure>
 
-      {# <a href="{{ path('like_album', {'slug'})}}">Aimer album</a> #}
+
+      {# {{ dump(album.id) }} #}
+
+      {% if app.user.aimerAlbums(album.id) %}
+
+      
+      <a href="{{ path('like_album', {'userId': app.user.id, 'slug': user.slug, 'albumId': album.id}) }}">Aimer</a>
+      
+      {% else %}
+      
+      <a href="">Ne plus aimer</a>
+      
+      {% endif %}
 
 
+
+        
     </div>
 
   </div>

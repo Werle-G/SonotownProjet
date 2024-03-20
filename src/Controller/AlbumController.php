@@ -351,46 +351,6 @@ class AlbumController extends AbstractController
         ]);
     }
 
-    #[Route('artiste/{slug}/album/like{albumId}', name: 'like_album')]
-    public function likeAlbum(
-        $slug,
-        $albumId,
-        User $user,
-        AlbumRepository $albumRepository,
-        EntityManagerInterface $entityManager
-    )
-    {
 
-        $album = $albumRepository->find($albumId);
-
-        $user->addAimerAlbum($album);
-
-        $entityManager->flush();
-
-        return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]);
-    }
-
-    // #[Route('artiste/{slug}/album/{albumId}/playlist/{playlistId}/add/piste/{id}', name: 'add_piste_playlist')]
-    // public function removePiste(
-    //     $id, 
-    //     $slug,
-    //     $albumId,
-    //     $playlistId, 
-    //     PisteRepository $pisteRepository, 
-    //     PlaylistRepository $playlistRepository, 
-    //     EntityManagerInterface $entityManager
-    // )
-    // {
-
-    //     $playlist = $playlistRepository->find($playlistId);
-
-    //     $piste = $pisteRepository->find($id);
-
-    //     $playlist->removeAjouter($piste);
-
-    //     $entityManager->flush();
-
-    //     return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]);
-    // }
 
 }

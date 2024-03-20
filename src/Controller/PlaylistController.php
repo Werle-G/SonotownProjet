@@ -17,6 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PlaylistController extends AbstractController
 {
+
+
     #[Route('/playlist', name: 'app_playlist')]
     public function index(): Response
     {
@@ -25,11 +27,13 @@ class PlaylistController extends AbstractController
         ]);
     }
 
+    // Fonction qui affiche toutes les playlists d'un utilisateur authentifié
     #[Route('/user/{userId}/playlist', name: 'user_playlist')]
     public function playlists($userId, PlaylistRepository $playlistRepository, Request $request): Response
     {
 
         $playlists = $playlistRepository->findBy(['user' => $userId]);
+
         $userSession = $this->getUser();
 
         return $this->render('user_page/playlist/index.html.twig', [
@@ -137,6 +141,8 @@ class PlaylistController extends AbstractController
         return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]);
     }
 
+
+
     #[Route('artiste/{slug}/album/{albumId}/playlist/{playlistId}/add/piste/{id}', name: 'add_piste_playlist')]
     public function removePiste(
         $id, 
@@ -155,6 +161,9 @@ class PlaylistController extends AbstractController
 
         $playlist->removeAjouter($piste);
 
+        // On prépare la base de donnée
+        $entityManager->persist($playlist);
+
         $entityManager->flush();
 
         return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]);
@@ -169,6 +178,21 @@ class PlaylistController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('user_playlist', ['userId' => $userId]);
+    }
+
+
+    #[Route('/user/{userId}/detail/playlist/{playlistId}', name: 'detail_playlist')]
+    public function detail($userId, $playlistId, PlaylistRepository $playlistRepository, Request $request): Response
+    {
+
+        $playlist = $playlistRepository->find($playlistId);
+
+        $userSession = $this->getUser();
+
+        return $this->render('user_page/playlist/detail.html.twig', [
+            'playlist' => $playlist,
+            'user' => $userSession,
+        ]);
     }
 
 }

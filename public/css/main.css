@@ -934,6 +934,11 @@ header{
     flex-direction: column;
 }
 
+.album-pochette img{
+    width: 200px;
+    height: 200px;
+}
+
 .artiste-concert{
     display: flex;
     width: 80%;
@@ -999,7 +1004,58 @@ header{
     background: var(--color-background-brown-1);
 }
 
-.user-playlist{
+/* User albums */
+
+#album-cards{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.album-card{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.album-card figure{
+    margin-bottom: 5px;
+}
+
+.album-card img{
+    width: 150px;
+    height: 150px;
+    border: #ffff solid 2px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.album-card span{
+    align-self: center;
+    color: black;
+    font-weight: 400;
+    font-size: var(--font-size-text);
+}
+
+/* .album-card img:hover{
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0.5;
+    z-index: 3;
+    cursor: pointer;
+    position: relative;
+    transition: opacity 0.3s ease;
+} */
+
+.album-remove{
+    position: absolute;
+    top: 6px;
+    right: 10px;
+}
+
+
+
+/* User playlist */
+
+.playlist, #user-album{
     background: var(--color-background-brown-1);
     padding: 0 6em 6em 6em;
     display: flex;
@@ -1013,12 +1069,12 @@ header{
     gap: 20px;
 }
 
-.user-playlist-cards{
+.playlist-cards{
     display: flex;
     gap: 30px;
 }
 
-.user-playlist-card{
+.playlist-card{
     width: 260px;
     padding: 1.5em;
     display: flex;
@@ -1029,6 +1085,9 @@ header{
     gap: 10px;
 }
 
+/* .card-titre{
+
+} */
 
 
 #add-playlist{

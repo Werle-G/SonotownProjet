@@ -159,4 +159,9 @@ function loadTrack(track_index) {
 
   loadTrack(track_index);
 
-// });
+
+// Album détail add
+
+var addPistes = document.querySelectorAll('.add-piste');
+
+console.log(addPistes);

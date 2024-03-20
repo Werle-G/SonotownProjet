@@ -17,7 +17,7 @@
     
             <p>Le site qui te permet de découvrir des musiciens indépendants</p>
     
-            <a href="#home-infos">En savoir plus</a>
+            <a href="#home-info">En savoir plus</a>
             
         </div>
 
@@ -36,8 +36,9 @@
                 <div class="card-image">
 
                     <figure>
+
                         <a href="{{ path('artiste_page', {'slug': user.slug}) }}">
-                        <img src="{{asset('uploads/images/' ~ user.avatar)}}"  alt="{{ user.nomArtiste }}">
+                        <img src="{{asset('uploads/images/' ~ user.avatar)}}"  alt="Avatar de l'artiste {{ user.nomArtiste }}">
                         </a>
 
                     </figure>
@@ -47,7 +48,6 @@
                 </div>
 
                 <div class="card-separation"></div>
-
 
                 <div class="card-header">
 
@@ -77,7 +77,7 @@
     <div id="home-info-container">
 
         <figure>
-            <img src="{{ asset('images/synthesizer.jpg')}}" alt="Synthétiseur">
+            <img src="{{ asset('images/synthesizer.jpg')}}" alt="Image d'un synthétiseur">
         </figure>
     
         <div id="home-info-text">

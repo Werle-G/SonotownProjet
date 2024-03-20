@@ -1,112 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Playlist{% endblock %}
+  {% block title %}Playlist{% endblock %}
 
 {% block body %}
 
 {% include "user_page/_header.html.twig" %}
 
-<div class="user-playlist">
+<div class="playlist">
 
-    <div class="playlist-title">
-        
-        <h1>Playlists</h1>  
+  <div class="playlist-title">
+      
+    <h1>Playlists</h1>  
 
-            {% if is_granted('ROLE_USER') and app.user.id == user.id %} 
+      {% if is_granted('ROLE_USER') and app.user.id == user.id %} 
 
         <a href="{{ path('new_playlist', {'userId': user.id})}}">Nouvelle playlist</a>
 
-            {% endif %}
+      {% endif %}
 
-    </div>
+  </div>
 
-    <div class="user-playlist-cards">
+    <div class="playlist-cards">
 
-        {% for playlist in playlists %}
+      {% for playlist in playlists %}
 
-            <div class="user-playlist-card">
+          <div class="playlist-card">
 
-                <div class="card-titre">
+              <div class="card-titre">
 
-                    <h2>{{ playlist.nomPlaylist }}</h2>
-    
-                    {% if is_granted('ROLE_USER') and app.user.id == user.id %} 
-                        <a href="{{ path('delete_playlist', {'userId': user.id, 'id': playlist.id})}}">Supprimer</a>
-                        {# <a href="{{ path('edit_playlist', {'userId': user.id, 'playlistId': playlist.id})}}">Editer</a> #}
-                    {% endif %}
+                <a href="{{ path('detail_playlist', {'userId': user.id, 'playlistId': playlist.id})}}"><h2>{{ playlist.nomPlaylist }}</h2></a>
 
-                </div>
+                {# {% if is_granted('ROLE_USER') and app.user.id == user.id %}  #}
+                    {# <a href="{{ path('delete_playlist', {'userId': user.id, 'id': playlist.id})}}">Supprimer</a> #}
+                    {# <a href="{{ path('edit_playlist', {'userId': user.id, 'playlistId': playlist.id})}}">Editer</a> #}
+                {# {% endif %} #}
 
-                <div class="playlist-titre">
+              </div>
 
-                    {# <div class="player">
-
-                        {% for ajouter in playlist.ajouter %}
-                        
-                        {% set audioUrl = asset('uploads/audios/' ~ ajouter.audio) %}
-                    
-                        <div class="track-name information-piste" data-titre="{{ ajouter.titre|serialize(format = 'json')}}" data-path="{{ asset('uploads/audios/' ~ ajouter.audio)|serialize(format = 'json')}}"></div>
-                    
-                        {% endfor %}
-                    
-                      <div class="player-detail">
-                
-                        <div class="playpause-track" onclick="playpauseTrack()">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="20px" height="20px"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/ ></svg>
-                        </div>
-                
-                        <div class="player-right">
-                
-                          <div class="player-column">
-                            <div class="time-track">
-                  
-                              <div class="current-time">00:00</div>
-                              <div class="total-duration">00:00</div>
-                            </div>
-                  
-                              <div class="lecteur">
-                                <div class="btn-track">
-                                  <div class="prev-track" onclick="prevTrack()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20px" height="20px" ><path d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z"/></svg>
-                                  </div>
-                                  <div class="next-track" onclick="nextTrack()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"  width="20px" height="20px" ><path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z"/></svg>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                  
-                            <div class="slider_container">
-                              <input type="range" min="1" max="100"
-                                value="0" class="seek_slider" onchange="seekTo()">
-                            </div>
-                
-                          </div>
-                  
-                        </div>
-                      </div> #}
+              <div class="playlist-titre">
                 
                 {% for ajouter in playlist.ajouter %} 
                 
-                    <p>{{ ajouter.titre }}</p>
+                  <p>{{ ajouter.titre }}</p>
                 
                 {% endfor %}
-                  
-                </div>  
 
-            </div>
-
-        {% endfor %}
+              </div>  
+        </div>
+      {% endfor %}
     </div>
 
 </div>
 
-          {# <div class="remove"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15px" height="15px"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg></div> #}
+  {# <div class="remove"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15px" height="15px"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg></div> #}
     
-{% endblock %}
-
-{% block javascripts %}
-
-    <script src="{{ asset('js/lecteur_audio.js') }}"></script>
-  
 {% endblock %}
