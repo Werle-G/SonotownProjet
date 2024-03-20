@@ -195,6 +195,8 @@ class AlbumController extends AbstractController
 
             }
 
+
+
             $audios = $form['pistes']->getData();
 
             if($audios){
@@ -208,6 +210,8 @@ class AlbumController extends AbstractController
                     if($audioData){
                         
                         $fichier = $audioService->add($audioData, $folder);
+
+                        
 
                         $son = new Piste();
             

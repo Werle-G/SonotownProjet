@@ -5,7 +5,7 @@
                 <a href="{{ path('user_profil_edit', {'id': app.user.id}) }}">Éditer le profil</a>
 
                 <figure class="user-avatar">
-                        <img src="{{asset('uploads/images/' ~ user.avatar)}}" alt="">
+                        <img src="{{asset('uploads/avatar/mini/300x300-' ~ user.avatar)}}" alt="">
                 </figure>
 
                 <h1>{{ user.pseudo }}</h1>

@@ -45,16 +45,30 @@ class RoleUserController extends AbstractController
             $form->handleRequest($request);
             
             if ($form->isSubmitted() && $form->isValid()) {
+
+
                 $user = $form->getData();
 
+                $avatarBdd = $userSession->getAvatar();
 
                 $avatar = $form['avatar']->getData();
 
-                $folder = 'avatar';
+                if($avatar){
 
-                // On appelle le service d'ajout de la classe PictureService
-                // En premier argument, l'image récupérée, le dossier de 
-                $pictureService->add($avatar, $folder, 300, 300);
+
+                    $folder = 'avatar';
+    
+                    // On appelle le service d'ajout de la classe PictureService
+                    // En premier argument, l'image récupérée, le dossier de 
+                    $fileName = $pictureService->add($avatar, $folder, 300, 300);
+
+                    if($fileName != $avatarBdd){
+
+                        $pictureService->delete($avatarBdd, 'avatar', 300, 300);
+                    }
+    
+                    $user->setAvatar($fileName);
+                }
                 
                 $entityManager->persist($user);
                 $entityManager->flush();
