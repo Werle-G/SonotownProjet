@@ -97,21 +97,17 @@
 
               {% for playlist in app.user.playlists %}
 
-                <span><a href="{{ path('add_piste_playlist', {'slug': user.slug, 'albumId': album.id, 'playlistId': playlist.id, 'id': piste.id}) }}">{{ playlist.nomPlaylist }}</a></span>
+                <span class="playlist-option" data-playlist-id="{{ playlist.id }}"><a href="{{ path('add_piste_playlist', {'slug': user.slug, 'albumId': album.id, 'playlistId': playlist.id, 'id': piste.id}) }}">{{ playlist.nomPlaylist }}</a></span>
               
               {% endfor %}
               
               {# <a href="{{ path('new_playlist', {'userId': user.id, 'id': piste.id})}}">Nouvelle playlist</a> #}
 
-          </div>
-
         </div>
         
         {% endfor %}
-        {# <p>{{ album.description }}</p> #}
 
       </div>
-
 
     </div>
 
@@ -129,19 +125,13 @@
         <img src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="pochette de l'album {{ album.nomAlbum }} de l'artiste {{ user.nomArtiste }}">
       </figure>
 
-
-      {# {{ dump(album.id) }} #}
-
-      {% if app.user.aimerAlbums(album.id) %}
-
-      
-      <a href="{{ path('like_album', {'userId': app.user.id, 'slug': user.slug, 'albumId': album.id}) }}">Aimer</a>
-      
-      {% else %}
-      
-      <a href="">Ne plus aimer</a>
-      
-      {% endif %}
+      <div class="btn-like">
+        {% if app.user.aimerAlbums is defined and not app.user.aimerAlbums.contains(album) %}
+        <a href="{{ path('like_album', {'userId': app.user.id, 'slug': user.slug, 'albumId': album.id}) }}">Like</a>
+        {% else %}
+        <a href="{{ path('like_album', {'userId': app.user.id, 'slug': user.slug, 'albumId': album.id}) }}">Unlike</a>
+        {% endif %}
+      </div>
 
 
 

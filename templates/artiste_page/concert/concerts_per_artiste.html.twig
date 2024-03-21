@@ -17,7 +17,7 @@
 
     {% for concert in user.concerts %}
 
-        <a href="{{ path('detail_concert', {'slug': user.slug, 'id': concert.id}) }}">{{ concert.lieu }}</a>
+        <a href="{{ path('detail_concert', {'slug': user.slug, 'concertId': concert.id}) }}">{{ concert.lieu }}</a>
     {% endfor %}
     </div>
 </section>

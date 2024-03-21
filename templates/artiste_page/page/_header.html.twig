@@ -4,21 +4,17 @@
 
     <div class="artiste-info">
 
-        {# <h1>{{ user.pseudo }}</h1> #}
-
         <h2>Biographie</h2>
 
         <p>{{ user.biographie}}</p>
 
-        {# {% for reseau in user.reseaus %}
-
-            {{ reseau.adresseEmail }}
-            
-        {% endfor %} #}
-
         <div id="artiste-link">
             <div class="btn-suivre">
-                <a href="">Suivre</a>
+                {% if app.user.follows is defined and not app.user.follows.contains(user) %}
+                <a href="{{ path('follow_artiste', {'userId': app.user.id, 'slug': user.slug}) }}">Follow</a>
+                {% else %}
+                <a href="{{ path('unfollow_artiste', {'userId': app.user.id, 'slug': user.slug}) }}">Unfollow</a>
+                {% endif %}
             </div>
 
             <div class="artiste-page-link">
@@ -27,7 +23,6 @@
             </div>
         </div>
     </div> 
-
 
     <div class="artiste-aside">
 

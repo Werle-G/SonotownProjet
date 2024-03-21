@@ -1091,14 +1091,18 @@ header{
 
 
 #add-playlist{
-    /* display: none; */
-    position: absolute;
-    top: 0px;
-    right: -205px;
+    display: none;
+    /* position: absolute; */
+    /* top: 0px;
+    right: -205px; */
     width: 200px;
     height: auto;
     display: flex;
     flex-direction: column;
+}
+
+.add-piste{
+
 }
 
 

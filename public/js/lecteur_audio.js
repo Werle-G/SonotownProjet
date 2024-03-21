@@ -162,6 +162,19 @@ function loadTrack(track_index) {
 
 // Album détail add
 
-var addPistes = document.querySelectorAll('.add-piste');
+// var addPistes = document.querySelectorAll('.add-piste');
 
-console.log(addPistes);
+// console.log(addPistes);
+
+document.addEventListener('DOMContentLoaded', function() {
+  var playlistOptions = document.querySelectorAll('.playlist-option');
+
+  playlistOptions.forEach(function(option) {
+      option.addEventListener('click', function(event) {
+          event.preventDefault(); // Pour éviter le comportement par défaut du lien
+          var playlistId = option.getAttribute('data-playlist-id');
+          // Maintenant, vous pouvez utiliser playlistId pour effectuer des actions en fonction de la playlist sélectionnée
+          console.log('Playlist sélectionnée : ' + playlistId);
+      });
+  });
+});
