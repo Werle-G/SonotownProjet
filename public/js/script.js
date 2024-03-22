@@ -10,26 +10,25 @@ window.addEventListener("scroll", function(){
 
 // addplaylist
 
-const addPiste = document.querySelector('.add-piste');
-const addPlaylist = document.querySelector('#add-playlist');
-con
+// const addPiste = document.querySelector('.add-piste');
+// const addPlaylist = document.querySelector('#add-playlist');
 
-const burger = document.querySelector('.add-piste')
-const menu = document.querySelector('#add-playlist')
-const navLinks = document.querySelectorAll('.navigation li')
+// const burger = document.querySelector('.add-piste')
+// const menu = document.querySelector('#add-playlist')
+// const navLinks = document.querySelectorAll('.navigation li')
 
-burger.addEventListener('click', () => {
-  burger.classList.toggle('active');
-  menu.classList.toggle('active')
-}) 
+// burger.addEventListener('click', () => {
+//   burger.classList.toggle('active');
+//   menu.classList.toggle('active')
+// }) 
 
 
-navLinks.forEach(link => {
-  link.addEventListener('click', ()=> {
-    menu.classList.remove("active");
-    burger.classList.remove("active");
-  })
-})
+// navLinks.forEach(link => {
+//   link.addEventListener('click', ()=> {
+//     menu.classList.remove("active");
+//     burger.classList.remove("active");
+//   })
+// })
 
 
 

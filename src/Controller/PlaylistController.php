@@ -57,7 +57,6 @@ class PlaylistController extends AbstractController
 
         $playlist->setUser($this->getUser());
 
-
         $form = $this->createForm(PlaylistType::class, $playlist);
             
         $form->handleRequest($request);
@@ -72,13 +71,54 @@ class PlaylistController extends AbstractController
 
                 return $this->redirectToRoute('user_playlist', ['userId' => $userId]);
             }
-            
         
         return $this->render('user_page/playlist/new.html.twig', [
             'form' => $form->createView(),
             'userId' => $userId,
             'edit' => false
         ]);
+    }
+
+    #[Route('profil/user/{userId}/piste/{pisteId}', name: 'new_piste_playlist')]
+    public function newPlaylistPiste(
+        $userId,
+        $pisteId,
+        Playlist $playlist = null, 
+        PisteRepository $pisteRepository,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response
+    {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $userSession = $userRepository->findOneById($userId);
+        
+        $piste = $pisteRepository->find($pisteId);
+        
+        $slug =  $piste->getAlbum()->getUser()->getSlug();
+        $albumId = $piste->getAlbum()->getId();
+        
+        $titrePlaylist = $request->get('titrePlaylist');
+
+            if($userSession && $piste && $titrePlaylist){
+
+                $playlist = new playlist();
+                
+                $playlist->setUser($userSession);
+                $playlist->setNomPlaylist($titrePlaylist);
+                $playlist->addAjouter($piste);
+
+                $entityManager->persist($playlist);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]);
+
+            }
+
+        return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]); 
+        
     }
 
     #[Route('/user/{userId}/edit/playlist/{playlistId}', name: 'edit_playlist')]
@@ -109,7 +149,6 @@ class PlaylistController extends AbstractController
 
                 return $this->redirectToRoute('user_playlist', ['userId' => $userId]);
             }
-            
         
         return $this->render('user_page/playlist/new.html.twig', [
             'form' => $form->createView(),

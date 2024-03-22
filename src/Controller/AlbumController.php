@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Entity\Album;
 use App\Entity\Piste;
 use App\Form\AlbumType;
+use App\Entity\Playlist;
+use App\Form\PlaylistType;
 use App\Service\AudioService;
 use App\Service\PictureService;
 use Doctrine\ORM\EntityManager;
@@ -195,8 +197,6 @@ class AlbumController extends AbstractController
 
             }
 
-
-
             $audios = $form['pistes']->getData();
 
             if($audios){
@@ -210,8 +210,7 @@ class AlbumController extends AbstractController
                     if($audioData){
                         
                         $fichier = $audioService->add($audioData, $folder);
-
-                        
+                    
 
                         $son = new Piste();
             
@@ -321,7 +320,6 @@ class AlbumController extends AbstractController
 
         $albums = $albumRepository->findBy(["user" => $user]);
 
-
         // Renvoie la vue des albums par artiste
         return $this->render('artiste_page/album/all_album_per_artiste.html.twig', [
 
@@ -333,24 +331,25 @@ class AlbumController extends AbstractController
     
     // Détails d'un album d'un artiste
     #[Route('/artiste/{slug}/album/detail/{albumId}', name: 'album_detail')]
-    public function detail($slug, $albumId, AlbumRepository $albumRepository, UserRepository $userRepository): Response
+    public function detail(
+        $slug, 
+        $albumId, 
+        AlbumRepository $albumRepository, 
+        UserRepository $userRepository, 
+        EntityManagerInterface $entityManager, 
+        Request $request
+    ): Response
     {
 
-        // On récupère l'album via la méthode findOneBy de AlbumRepository
-        // On prend en argument l'id de l'album
         $album = $albumRepository->find($albumId);
 
-        // On stocke l'utilisateur dans $user en récupèrant l'user de l'album avec la méthode getUser de la classe Album
         $user = $userRepository->findOneBy(['slug' => $slug]);
 
-        // Renvoie la vue du detail de l'album en utilisant la méthode rendre
-        // Cette méthode prend en argument la vue et un tableau de paramètre content l'objet Album et User
         return $this->render('artiste_page/album/detail.html.twig', [
             'album' => $album,
             'user' => $user,
+            // 'form' => $form->createView(),
         ]);
     }
-
-
-
 }
+ 
