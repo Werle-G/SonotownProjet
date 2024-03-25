@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discographie{% endblock %}
+
+{% block body %}
+
+<section class="artiste padding-9">
+
+    {% include "artiste_page/page/_header.html.twig" %}
+
+    <div class="artiste-album">
+        
+        <h2>Discographie</h2>
+    
+        {% if user.id == app.user.id %}
+            <a href="{{ path('new_album', {'slug': user.slug}) }}">Ajouter un album</a><br>
+        {% endif %}
+        
+        <div class="album-pochette">
+
+        {% for album in albums %}
+    
+            <a href="{{ path('show_album', {'slug': user.slug, 'albumId': album.id}) }}">
+            <figure>
+                <img src="{{asset('uploads/imageAlbum/mini/300x300-' ~ album.imageAlbum)}}" alt="">
+            </figure>
+            <p>{{ album.nomAlbum }}</p>
+            </a>
+
+        {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

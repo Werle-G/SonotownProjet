@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+  {% block title %}Détail Album{% endblock %}
+
+{% block body %}
+
+<section class="artiste padding-9">
+
+  {% include "artiste_page/page/_header.html.twig" %}
+
+  {# {% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+  {% endfor %} #}
+
+  <div class="artiste-album-detail">
+
+    {# Album-detail-left: lecteur audio #}
+    <div class="album-detail-left">
+
+
+        {# Player music #}
+      <div class="player">
+        
+        {% for piste in album.pistes %}
+
+        <div class="track-name information-piste" data-titre="{{ piste.titre|serialize(format = 'json')}}" data-path="{{ asset('uploads/audios/' ~ piste.audio)|serialize(format = 'json')}}"></div>
+    
+        {% endfor %}
+    
+        <div class="player-detail">
+
+          <div class="playpause-track" onclick="playpauseTrack()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="20px" height="20px"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/ ></svg>
+          </div>
+
+          <div class="player-right">
+
+            <div class="player-column">
+              <div class="time-track">
+    
+                <div class="current-time">00:00</div>
+                <div class="total-duration">00:00</div>
+              </div>
+    
+                <div class="lecteur">
+                  <div class="btn-track">
+                    <div class="prev-track" onclick="prevTrack()">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20px" height="20px" ><path d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z"/></svg>
+                    </div>
+                    <div class="next-track" onclick="nextTrack()">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"  width="20px" height="20px" ><path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z"/></svg>
+                    </div>
+                  </div>
+                </div>
+            </div>
+    
+              <div class="slider_container">
+                <input type="range" min="1" max="100"
+                  value="0" class="seek_slider" onchange="seekTo()">
+              </div>
+
+          </div>
+    
+        </div>
+        
+      </div>
+      
+        <div class="album-piste">
+          
+          {% for piste in album.pistes %}
+          
+          <div class="piste-titre">
+
+            <span>{{ piste.titre }}</span>
+
+            <span>{{ piste.duree }}</span>
+            
+            {% if app.user.follows is defined and not app.user.follows.contains(album) %}
+            
+            <div class="add-piste" data-piste="{{ piste.id }}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15px" height="15px"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"></svg></div>
+            
+            <div class="add-playlist hidden" data-piste="{{ piste.id }}">
+              
+              {% if app.user.playlits is defined and not app.user.follows.constains(playlist) %}
+
+              
+              
+                {% for playlist in app.user.playlists %}
+            
+                  <span>Choisi une playlist</span>
+                
+                  <span class="playlist-option"><a href="{{ path('add_piste_playlist', {'slug': user.slug, 'albumId': album.id, 'playlistId': playlist.id, 'id': piste.id}) }}">{{ playlist.nomPlaylist }}</a></span>
+                
+                {% endfor %}
+
+              {% endif %}
+              
+              <form id="new-playlist" action='{{ path('new_piste_playlist', {'userId': app.user.id, 'pisteId': piste.id } ) }}' method="post">
+  
+                <label for="nomPlaylist"></label>
+
+                  <p>{{  piste.titre }}</p>
+
+                  <input type="text" name="titrePlaylist" >
+
+                <input type="submit" value="Valider">
+  
+              </form> 
+              
+            </div>
+
+            </div>
+            {% else %}
+            
+            {% endif %}
+            
+            {% endfor %}
+            
+            
+          </div>
+          
+        </div>
+
+      
+    {# Album-detail-right: Pochette nom album like-dislike #}
+    <div class="album-detail-right">
+
+      <div class="album-pochette">
+        
+        {% if album.user == app.user %}
+
+          <a href="{{ path('edit_album', {'albumId': album.id}) }}">Edit album</a>
+          
+          <a href="{{ path('delete_album', {'albumId': album.id}) }}">Delete album</a>
+
+        {% endif %}
+
+        <span>{{ album.nomAlbum }}</span>
+
+        <figure>
+          <img src="{{ asset('uploads/imageAlbum/mini/300x300-' ~ album.imageAlbum) }}" alt="pochette de l'album {{ album.nomAlbum }} de l'artiste {{ user.nomArtiste }}">
+        </figure>
+
+        <div class="btn-like">
+
+          {% if app.user.aimerAlbums is defined and not app.user.aimerAlbums.contains(album) %}
+          <a href="{{ path('like_album', {'userId': app.user.id, 'albumId': album.id}) }}">Like</a>
+          {% else %}
+          <a href="{{ path('unlike_album', {'userId': app.user.id, 'albumId': album.id}) }}">Unlike</a>
+          {% endif %}
+
+        </div>
+        
+    </div>
+
+    </div>
+    
+  </div>
+</section>
+
+{% endblock %}
+
+{% block javascripts %}
+
+  <script src="{{ asset('js/lecteur_audio.js') }}"></script>
+  
+{% endblock %}

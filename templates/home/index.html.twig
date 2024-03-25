@@ -4,7 +4,6 @@
 
 {% block body %}
 
-
 <section id="home-hero">
     
         <video autoplay loop muted plays-inline id="back-video">
@@ -67,7 +66,49 @@
 
     {# Section les meilleurs albums #}
 
-{% include "home/carrousel.html.twig" %}
+{# {% include "home/carrousel.html.twig" %} #}
+
+<section id="home-album" class="padding-6">
+
+    <h4>Les meilleurs albums</h4>
+
+    <div id="album-content-text">
+
+        <div id="home-album-content">
+    
+            {# Container caroussel #}
+            <div class="container">
+
+                {% for album in albums %}
+                <div class="slides">
+                
+                        <figure>
+                            <a href=""><img  src="{{asset('uploads/images/' ~ album.imageAlbum)}}" alt="Image de l'album {{ album.nomAlbum }}"></a>
+                        </figure>
+                    </div>
+                    
+                    {% endfor %}
+            </div>
+            
+            <div style="text-align:center">
+                <span class="dot" onclick="currentSlide(1)"></span> 
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+
+         </div>   
+    
+        <div id="home-album-text">
+        
+            <h5>Derniers albums</h5>
+        
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum ab fuga aliquid et quia at doloribus culpa neque quam nulla</p>
+        
+        </div>
+
+    </div>
+
+</section>
 
 
 <section id="home-info" class="padding-6">
@@ -98,4 +139,6 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/slider.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+
 {% endblock %}

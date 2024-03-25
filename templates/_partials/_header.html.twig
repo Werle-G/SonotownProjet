@@ -2,7 +2,15 @@
     <nav id="nav">
 
         <div id="logo-search-bar">
-            <a class="active" href="{{ path('app_home') }}">Sonotown</a></li>
+            <a class="active" href="{{ path('app_home') }}">Sonotown</a>
+
+            {# Logo Sonotown #}
+        {# <a class="active" href="{{ path('app_home') }}">
+            <figure>
+                <img src="{{ asset('./images/sonotown.svg') }}" alt="Sonotown">
+            </figure>
+        </a>v#}
+                            
             <input class="search-bar" type="text" placeholder="Artiste, album, piste ...">
         </div>
 
@@ -34,8 +42,7 @@
                     {# <li><a href="{{ path('all_artiste')}}">Artiste</a></li> #}
                     {# <li><a href="{{ path('artiste_all_album')}}">Albums</a></li> #}
                     <li><a href="{{ path('app_logout') }}">Logout</a></li>
-                    <li><a href="{{ path('profil') }}">Profil</a></li>  
-        
+                    <li><a href="{{ path('user_profil') }}">Profil</a></li>  
                 {% endif %}
             
             {% else %}

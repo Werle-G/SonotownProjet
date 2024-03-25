@@ -32,15 +32,20 @@ class AlbumType extends AbstractType
                 'label' => 'Description',
                 'required' => false,
             ])
-            ->add('photo', FileType::class, [
-                'label' => 'imageAlbum',
+            ->add('imageAlbum', FileType::class, [
+                'label' => false,
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new Image([
-                        'maxSize' => '5000k',
-                    ])
-                ],
+                    new File([
+                        'maxSize' => '15254k',  
+                        'mimeTypes' => [  
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG ou PNG).',
+                    ]),
+                ]
             ])
             ->add('dateSortieAlbum', DateType::class, [
                 'widget' => 'single_text',

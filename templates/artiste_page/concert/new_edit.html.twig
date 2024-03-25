@@ -27,10 +27,9 @@
                 <div class="concert-image">
 
                     <figure>
-
                         <img src="{{ asset('uploads/Concerts/mini/300x300-' ~ imageConcert.nomImage ) }}" alt="{{imageConcert.nomImage}}" width="150">
 
-                        <a href="{{ path('delete_image', {'id': imageConcert.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ imageConcert.id) }}">Supprimer image</a> 
+                        <a href="{{ path('delete_image', {'concertId': imageConcert.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ imageConcert.id) }}">Supprimer image</a> 
                     </figure>
 
                     {# <a href="" data-delete data-token="{{ csrf_token('delete' ~ imageConcert.id) }}">Supprimer image</a>  #}

@@ -30,12 +30,12 @@
     
     {% if is_granted('ROLE_ARTISTE') and app.user.slug == user.slug %} 
 
-            <a href="{{ path('artiste_profil_edit', {'slug': app.user.slug}) }}">Éditer le profil artiste</a>
+            <a href="{{ path('artiste_edit', {'slug': app.user.slug}) }}">Éditer le profil artiste</a>
 
     {% endif %}
 
             <figure class="avatar">
-                <img src="{{asset('uploads/images/' ~ user.avatar)}}" alt="avatar {{ user.nomArtiste }}">
+                <img src="{{asset('uploads/avatar/mini/300x300-' ~ user.avatar)}}" alt="avatar {{ user.nomArtiste }}">
             </figure>
         </div>
 

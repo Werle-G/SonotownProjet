@@ -18,17 +18,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RoleUserController extends AbstractController
 {
 
-    #[Route('/profil', name: 'all_user')]
-    public function index(): Response
-    {
+    // #[Route('/user', name: 'all_user')]
+    // public function index(): Response
+    // {
 
-        return $this->render('profil/index.html.twig', [
-        ]);
-    }
+    //     return $this->render('profil/index.html.twig', [
+    //     ]);
+    // }
     
-    #[Route('/profil/edit/{id}', name: 'user_profil_edit')]
+    #[Route('/user/edit/{userId}', name: 'edit_user')]
     public function userProfilEdit(
-        $id, 
+        $userId, 
         Request $request, 
         UserRepository $userRepository, 
         EntityManagerInterface $entityManager,
@@ -39,7 +39,7 @@ class RoleUserController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $userSession = $this->getUser(); 
-        $userBdd = $userRepository->findOneBy(['id' => $id]);
+        $userBdd = $userRepository->find($userId);
         
         if ($userSession == $userBdd) {
 
@@ -58,7 +58,6 @@ class RoleUserController extends AbstractController
 
                 if($avatar){
 
-
                     $folder = 'avatar';
     
                     // On appelle le service d'ajout de la classe PictureService
@@ -74,24 +73,47 @@ class RoleUserController extends AbstractController
                 }
                 
                 $entityManager->persist($user);
+
                 $entityManager->flush();
                 
-                return $this->redirectToRoute('profil');
+                return $this->redirectToRoute('user_profil');
             }
         }
         
-        return $this->render('user_page/edit.html.twig', [
+        return $this->render('user_page/profil/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $userSession,
         ]);
     }
-
-    // #[Route('/profil/user/{id}/follow/artiste/{artisteId}', name: 'profil_follow')]
     
-    #[Route('profil/user/{userId}/follow/artiste/{slug}', name: 'follow_artiste')]
-    public function follow(
-        $slug, 
+    #[Route('/user/{userId}/follow/user/{userFollowId}', name: 'follow_user')]
+    public function followUser(
         $userId,
+        $userFollowId,
+        UserRepository $userRepository, 
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $userRepository->find($userId);
+            
+        $userFollow = $userRepository->find($userFollowId);
+
+        $user->addFollow($userFollow);
+
+        $entityManager->persist($user);
+
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('user_page', ['id' => $userFollowId]);
+    }
+
+    #[Route('/user/{userId}/follow/artiste/{slug}', name: 'follow_artiste')]
+    public function followArtiste(
+        $userId,
+        $slug, 
         UserRepository $userRepository, 
         EntityManagerInterface $entityManager
     ): Response
@@ -114,10 +136,10 @@ class RoleUserController extends AbstractController
     }
 
 
-    #[Route('profil/user/{userId}/unfollow/artiste/{slug}', name: 'unfollow_artiste')]
-    public function unFollow(
-        $slug, 
+    #[Route('/user/{userId}/unfollow/artiste/{slug}', name: 'unfollow_artiste')]
+    public function unFollowArtiste(
         $userId,
+        $slug, 
         UserRepository $userRepository, 
         EntityManagerInterface $entityManager
     ): Response
@@ -139,47 +161,80 @@ class RoleUserController extends AbstractController
 
     }
 
-    // Fonction qui affiche le profil de l'utilisateur authentifié
-    #[Route('/profil/user', name: 'profil')]
-    public function userProfil(): Response
+    #[Route('/user/{userId}/unfollow/user/{userFollowId}', name: 'unfollow_user')]
+    public function unfollowUser(
+        $userId,
+        $userFollowId,
+        UserRepository $userRepository, 
+        EntityManagerInterface $entityManager
+    ): Response
     {
-        // Vérifier si l'utilisateur est connecté
+
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $userRepository->find($userId);
+            
+        $userFollow = $userRepository->find($userFollowId);
+
+        $user->removeFollow($userFollow);
+
+        $entityManager->persist($user);
+
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('user_page', ['id' => $userId]);
+    }
+
+    // Fonction qui affiche le profil de l'utilisateur authentifié
+    #[Route('/user', name: 'user_profil')]
+    #[Route('/user/{userId}', name: 'user_page')]
+    public function profil(UserRepository $userRepository, $userId = null): Response
+    {
+
+        if($userId){
+
+            $user = $userRepository->find($userId);
+
+        }else{
+
+            // Vérifier si l'utilisateur est connecté
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+            $user = $this->getUser();
+        }
     
-        $userSession = $this->getUser();
-    
-        return $this->render('user_page/profil.html.twig', [
-            'user' => $userSession,
+        return $this->render('user_page/profil/show.html.twig', [
+            'user' => $user,
         ]);
     }
 
-
-
-    #[Route('/user/{userId}/album', name: 'user_album')]
-    public function albums($userId): Response
+    #[Route('/user/{userId}/albums', name: 'albums_per_user')]
+    public function albumsPerUser($userId): Response
     {
 
         $userSession = $this->getUser();
 
-        return $this->render('user_page/album/index.html.twig', [
+        return $this->render('user_page/album/albums_per_user.html.twig', [
             'user' => $userSession
         ]);
     }
 
-    #[Route('profil/user/{userId}/artiste/{slug}/album/like/{albumId}', name: 'like_album')]
+    #[Route('/album/like/{albumId}', name: 'like_album')]
     public function likeAlbum(
-        $slug,
         $albumId,
-        $userId,
         UserRepository $userRepository,
         AlbumRepository $albumRepository,
         EntityManagerInterface $entityManager
     )
     {
 
+        $userSession = $this->getUser();
+
         $album = $albumRepository->find($albumId);
 
-        $user = $userRepository->find($userId);
+        $slug = $album->getUser()->getSlug();
+
+        $user = $userRepository->find($userSession->getId());
 
         $user->addAimerAlbum($album);
 
@@ -187,13 +242,12 @@ class RoleUserController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]);
+        return $this->redirectToRoute('show_album', ['slug' => $slug, 'albumId' => $albumId]);
     }
 
     // Fonction qui enlève des favoris l'album liké
-    #[Route('profil/user/{userId}/album/unlike/{albumId}', name: 'unlike_album')]
+    #[Route('/album/unlike/{albumId}', name: 'unlike_album')]
     public function unlikeAlbum(
-        $userId,
         $albumId,
         UserRepository $userRepository,
         AlbumRepository $albumRepository,
@@ -201,11 +255,13 @@ class RoleUserController extends AbstractController
     )
     {
 
-        // On récupère l'objet user dans l'url
-        $user = $userRepository->find($userId);
+        $userSession = $this->getUser();
 
-        // On récupère l'id de l'album
         $album = $albumRepository->find($albumId);
+
+        $slug = $album->getUser()->getSlug();
+
+        $user = $userRepository->find($userSession->getId());
 
         //  On supprimer l'album des favoris
         $user->removeAimerAlbum($album);
@@ -216,13 +272,11 @@ class RoleUserController extends AbstractController
         // On execute la requete
         $entityManager->flush();
 
-        return $this->redirectToRoute('user_album', ['userId' => $userId]);
+        return $this->redirectToRoute('show_album', ['slug' => $slug, 'albumId' => $albumId]);
     }
 
-    #[Route('profil/user/{userId}/artiste/{slug}/concert/like/{concertId}', name: 'like_concert')]
+    #[Route('/concert/like/{concertId}', name: 'like_concert')]
     public function likeConcert(
-        $userId,
-        $slug,
         $concertId,
         UserRepository $userRepository,
         ConcertRepository $concertRepository,
@@ -244,20 +298,21 @@ class RoleUserController extends AbstractController
     }
 
     // Fonction qui enlève des favoris l'album liké
-    #[Route('profil/user/{userId}/artiste/{slug}/concert/unlike/{concertId}', name: 'unlike_concert')]
+    #[Route('concert/unlike/{concertId}', name: 'unlike_concert')]
     public function unlikeConcert(
-        $userId,
-        $slug,
         $concertId,
         UserRepository $userRepository,
         ConcertRepository $concertRepository,
         EntityManagerInterface $entityManager
     )
     {
+        $userSession = $this->getUser();
 
-        $user = $userRepository->find($userId);
+        $user = $userRepository->find($userSession->getId());
 
         $concert = $concertRepository->find($concertId);
+
+        $slug = $concert->getUser()->getSlug();
 
         $user->removeAimerConcert($concert);
 

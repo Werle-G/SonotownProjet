@@ -28,15 +28,15 @@ class PlaylistController extends AbstractController
     }
 
     // Fonction qui affiche toutes les playlists d'un utilisateur authentifié
-    #[Route('/user/{userId}/playlist', name: 'user_playlist')]
-    public function playlists($userId, PlaylistRepository $playlistRepository, Request $request): Response
+    #[Route('/user/{userId}/playlists', name: 'user_playlist')]
+    public function playlistsPerUser($userId, PlaylistRepository $playlistRepository): Response
     {
 
         $playlists = $playlistRepository->findBy(['user' => $userId]);
 
         $userSession = $this->getUser();
 
-        return $this->render('user_page/playlist/index.html.twig', [
+        return $this->render('user_page/playlist/playlists_per_user.html.twig', [
             'playlists' => $playlists,
             'user' => $userSession
         ]);
@@ -220,15 +220,15 @@ class PlaylistController extends AbstractController
     }
 
 
-    #[Route('/user/{userId}/detail/playlist/{playlistId}', name: 'detail_playlist')]
-    public function detail($userId, $playlistId, PlaylistRepository $playlistRepository, Request $request): Response
+    #[Route('/user/{userId}/playlist/{playlistId}', name: 'show_playlist')]
+    public function show($userId, $playlistId, PlaylistRepository $playlistRepository): Response
     {
 
         $playlist = $playlistRepository->find($playlistId);
 
         $userSession = $this->getUser();
 
-        return $this->render('user_page/playlist/detail.html.twig', [
+        return $this->render('user_page/playlist/show.html.twig', [
             'playlist' => $playlist,
             'user' => $userSession,
         ]);

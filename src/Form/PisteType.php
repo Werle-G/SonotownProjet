@@ -26,6 +26,7 @@ class PisteType extends AbstractType
             ])
             ->add('duree', IntegerType::class, [
                 'label' => 'Durée du morceau',
+                'required' => false,
             ])
             ->add('audio', FileType::class, [
                 'label' => false,

@@ -1,0 +1,29 @@
+<section class="user-header padding-9">
+
+        <div class="user-avatar">
+
+        <a href="{{ path('edit_user', {'userId': app.user.id}) }}">Éditer le profil</a>
+
+        <figure class="user-avatar">
+                <img src="{{asset('uploads/avatar/mini/300x300-' ~ user.avatar)}}" alt="Avatar de l'ulisateur {{ user.pseudo }}">
+        </figure>
+
+        <h2>{{ user.pseudo }}</h2>
+
+        {% if app.user.follows is defined and not app.user.follows.contains(user) %}
+        <a href="{{ path('follow_user', {'userId': app.user.id, 'userFollowId': user.id}) }}">Follow</a>
+        {% else %}
+        <a href="{{ path('unfollow_user', {'userId': app.user.id, 'userFollowId': user.id}) }}">Unfollow</a>
+        {% endif %}
+
+        </div>
+
+        <a href="{{ path('albums_per_user', {'userId': user.id}) }}">Albums</a>
+
+        <a href="{{ path('user_playlist', {'userId': user.id}) }}">Playlists</a>
+
+        <a href="">Concerts</a>
+
+        <a href="">Followers</a>
+
+</section>

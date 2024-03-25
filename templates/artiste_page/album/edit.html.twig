@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}    
-<h1>Editer l'album</h1>
-
-
-{% endblock %}
+{% block title %}Editer l'album{% endblock %}
 
 {% block body %}
 
 <section class="padding-9">
 
-    <h1>Editer l'album</h1>
+    <h2>Editer l'album</h2>
     
     {{ form_start(form) }}
 
         {{ form_row(form.nomAlbum) }}
         {{ form_row(form.description) }}
-        {{ form_label(form.photo, 'Télécharge une photo d\'album') }}
-        {{ form_widget(form.photo) }}
+        {{ form_label(form.imageAlbum, 'Télécharge une photo d\'album') }}
+        {{ form_widget(form.imageAlbum) }}
+
+        <figure>
+            <img src="{{ asset('uploads/imageAlbum/mini/300x300-' ~ album.imageAlbum) }}" alt="Pochette de l'album {{ album.nomAlbum }}">
+        </figure>
         
         {{ form_row(form.dateSortieAlbum) }}
         {{ form_row(form.nbPistes) }}
@@ -29,16 +29,7 @@
                 {{ form_widget(form.genreMusicals) }}
             </div>
         </div>
-        <h2>Ajouter des morceaux</h2>
-
-   
-        {# {{ form_row(form.pistes )}}
-
-        <div id="validate">{{ form_row(form.valider) }}</div>
-
-        {{ form_row(form._token) }} 
-        {{ form_end(form) }} #}
-        {# {{ dump()}} #}
+        <h3>Ajouter des morceaux</h3>
 
         <div id="formulaire">
             <div class="form-group row form-piste">
@@ -60,8 +51,6 @@
                     {# compteur champ #}
                     {% for pisteField in form.pistes %}
                     
-                    {# {{ dump(pisteField.vars.value.audio)}}  #}
-
                     <p>
                         {{ form_errors(pisteField) }}
 

@@ -36,9 +36,8 @@ class ConcertController extends AbstractController
     }
 
     // Cette méthode ajoute un concert
-    #[Route('/artiste/{slug}/concert/new', name: 'new_concert')]
+    #[Route('/concert/new', name: 'new_concert')]
     public function newEditConcert(
-        $slug, 
         Concert $concert = null,
         Request $request, 
         EntityManagerInterface $entityManager, 
@@ -53,6 +52,8 @@ class ConcertController extends AbstractController
 
         // On récupère l'utilisateur et on l'attribue à l'objet concert via la méthode setUser de la classe Concert
         $concert->setUser($this->getUser());
+
+        $slug = $concert->getUser()->getSlug();
 
         // la variable form stocke le formulaire crée en appellant la méthode createForm, cette méthode prend en argument la classe
         // ConcertType ainsi que l'objet Concert
@@ -93,7 +94,7 @@ class ConcertController extends AbstractController
             
             $entityManager->flush();
 
-            return $this->redirectToRoute('detail_concert', ["slug" => $slug, "id" => $concert->getId()]);
+            return $this->redirectToRoute('show_concert', ["slug" => $slug, "id" => $concert->getId()]);
         }
 
         return $this->render('artiste_page/concert/new_edit.html.twig', [
@@ -103,11 +104,11 @@ class ConcertController extends AbstractController
     }
 
     // Cette méthode édite un concert
-    #[Route('/artiste/{slug}/concert/edit/{id}', name: 'edit_concert')]
-    public function editConcert(
-        $slug, 
-        Concert $concert, 
+    #[Route('/concert/edit/{concertId}', name: 'edit_concert')]
+    public function edit(
+        $concertId, 
         Request $request, 
+        ConcertRepository $concertRepository,
         EntityManagerInterface $entityManager, 
         PictureService $pictureService
     ): Response
@@ -117,6 +118,11 @@ class ConcertController extends AbstractController
 
         // la variable form stocke le formulaire crée en appellant la méthode createForm, cette méthode prend en argument la classe
         // ConcertType ainsi que l'objet Concert
+
+        $concert = $concertRepository->find($concertId);
+
+        $slug =  $concert->getUser()->getSlug();
+
         $form = $this->createForm(ConcertType::class, $concert);
 
         // Form récupère les données de la requète en prenant en argument l'objet requete
@@ -128,8 +134,6 @@ class ConcertController extends AbstractController
             // On récupère les images du formulaire en récupérant d'abord les données du formulaire
             // et on stocke les images dans la variable $images
             $images = $form->get('imageConcerts')->getData();
-
-            // dd($images);
 
             // On parcourt le tableau d'images
             foreach ($images as $image) {
@@ -156,7 +160,7 @@ class ConcertController extends AbstractController
             
             $entityManager->flush();
 
-            return $this->redirectToRoute('detail_concert', ["slug" => $slug, "id" => $concert->getId()]);
+            return $this->redirectToRoute('show_concert', ["slug" => $slug, "concertId" => $concert->getId()]);
         }
 
         return $this->render('artiste_page/concert/new_edit.html.twig', [
@@ -166,11 +170,10 @@ class ConcertController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/image/concert/{id}', name: 'delete_image', methods: ['DELETE'])]
+    #[Route('/delete/image/concert/{concertId}', name: 'delete_image', methods: ['DELETE'])]
     public function deleteImage(ImageConcert $imageConcert, Request $request, EntityManagerInterface $entityManager, PictureService $pictureService): JsonResponse
     {
 
-        dd($request);
         // On récupère le contenu de la requête
         $data = json_decode($request->getContent(), true);
 
@@ -196,41 +199,19 @@ class ConcertController extends AbstractController
         return new JsonResponse(['error' => 'Token invalide'], 400);
 
     }
-
-    // #[Route('/suppression/image/{id}', name: 'delete_image', methods: ['DELETE'])]
-    // public function deleteImage(Images $image, Request $request, EntityManagerInterface $em, PictureService $pictureService): JsonResponse
-    // {
-    //     // On récupère le contenu de la requête
-    //     $data = json_decode($request->getContent(), true);
-
-    //     if($this->isCsrfTokenValid('delete' . $image->getId(), $data['_token'])){
-    //         // Le token csrf est valide
-    //         // On récupère le nom de l'image
-    //         $nom = $image->getName();
-
-    //         if($pictureService->delete($nom, 'products', 300, 300)){
-    //             // On supprime l'image de la base de données
-    //             $em->remove($image);
-    //             $em->flush();
-
-    //             return new JsonResponse(['success' => true], 200);
-    //         }
-    //         // La suppression a échoué
-    //         return new JsonResponse(['error' => 'Erreur de suppression'], 400);
-    //     }
-
-    //     return new JsonResponse(['error' => 'Token invalide'], 400);
-    // }
-
     
     // Supprimer un concert
-    #[Route('/artiste/{slug}/concert/delete/{id}', name: 'delete_concert')]
+    #[Route('/concert/delete/{concertId}', name: 'delete_concert')]
     public function deleteConcert(
-        $slug, 
-        Concert $concert,
+        $concertId, 
+        ConcertRepository $concertRepository,
         EntityManagerInterface $entityManager
     ): Response
     {
+
+        $concert = $concertRepository->find($concertId);
+
+        $slug = $concert->getUser()->getSlug();
 
         $entityManager->remove($concert);
         $entityManager->flush();
@@ -239,7 +220,7 @@ class ConcertController extends AbstractController
     }
 
     // Tous les concerts de l'artiste
-    #[Route('/artiste/{slug}/concert/', name: 'concerts_per_artiste')]
+    #[Route('/artiste/{slug}/concerts', name: 'concerts_per_artiste')]
     public function concertsPerArtist(
         $slug, 
         ConcertRepository $concertRepository, 
@@ -256,19 +237,19 @@ class ConcertController extends AbstractController
     }
 
     // Détails d'un concert de l'artiste
-    #[Route('/artiste/{slug}/concert/detail/{id}', name: 'detail_concert')]
-    public function detailConcert(
+    #[Route('/artiste/{slug}/concert/{concertId}', name: 'show_concert')]
+    public function show(
         $slug, 
-        $id, 
+        $concertId, 
         ConcertRepository $concertRepository,
         UserRepository $userRepository
     ): Response
     {
-        $concert = $concertRepository->find($id);
+        $concert = $concertRepository->find($concertId);
 
         $user = $userRepository->findOneBy(['slug' => $slug]);
         
-        return $this->render('artiste_page/concert/detail.html.twig', [
+        return $this->render('artiste_page/concert/show.html.twig', [
             'concert' => $concert,
             'user' => $user,
         ]);

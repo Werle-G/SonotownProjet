@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+  {% block title %}Playlist{% endblock %}
+
+{% block body %}
+
+{% include "user_page/profil/_header.html.twig" %}
+
+<div class="playlist">
+
+  <div class="playlist-title">
+      
+    <h1>Playlists</h1>  
+
+      {% if is_granted('ROLE_USER') and app.user.id == user.id %} 
+
+        <a href="{{ path('new_playlist', {'userId': user.id})}}">Nouvelle playlist</a>
+
+      {% endif %}
+
+  </div>
+
+    <div class="playlist-cards">
+
+      {% for playlist in playlists %}
+
+          <div class="playlist-card">
+
+              <div class="card-titre">
+
+                <a href="{{ path('show_playlist', {'userId': user.id, 'playlistId': playlist.id})}}"><h2>{{ playlist.nomPlaylist }}</h2></a>
+
+                {# {% if is_granted('ROLE_USER') and app.user.id == user.id %}  #}
+                    {# <a href="{{ path('delete_playlist', {'userId': user.id, 'id': playlist.id})}}">Supprimer</a> #}
+                    {# <a href="{{ path('edit_playlist', {'userId': user.id, 'playlistId': playlist.id})}}">Editer</a> #}
+                {# {% endif %} #}
+
+              </div>
+
+              <div class="playlist-titre">
+                
+                {% for ajouter in playlist.ajouter %} 
+                
+                  <p>{{ ajouter.titre }}</p>
+                
+                {% endfor %}
+
+              </div>  
+        </div>
+      {% endfor %}
+    </div>
+
+</div>
+
+  {# <div class="remove"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15px" height="15px"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg></div> #}
+    
+{% endblock %}

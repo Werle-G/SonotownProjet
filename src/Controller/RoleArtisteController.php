@@ -42,8 +42,8 @@ class RoleArtisteController extends AbstractController
     }
 
     // Cette méthode édite la page artiste
-    #[Route('/page/edit/{slug}', name: 'profil_edit')]
-    public function pageEdit(
+    #[Route('/edit/{slug}', name: 'edit')]
+    public function edit(
         $slug, 
         Request $request, 
         UserRepository $userRepository, 
@@ -91,9 +91,6 @@ class RoleArtisteController extends AbstractController
                     $user->setAvatar($fileName);
                 }
 
-    
-    
-
                 // Un object Slugify est nouvellement crée et stocké dans la variableslugify
                 $slugify = new Slugify();
 
@@ -122,8 +119,7 @@ class RoleArtisteController extends AbstractController
     
         return $this->render('artiste_page/page/edit.html.twig', [
             'form' => $form->createView(),
-            'slug' => $userBdd->getId(),
-            // 'sessionId' => $session->getId()
+            'user' => $userBdd->getId(),
         ]);
     }
 
@@ -132,11 +128,11 @@ class RoleArtisteController extends AbstractController
     public function artisteSitePage(UserRepository $userRepository, $slug = null): Response
     {
         
-        if ($slug) {
+        if($slug){
             
             $user = $userRepository->findOneBy(["slug" => $slug]);
 
-        } else {
+        }else{
             
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 

@@ -2,18 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Album;
 use App\Entity\Piste;
 use App\Form\AlbumType;
-use App\Entity\Playlist;
-use App\Form\PlaylistType;
 use App\Service\AudioService;
-use App\Service\PictureService;
-use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
 use App\Repository\AlbumRepository;
-use App\Repository\PisteRepository;
+use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,14 +36,13 @@ class AlbumController extends AbstractController
         ]);
     }
 
-    #[Route('/artiste/{slug}/album/new', name: 'album_new')]
+    #[Route('/album/new', name: 'new_album')]
     public function new(
-        $slug, 
         Album $album = null, 
-        Request $request, 
         AudioService $audioService,
+        PictureService $pictureService,
         EntityManagerInterface $entityManager, 
-        #[Autowire('%photo_dir%')]string $photoDir,  
+        Request $request, 
     ): Response
     {
 
@@ -59,7 +53,11 @@ class AlbumController extends AbstractController
         $album = new Album();
 
         // L'utilisateur est récupéré et récupéré dans l'objet album
-        $album->setUser($this->getUser());
+        $userSession = $this->getUser(); 
+
+        $album->setUser($userSession);
+
+        $slug = $album->getUser()->getSlug();
 
         // form stocke le formulaire crée en appellant la méthode createForm, cette méthode prend en argument la classe
         // AlbumType ainsi que l'objet Album
@@ -74,28 +72,16 @@ class AlbumController extends AbstractController
             // On stocke les données recupérées dans la variable $album
             $album = $form->getData();
 
-            // Si dans le tableau $form la propriété 'avatar' existe. On stocke la photo dans la variable $photo
-            // et on rentre dans la condition
-            $photo = $form['photo']->getData();
+            $imageAlbum = $form['imageAlbum']->getData();
 
-            
-            // $audio = $form->get('pistes')->getData();
-            // $brochureFile = $form->get('brochure')->getData();
+            if($imageAlbum){
 
-            if ($photo) {
-                // uniqid génère un identifiant unique 
-                // photo récupère l'extension en utilisant la méthode guessExtension de la classe File utilisées dans le formulaire RoleArtisteType
-                // fileName stocke la concatenation de uniqid et de photo
-                $fileName = uniqid().'.'.$photo->guessExtension();
+                $folder = 'imageAlbum';
 
-                // photo déplace déplace $fileName dans le dossier précisé dans la variable $photoDir.
-                // move prend en premier argument, le dossier de redirection et le fichier
-                $photo->move($photoDir, $fileName);
+                // On appelle le service d'ajout de la classe PictureService
+                $fileName = $pictureService->add($imageAlbum, $folder, 300, 300);
 
-                // $album modifie le nom du fichier contenu dans l'oject album
                 $album->setImageAlbum($fileName);
-
-                // dd($album);
             }
 
 
@@ -126,9 +112,11 @@ class AlbumController extends AbstractController
             // On execute la requete en base de donnée après avoir préparé la requète via la méthode persist 
             $entityManager->flush();
 
+
+            $this->addFlash('success', 'Album ajouté');
             // Redirige vers la vue 'artiste_detail_album' avec en paramètre l'id de l'album récupéré avec la méthode getId de
             // l'object album
-            return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $album->getId()]);
+            return $this->redirectToRoute('show_album', ['slug' => $slug, 'albumId' => $album->getId()]);
 
         }
 
@@ -145,16 +133,15 @@ class AlbumController extends AbstractController
     }
 
     // Méthode qui permet d'éditer un album
-    #[Route('/artiste/{slug}/album/edit/{albumId}', name: 'album_edit')]
+    #[Route('/album/edit/{albumId}', name: 'edit_album')]
     public function edit(
-        $slug, 
         $albumId, 
         Album $album = null,
         Request $request,
         AlbumRepository $albumRepository, 
         EntityManagerInterface $entityManager,
         AudioService $audioService, 
-        #[Autowire('%photo_dir%')]string $photoDir,  
+        PictureService $pictureService
     ): Response
     {
 
@@ -162,6 +149,8 @@ class AlbumController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ARTISTE');
 
         $album = $albumRepository->find($albumId);
+
+        $slug =  $album->getUser()->getSlug();
 
         // form stocke le formulaire crée en appellant la méthode createForm, cette méthode prend en argument la classe
         // AlbumType ainsi que l'objet Album
@@ -179,22 +168,20 @@ class AlbumController extends AbstractController
             
             // Si dans le tableau $form la propriété 'avatar' existe. On stocke la photo dans la variable $photo
             // et on rentre dans la condition
-            $photo = $form['photo']->getData();
+            $imageAlbum = $form['imageAlbum']->getData();
 
-            if ($photo) {
+            $imageBdd = $album->getImageAlbum();
+            
+            if($imageAlbum){
+                
+                $pictureService->delete($imageBdd, 'imageAlbum', 300, 300);
+                
+                $folder = 'imageAlbum';
+                
+                // On appelle le service d'ajout de la classe PictureService
+                $fileName = $pictureService->add($imageAlbum, $folder, 300, 300);
 
-                // uniqid génère un identifiant unique 
-                // photo récupère l'extension en utilisant la méthode guessExtension de la classe File utilisées dans le formulaire RoleArtisteType
-                // fileName stocke la concatenation de uniqid et de photo
-                $fileName = uniqid().'.'.$photo->guessExtension();
-
-                // photo déplace déplace $fileName dans le dossier précisé dans la variable $photoDir.
-                // move prend en premier argument, le dossier de redirection et le fichier
-                $photo->move($photoDir, $fileName);
-
-                // $album modifie le nom du fichier contenu dans l'oject album
                 $album->setImageAlbum($fileName);
-
             }
 
             $audios = $form['pistes']->getData();
@@ -210,7 +197,6 @@ class AlbumController extends AbstractController
                     if($audioData){
                         
                         $fichier = $audioService->add($audioData, $folder);
-                    
 
                         $son = new Piste();
             
@@ -227,9 +213,10 @@ class AlbumController extends AbstractController
             // On execute la requete en base de donnée après avoir préparé la requète via la méthode persist 
             $entityManager->flush();
 
+            $this->addFlash('success', 'Album modifié');
             // Redirige vers la vue 'artiste_detail_album' avec en paramètre l'id de l'album récupéré avec la méthode getId de
             // l'object album
-            return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $album->getId()]);
+            return $this->redirectToRoute('show_album', ['slug' => $slug, 'albumId' => $album->getId()]);
 
         }
 
@@ -242,6 +229,7 @@ class AlbumController extends AbstractController
             // edit : variable qui affiche l'album à éditer.
             // Récupère l'Id de l'album via la méthode getId de la classe Album
             'albumId' => $album->getId(),
+            'album' => $album
 
         ]);
     }
@@ -254,6 +242,23 @@ class AlbumController extends AbstractController
         $album = $albumRepository->find($albumId);
         
         $pistes = $album->getPistes();
+
+        $data = json_decode($request->getContent(), true);
+
+
+        // if($this->isCsrfTokenValid('delete' . $imageConcert->getId(), $data['_token'])){
+        //     // Le token csrf valide
+        //     // On récupère le nom de l'image
+        //     $nom = $imageConcert->getNomImage();
+
+        //     if($pictureService->delete($nom, 'Concerts', 300, 300)){
+        //         // On supprime l'image de la base de donnée
+        //         $entityManager->remove($imageConcert);
+        //         $entityManager->flush();
+
+        //         return new JsonResponse(['success' => true], 200);
+        //     }
+
 
         foreach($pistes as $piste){
 
@@ -278,14 +283,21 @@ class AlbumController extends AbstractController
     }
 
     // Fonction pour supprimer un album
-    #[Route('/artiste/{slug}/album/{albumId}/delete', name: 'album_delete')]
-    public function delete($slug, $albumId, AlbumRepository $albumRepository,EntityManagerInterface $entityManager, AudioService $audioService): Response
+    #[Route('/album/delete/{albumId}', name: 'delete_album')]
+    public function delete(
+        $albumId, 
+        AlbumRepository $albumRepository,
+        EntityManagerInterface $entityManager, 
+        AudioService $audioService
+    ): Response
     {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         // L'objet $album sera supprimé
         $album = $albumRepository->find($albumId);
+
+        $slug =  $album->getUser()->getSlug();
 
 
         foreach($album->getPistes() as $piste){
@@ -306,11 +318,11 @@ class AlbumController extends AbstractController
     }
 
     // Méthode qui affiche tout les albums qu'un artiste
-    #[Route('/artiste/{slug}/album/', name: 'albums_per_artiste')]
+    #[Route('/artiste/{slug}/albums', name: 'albums_per_artiste')]
     public function albumsPerArtiste(
+        $slug,
         AlbumRepository $albumRepository, 
         UserRepository $userRepository, 
-        $slug
     ): Response
     {
 
@@ -321,7 +333,7 @@ class AlbumController extends AbstractController
         $albums = $albumRepository->findBy(["user" => $user]);
 
         // Renvoie la vue des albums par artiste
-        return $this->render('artiste_page/album/all_album_per_artiste.html.twig', [
+        return $this->render('artiste_page/album/albums_per_artiste.html.twig', [
 
             // Prend un tableau de paramètre contenant les variables $albums et $user récupérés 
             'albums' => $albums,
@@ -330,14 +342,12 @@ class AlbumController extends AbstractController
     }
     
     // Détails d'un album d'un artiste
-    #[Route('/artiste/{slug}/album/detail/{albumId}', name: 'album_detail')]
-    public function detail(
+    #[Route('/artiste/{slug}/album/{albumId}', name: 'show_album')]
+    public function show(
         $slug, 
         $albumId, 
         AlbumRepository $albumRepository, 
         UserRepository $userRepository, 
-        EntityManagerInterface $entityManager, 
-        Request $request
     ): Response
     {
 
@@ -345,10 +355,9 @@ class AlbumController extends AbstractController
 
         $user = $userRepository->findOneBy(['slug' => $slug]);
 
-        return $this->render('artiste_page/album/detail.html.twig', [
+        return $this->render('artiste_page/album/show.html.twig', [
             'album' => $album,
             'user' => $user,
-            // 'form' => $form->createView(),
         ]);
     }
 }

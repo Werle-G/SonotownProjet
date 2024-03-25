@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des concerts{% endblock %}
+
+{% block body %}
+
+<section class="artiste padding-9">
+
+    {% include "artiste_page/page/_header.html.twig" %}
+
+    <div class="artiste-concert">
+
+    <h1>{{ concert.lieu }}</h1>
+
+    {{ concert.descriptionConcert }} <br>
+
+    {% for imageConcert in concert.imageConcerts %}
+
+        <img src="{{ asset('uploads/Concerts/mini/300x300-') ~ imageConcert.nomImage }}">
+        
+    {% endfor %}
+    <br>
+    <a href="{{ path('edit_concert', {'concertId': concert.id}) }}">Editer concert</a><br>
+    <a href="{{ path('delete_concert', {'concertId': concert.id}) }}">Delete concert</a>
+
+    </div>
+
+    <div class="btn-like">
+        {% if app.user.aimerConcerts is defined and not app.user.aimerConcerts.contains(concert) %}
+        <a href="{{ path('like_concert', {'userId': app.user.id, 'slug': user.slug, 'concertId': concert.id}) }}">Like</a>
+        {% else %}
+        <a href="{{ path('unlike_concert', {'userId': app.user.id, 'slug': user.slug, 'concertId': concert.id}) }}">Unlike</a>
+        {% endif %}
+      </div>
+
+</section>
+
+{% endblock %}
