@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Commentaire;
 use App\Form\CommentaireType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CommentaireRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,27 +24,43 @@ class CommentaireController extends AbstractController
     }
 
 
-
-    #[Route('/artiste/{idArtiste}/new/commentaire', name: 'new_commentaire')]
-    public function new_commentaire(Request $request, EntityManagerInterface $entityManager, $idArtiste): Response
+    #[Route('/user/{userId}/commentaire/new/{userCommentId}', name: 'new_commentaire')]
+    public function newCommentaire(
+        $userId,
+        $userCommentId,
+        Commentaire $commentaire = null, 
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $userSession = $userRepository->findOneById($userId);
         
-        $commentaire = new Commentaire();
-        $commentaire->setCommenter($this->getUser());
-    
-        $form = $this->createForm(CommentaireType::class, $commentaire);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($commentaire);
-            $entityManager->flush();
-    
-            return $this->redirectToRoute('artiste_page', ['id' => $idArtiste]);
-        }
-    
-        return $this->render('artiste_page/page/show.html.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        $artiste = $userRepository->find($userCommentId);
+
+        $slug = $artiste->getSlug();
+
+        $addCommentaire = $request->get('message');
+        
+            if($userSession && $artiste && $addCommentaire){
+
+                $commentaire = new Commentaire();
+
+                $commentaire->setCommenter($userSession);
+                $commentaire->setMessage($addCommentaire);
+                
+                $entityManager->persist($commentaire);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('artiste_page', ['slug' => $artiste->getSlug()]);
+
+            }
+
+        return $this->redirectToRoute('artiste_page', ['slug' => $slug]); 
+        
     }
 
 

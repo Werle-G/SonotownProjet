@@ -7,11 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Serializer\Serializer;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 

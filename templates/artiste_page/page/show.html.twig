@@ -11,7 +11,29 @@
 
   <div class="artiste-main">
       
-    <div class="artiste-commentaire">
+      
+    {% for commentaire in user.commentaires %}
+    
+    {# {{ dump(commentaire.message)}} #}
+
+      {{ commentaire.commenter.pseudo}}
+        {{ commentaire.dateCreation | date("m/d/Y")}} <br>
+        {{ commentaire.message}}<br>
+
+        <div class="artiste-commentaire">
+  
+        <form id="new-commentaire" action='{{ path('new_commentaire', {'userId': app.user.id, 'userCommentId': user.id } ) }}' method="post">
+    
+          <label for="message"></label>
+  
+            <p>{{  commentaire.repondre }}</p>
+  
+            <input type="text" name="message" >
+  
+          <input type="submit" value="Valider">
+  
+        </form> 
+      {% endfor %}
 
     </div>
 

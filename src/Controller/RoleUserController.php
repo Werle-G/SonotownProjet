@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Form\RoleUserType;
 use App\Service\PictureService;
 use App\Repository\UserRepository;
@@ -29,16 +28,17 @@ class RoleUserController extends AbstractController
     #[Route('/user/edit/{userId}', name: 'edit_user')]
     public function userProfilEdit(
         $userId, 
-        Request $request, 
         UserRepository $userRepository, 
         EntityManagerInterface $entityManager,
         PictureService $pictureService,
+        Request $request 
     ): Response
     {
         // Vérifier si l'utilisateur est connecté
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $userSession = $this->getUser(); 
+
         $userBdd = $userRepository->find($userId);
         
         if ($userSession == $userBdd) {
@@ -49,13 +49,13 @@ class RoleUserController extends AbstractController
             
             if ($form->isSubmitted() && $form->isValid()) {
 
-
                 $user = $form->getData();
 
+                $avatar = $form['avatar']->getData();
+                
                 $avatarBdd = $userSession->getAvatar();
 
-                $avatar = $form['avatar']->getData();
-
+                
                 if($avatar){
 
                     $folder = 'avatar';

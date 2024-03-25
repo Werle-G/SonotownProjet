@@ -98,6 +98,7 @@ class PlaylistController extends AbstractController
         $piste = $pisteRepository->find($pisteId);
         
         $slug =  $piste->getAlbum()->getUser()->getSlug();
+        
         $albumId = $piste->getAlbum()->getId();
         
         $titrePlaylist = $request->get('titrePlaylist');

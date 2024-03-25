@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentaireRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommentaireRepository;
 
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
@@ -20,7 +21,7 @@ class Commentaire
     #[ORM\Column]
     private ?\DateTimeImmutable $dateCreation = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $ban = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
@@ -28,8 +29,15 @@ class Commentaire
     private ?User $commenter = null;
 
     #[ORM\ManyToOne(inversedBy: 'repondres')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $repondre = null;
+
+    public function __construct()
+    {
+
+        $this->dateCreation = new DateTimeImmutable();
+
+    }
 
     public function getId(): ?int
     {

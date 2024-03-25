@@ -43,14 +43,6 @@ class RoleArtisteType extends AbstractType
                 'label' => 'Biographie',
                 'required' => false,
             ])
-            // ->add('sites', EntityType::class, [
-            //     'class' => Site::class, // Classe de votre entité Site
-            //     'choice_label' => 'nom', // Propriété de l'entité Site à afficher dans le champ de sélection
-            //     'multiple' => true, // Permettre à l'utilisateur de sélectionner plusieurs sites
-            //     'expanded' => false, // Afficher les options sous forme de liste déroulante
-            //     'required' => false, // Indiquer si le champ est obligatoire ou non
-            //     // Autres options si nécessaire
-            // ])
             ->add('reseaus', CollectionType::class, [
                 'entry_type' => ReseauType::class,
             ])
