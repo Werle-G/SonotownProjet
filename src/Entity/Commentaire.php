@@ -10,6 +10,7 @@ use App\Repository\CommentaireRepository;
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,19 +25,17 @@ class Commentaire
     #[ORM\Column(nullable: true)]
     private ?bool $ban = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commentaires')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'commentaires', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $commenter = null;
 
-    #[ORM\ManyToOne(inversedBy: 'repondres')]
+    #[ORM\ManyToOne(inversedBy: 'repondres', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $repondre = null;
 
     public function __construct()
     {
-
         $this->dateCreation = new DateTimeImmutable();
-
     }
 
     public function getId(): ?int

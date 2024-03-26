@@ -553,6 +553,7 @@ header{
 
 /* Page artiste Profil */
 
+
 .artiste{
     display: flex;
     flex-direction: column;
@@ -560,6 +561,14 @@ header{
     min-height: 100vh;
     background: var(--color-background-brown-1);
 }
+
+.artiste-main{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+/* Artiste header */
 
 .artiste-header{
     width: 80%;
@@ -581,7 +590,7 @@ header{
     max-width: 100%;
 }
 
-.artiste-info h1{
+.artiste-info h2{
     font-size: var(--font-size-title);
     color: var(--color-background-brown-3);
     text-shadow:5px 3px 6px #d9d7d7;;
@@ -589,8 +598,15 @@ header{
 
 .artiste-info p{
     font-size: var(--font-size-text);
-
 }
+
+
+
+#artiste-biographie{
+    width: 50%;
+}
+
+/* artiste aside */
 
 .artiste-aside .avatar img{
     max-width: 300px;
@@ -602,16 +618,26 @@ header{
     object-fit: cover;
 }
 
-.avatar figure{
-    max-width: 100%;
-}
-
 .artiste-aside{
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: 100%;
 }
+
+
+.artiste-aside h2{
+    font-size: var(--font-size-title);
+    color: var(--color-background-brown-3);
+}
+
+.avatar figure{
+    max-width: 100%;
+}
+
+
+
+/* Artiste aside link */
 
 #artiste-link{
     display: flex;
@@ -634,40 +660,6 @@ header{
     position: relative;
 }
 
-#artiste-link .btn-suivre a{
-    position: relative;
-    text-decoration: none;
-    overflow: hidden;
-    z-index: 1;
-    transition: .5s;
-    font-size: var(--font-size-link);
-
-}
-
-
-.btn-suivre a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background: var(--color-background-brown-3);
-    z-index: -1;
-    transition: .5s;
-}
-
-.btn-suivre a{
-    background: transparent;
-    color: var(--color-background-brown-1);
-    font-weight: 500;
-    text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 3px -5px;
-}
-
-.btn-suivre a:hover::before{
-    width: 100%;
-}
-
 #artiste-link .artiste-page-link a{
     color: white;
     text-decoration: none;
@@ -685,6 +677,7 @@ header{
     border: solid var(--color-text-1 )  1px;
     border-radius: 50%;
 }
+
 
 .artiste-reseau a:hover{
     color: white;
@@ -709,20 +702,46 @@ header{
     align-items: center;
 }
 
-
-
-
 .artiste-reseau img{
     fill: currentColor !important;
 }
 
+/* Artiste aside boutton suivre */
 
+#artiste-link .btn-suivre a{
+    position: relative;
+    text-decoration: none;
+    overflow: hidden;
+    z-index: 1;
+    transition: .5s;
+    font-size: var(--font-size-link);
 
-
-.artiste-aside h1{
-    font-size: var(--font-size-title);
-    color: var(--color-background-brown-3);
 }
+
+.btn-suivre a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: var(--color-background-brown-3);
+    z-index: -1;
+    transition: .5s;
+}
+
+.btn-suivre a{
+    background: transparent;
+    color: var(--color-background-brown-1);
+    font-weight: 500;
+    text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 3px -5px;
+}
+
+.btn-suivre a:hover::before{
+    width: 100%;
+}
+
+
 .artiste-titre{
     display: flex;
     justify-content: space-between;
@@ -742,15 +761,54 @@ header{
     text-decoration: none;
 }
 
-.artiste-main{
+/* Artiste commentaire */
+
+#commentaire-container{
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    height: 200px;
+    width: 600px;
+    background: var(--color-background-grey-0);
+    border-radius: 10px;
+    padding: 2em;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-#artiste-biographie{
-    width: 50%;
+#commentaire-container h3{
+    text-align: center;
+    padding-bottom: 2rem;
+    border-bottom: #a0a0a0 1px solid;
+    margin-bottom: 0;
+}
+
+.commentaire-post{
+    display: flex;
+    flex-direction: column;
+    border-bottom: #a0a0a0 1px solid;
+    padding-top: 1rem
+}
+
+.post-title{
+    padding-bottom: 2rem
+}
+
+#commentaire-form{
+    display: flex;
+    flex-direction: column;
+}
+
+#commentaire-form h4{
+    padding-top: 2rem;
+}
+
+#new-commentaire{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#new-commentaire input[type="submit"]{
+    width: 50px;
+    align-self: end;
 }
 
 /* Artiste lecteur multipiste */

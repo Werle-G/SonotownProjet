@@ -14,12 +14,27 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Commentaire[]    findAll()
  * @method Commentaire[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
 class CommentaireRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Commentaire::class);
     }
+
+    /**
+     * @return Commentaire[] Returns an array of Commentaire objects
+     */
+     public function findCommentaireByArtiste($value): array
+     {
+         return $this->createQueryBuilder('c')
+             ->andWhere('c.repondre = :val')
+             ->setParameter('val', $value)
+             ->orderBy('c.id', 'ASC')
+             ->getQuery()
+             ->getResult()
+         ;
+     }
 
 //    /**
 //     * @return Commentaire[] Returns an array of Commentaire objects
@@ -35,6 +50,8 @@ class CommentaireRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
+
+
 
 //    public function findOneBySomeField($value): ?Commentaire
 //    {

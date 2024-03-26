@@ -22,8 +22,10 @@
 
     <div class="playlist-cards">
 
-      {% for playlist in playlists %}
-
+      {% for key, playlist in playlists %}
+      {# {{ dump(key) }}
+      {{ dump(playlist.ajouter) }} #}
+      {# Récupérer l'id de la playlist pour l'écouter depuis Playlists_per_user #}
           <div class="playlist-card">
 
               <div class="card-titre">

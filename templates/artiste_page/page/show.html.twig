@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Page de l'artiste{% endblock %}
+  {% block title %}Page de l'artiste{% endblock %}
 
 {% block body %}
-
 
 <section class="artiste padding-9">
 
@@ -11,32 +10,102 @@
 
   <div class="artiste-main">
       
+    <div id="commentaire-container">
+
+      <div id="commentaire-header">
+
+        <h3>Commentaires</h3>
+
+      </div>
       
-    {% for commentaire in user.commentaires %}
-    
-    {# {{ dump(commentaire.message)}} #}
+      {% for commentaire in commentaires %}
+      
+      <div class="commentaire-post">
 
-      {{ commentaire.commenter.pseudo}}
-        {{ commentaire.dateCreation | date("m/d/Y")}} <br>
-        {{ commentaire.message}}<br>
+        <div class="post-title">
 
-        <div class="artiste-commentaire">
+          {# Si l'utilisateur ayant écrit le commentaire à encore un compte #}
+          {% if commentaire.commenter %}
+
+              <span>{{ commentaire.commenter.pseudo }}</span> 
+          
+          {% else %}
+
+              <span>Utilisateur supprimé</span>
+            
+          {% endif %}
+
+            <span>{{ commentaire.dateCreation | date("m/d/Y")}} </span>
+
+          {% if is_granted('ROLE_ADMIN') and app.user.id == commentaire.commenter.id %} 
+
+            <a href="{{ path('delete_commentaire', {'userId': user.id, 'commentaireId': commentaire.id}) }}">Supprimer</a>
+            
+          {% else %}
+            
+          {% endif %}
+
+
+          {# Si le commentaire a été banni #}
+
+          <div class="ban">
+
+            {% if commentaire.ban %}
   
-        <form id="new-commentaire" action='{{ path('new_commentaire', {'userId': app.user.id, 'userCommentId': user.id } ) }}' method="post">
+                <a href="{{ path('unban_commentaire', {'commentaireId': commentaire.id}) }}">Unban</a>
+              
+            {% else %}
+              
+                <a href="{{ path('ban_commentaire', {'commentaireId': commentaire.id}) }}">Ban</a>
+  
+            {% endif %}
+
+          </div>
+
+        </div>
+
+        <div class="post-text">
+
+          {% if commentaire.ban %}
+            
+          <p>Commentaire supprimé ou ayant enfreint les règles.</p>
+
+          {% else %}
+            
+          <p>{{ commentaire.message}}</p>
+
+          {% endif %}
+
+        </div>
+          
+      </div>
+
+        {% endfor %}
+
+
+      <div id="commentaire-form">
+
+        <h4>Ecrire un commentaire</h4>
+
+        <form id="new-commentaire" action='{{ path('new_commentaire', {'userId': app.user.id, 'artisteId': user.id } ) }}' method="post">
     
           <label for="message"></label>
-  
-            <p>{{  commentaire.repondre }}</p>
-  
-            <input type="text" name="message" >
-  
+    
+            <input type="textarea" name="message" >
+    
           <input type="submit" value="Valider">
-  
+    
         </form> 
-      {% endfor %}
+
+      </div>
 
     </div>
 
-  </section>
+
+
+
+    </div>
+
+</section>
 
 {% endblock %}

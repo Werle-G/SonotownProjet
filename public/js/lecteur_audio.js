@@ -1,5 +1,4 @@
-
-var trackElements = document.querySelectorAll('.information-piste');
+const trackElements = document.querySelectorAll('.information-piste');
 
 let now_playing = document.querySelector(".now-playing");
 let track_art = document.querySelector(".track-art");
@@ -15,11 +14,11 @@ let volume_slider = document.querySelector(".volume_slider");
 let curr_time = document.querySelector(".current-time");
 let total_duration = document.querySelector(".total-duration");
 
-var track_list = [];
+let track_list = [];
 
 trackElements.forEach(function(trackElement) {
   
-  var track = {
+  let track = {
       name: JSON.parse(trackElement.dataset.titre),
       path: JSON.parse(trackElement.dataset.path)
   };

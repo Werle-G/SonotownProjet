@@ -36,8 +36,8 @@
 
                     <figure>
 
-                        <a href="{{ path('artiste_page', {'slug': user.slug}) }}">
-                        <img src="{{asset('uploads/images/' ~ user.avatar)}}"  alt="Avatar de l'artiste {{ user.nomArtiste }}">
+                        <a href="{{ path('artiste_page', {'artisteId': user.id}) }}">
+                        <img src="{{asset('uploads/avatar/mini/300x300-' ~ user.avatar)}}"  alt="Avatar de l'artiste {{ user.nomArtiste }}">
                         </a>
 
                     </figure>

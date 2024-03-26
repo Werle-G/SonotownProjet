@@ -80,7 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, unique: true, nullable: true)]
     private string $slug;
 
-    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'commenter')]
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'commenter', cascade: ['persist'])]
     private Collection $commentaires;
 
     #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'repondre')]
@@ -285,6 +285,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isBan(): ?bool
     {
+        
         return $this->ban;
     }
 

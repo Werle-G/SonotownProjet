@@ -32,7 +32,7 @@
               <div class="player">
 
                   {% for ajouter in playlist.ajouter %}
-                  
+
                   {% set audioUrl = asset('uploads/audios/' ~ ajouter.audio) %}
               
                   <div class="track-name information-piste" data-titre="{{ ajouter.titre|serialize(format = 'json')}}" data-path="{{ asset('uploads/audios/' ~ ajouter.audio)|serialize(format = 'json')}}"></div>

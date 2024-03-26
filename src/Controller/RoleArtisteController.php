@@ -7,8 +7,6 @@ use App\Form\ProfilType;
 use Cocur\Slugify\Slugify;
 use App\Form\RoleArtisteType;
 use App\Repository\CommentaireRepository;
-use Doctrine\DBAL\Types\Types;
-use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Repository\ConcertRepository;
 use App\Service\PictureService;
@@ -145,7 +143,7 @@ class RoleArtisteController extends AbstractController
 
         $userId = $user->getId();
 
-        $commentaires = $commentaireRepository->find($userId);
+        $commentaires = $commentaireRepository->findCommentaireByArtiste($userId);
 
         return $this->render('artiste_page/page/show.html.twig', [
             'user' => $user,
@@ -153,9 +151,29 @@ class RoleArtisteController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}', name: 'page')]
+    // #[Route('/{slug}', name: 'page')]
+    // public function artistePage(
+    //     $slug,
+    //     UserRepository $userRepository,
+    //     CommentaireRepository $commentaireRepository
+    // ): Response
+    // {
+        
+    //     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+    //     $commentaires = $commentaireRepository->findOneBy(['slug' => $slug]);
+        
+    //     $user = $userRepository->findOneBy(["slug" => $slug]);
+            
+    //     return $this->render('artiste_page/page/show.html.twig', [
+    //         'user' => $user,
+    //         'commentaires' => $commentaires
+    //     ]);
+    // }
+    
+    #[Route('/{artisteId}', name: 'page')]
     public function artistePage(
-        $slug,
+        $artisteId,
         UserRepository $userRepository,
         CommentaireRepository $commentaireRepository
     ): Response
@@ -163,10 +181,10 @@ class RoleArtisteController extends AbstractController
         
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $commentaires = $commentaireRepository->findOneBy(['slug' => $slug]);
-        
-        $user = $userRepository->findOneBy(["slug" => $slug]);
-            
+        $commentaires = $commentaireRepository->findCommentaireByArtiste($artisteId);
+
+        $user = $userRepository->find($artisteId);
+
         return $this->render('artiste_page/page/show.html.twig', [
             'user' => $user,
             'commentaires' => $commentaires
