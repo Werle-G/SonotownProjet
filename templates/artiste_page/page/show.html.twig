@@ -36,28 +36,30 @@
           {% endif %}
 
             <span>{{ commentaire.dateCreation | date("m/d/Y")}} </span>
-
-          {% if is_granted('ROLE_ADMIN') and app.user.id == commentaire.commenter.id %} 
+          {% if commentaire.commenter == null %}
+  
+          {% elseif is_granted('ROLE_ADMIN') or is_granted('ROLE_ARTISTE') and app.user.id == commentaire.repondre.id %}
 
             <a href="{{ path('delete_commentaire', {'userId': user.id, 'commentaireId': commentaire.id}) }}">Supprimer</a>
             
-          {% else %}
-            
-          {% endif %}
+          {% elseif commentaire.commenter is not null and commentaire.commenter.id == app.user.id %}
 
+            <a href="{{ path('delete_commentaire', {'userId': user.id, 'commentaireId': commentaire.id}) }}">Supprimer</a>
+
+          {% endif %}
 
           {# Si le commentaire a été banni #}
 
           <div class="ban">
 
-            {% if commentaire.ban %}
+            {% if commentaire.ban == false and commentaire.commenter is not null %}
+            
+            <a href="{{ path('ban_commentaire', {'commentaireId': commentaire.id}) }}">Ban</a>
+
+            {% elseif commentaire.ban == true and is_granted('ROLE_ADMIN') or is_granted('ROLE_ARTISTE') and user.id == commentaire.repondre.id %}
   
-                <a href="{{ path('unban_commentaire', {'commentaireId': commentaire.id}) }}">Unban</a>
-              
-            {% else %}
-              
-                <a href="{{ path('ban_commentaire', {'commentaireId': commentaire.id}) }}">Ban</a>
-  
+            <a href="{{ path('unban_commentaire', {'commentaireId': commentaire.id}) }}">Unban</a>
+            
             {% endif %}
 
           </div>
@@ -66,7 +68,7 @@
 
         <div class="post-text">
 
-          {% if commentaire.ban %}
+          {% if commentaire.ban == true %}
             
           <p>Commentaire supprimé ou ayant enfreint les règles.</p>
 

@@ -101,7 +101,9 @@ class PlaylistController extends AbstractController
         
         $albumId = $piste->getAlbum()->getId();
         
-        $titrePlaylist = $request->get('titrePlaylist');
+        if($request->isMethod("POST")) {
+
+            $titrePlaylist = $request->request->get('titrePlaylist');
 
             if($userSession && $piste && $titrePlaylist){
 
@@ -117,6 +119,7 @@ class PlaylistController extends AbstractController
                 return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]);
 
             }
+        }
 
         return $this->redirectToRoute('album_detail', ['slug' => $slug, 'albumId' => $albumId]); 
         

@@ -2,13 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Commentaire;
-use App\Form\CommentaireType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CommentaireRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -45,10 +42,15 @@ class CommentaireController extends AbstractController
         $artiste = $userRepository->find($artisteId);
 
         // On récupère le message via la méthode get de la classe Request
-        $addCommentaire = $request->get('message');
+        
+        if($request->isMethod("POST")) {
+
+            // $request->request->get('message') : récupère les données via la méthode POST
+            // $request->get('message') : récupère les données via la méthode GET et POST
+            $message = $request->request->get('message');
 
             // Si userSession ainsi que artiste et addCommentaire existent
-            if($userSession && $artiste && $addCommentaire){
+            if($userSession && $artiste && $message){
 
                 // On crée un nouvel objet commentaire
                 $commentaire = new Commentaire();
@@ -60,7 +62,7 @@ class CommentaireController extends AbstractController
                 $commentaire->setRepondre($artiste);
 
                 // On attribut le message au commentaire
-                $commentaire->setMessage($addCommentaire);
+                $commentaire->setMessage($message);
 
                 // On prepare la base de donnée 
                 $entityManager->persist($commentaire);
@@ -72,57 +74,11 @@ class CommentaireController extends AbstractController
                 return $this->redirectToRoute('artiste_page', ['artisteId' => $artisteId]);
 
             }
+        }
+
 
         // On retourne la vue de la page de l'artiste
         return $this->redirectToRoute('artiste_page', ['artisteId' => $artisteId]); 
-        
-    }
-
-    // Fonction répondre commentaire
-    #[Route('/user/{userId}/commentaire/new/repondre/{commentaireId}', name: 'new_commentaire_repondre')]
-    public function newCommentaireRepondre(
-        $userId,
-        $commentaireId,
-        Commentaire $commentaire = null, 
-        CommentaireRepository $commentaireRepository,
-        UserRepository $userRepository,
-        EntityManagerInterface $entityManager,
-        Request $request
-    ): Response
-    {
-
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $userSession = $userRepository->findOneById($userId);
-        
-        $commentaireBdd = $commentaireRepository->find($commentaireId);
-
-        $commentaireBdd = $commentaireBdd->getId();
-
-        dd($commentaire->getCommenter());
-
-        // $userRepondre = $commentaireBdd->getCommenter()->getId();
-
-        $addCommentaire = $request->get('message');
-        
-            if($userSession && $commentaireBdd && $addCommentaire){
-
-                $commentaire = new Commentaire();
-
-                $commentaire->setCommenter($userSession);
-
-                // $commentaire->setRepondre($artiste);
-                $commentaire->setMessage($addCommentaire);
-                
-                $entityManager->persist($commentaire);
-                
-                $entityManager->flush();
-
-                return $this->redirectToRoute('artiste_page', ['artisteId' => $userId]);
-
-            }
-
-        return $this->redirectToRoute('artiste_page', ['artisteId' => $userId]); 
         
     }
 
