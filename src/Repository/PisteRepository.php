@@ -36,6 +36,28 @@ class PisteRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+    public function findPiste(?string $piste)
+    {
+
+        $query = $this->createQueryBuilder('p')
+            ->where('p.titre LIKE :val')
+            ->setParameter('val', $piste)
+            ->orderBy('p.titre', 'ASC')
+        ;
+        return $query->getQuery()->getResult();
+    }
+
+    // public function findUserByRole(?string $roles)
+    // {
+
+    //     $query = $this->createQueryBuilder('u')
+    //         ->where('u.roles LIKE :val')
+    //         ->setParameter('val', $roles)
+    //         ->orderBy('u.nomArtiste', 'ASC')
+    //     ;
+    //     return $query->getQuery()->getResult();
+    // }
+
 //    public function findOneBySomeField($value): ?Piste
 //    {
 //        return $this->createQueryBuilder('p')

@@ -110,10 +110,10 @@ class RoleUserController extends AbstractController
         return $this->redirectToRoute('user_page', ['id' => $userFollowId]);
     }
 
-    #[Route('/user/{userId}/follow/artiste/{slug}', name: 'follow_artiste')]
+    #[Route('/user/{userId}/follow/artiste/{artisteId}', name: 'follow_artiste')]
     public function followArtiste(
         $userId,
-        $slug, 
+        $artisteId, 
         UserRepository $userRepository, 
         EntityManagerInterface $entityManager
     ): Response
@@ -123,7 +123,7 @@ class RoleUserController extends AbstractController
 
         $user = $userRepository->find($userId);
 
-        $artiste = $userRepository->findOneBy(["slug" => $slug]);
+        $artiste = $userRepository->find($artisteId);
 
         $user->addFollow($artiste);
 
@@ -131,15 +131,15 @@ class RoleUserController extends AbstractController
 
         $entityManager->flush();
         
-        return $this->redirectToRoute('artiste_page', ['slug' => $slug]);
+        return $this->redirectToRoute('artiste_page', ['artisteId' => $artisteId]);
 
     }
 
 
-    #[Route('/user/{userId}/unfollow/artiste/{slug}', name: 'unfollow_artiste')]
+    #[Route('/user/{userId}/unfollow/artiste/{artisteId}', name: 'unfollow_artiste')]
     public function unFollowArtiste(
         $userId,
-        $slug, 
+        $artisteId, 
         UserRepository $userRepository, 
         EntityManagerInterface $entityManager
     ): Response
@@ -149,7 +149,7 @@ class RoleUserController extends AbstractController
 
         $user = $userRepository->find($userId);
 
-        $artiste = $userRepository->findOneBy(["slug" => $slug]);
+        $artiste = $userRepository->find($artisteId);
 
         $user->removeFollow($artiste);
 
@@ -157,7 +157,7 @@ class RoleUserController extends AbstractController
 
         $entityManager->flush();
         
-        return $this->redirectToRoute('artiste_page', ['slug' => $slug]);
+        return $this->redirectToRoute('artiste_page', ['artisteId' => $artisteId]);
 
     }
 

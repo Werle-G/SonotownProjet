@@ -1,20 +1,81 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SearchController!{% endblock %}
+{% block title %}Page de recherche{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<section class="search-page padding-9">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/laragon/www/SonotownProjet/src/Controller/SearchController.php</code></li>
-        <li>Your template at <code>C:/laragon/www/SonotownProjet/templates/search/index.html.twig</code></li>
-    </ul>
-</div>
+    <h2>Page de recherche</h2>
+
+    <div id="search-page-search-zone">
+
+        <div id="search-page-input">
+
+            <form id="filters">
+
+
+            {# On parcours le tableau des genres musicaux #}
+            {% for genreMusical in genreMusicals %}
+
+                {# On crée un input de type checkbox pour les choisir les genres musicaux #}
+                {# on indique dans name que genreMusicals est un tableau #}
+                {# On attribut l'id du genre à id de l'input #}
+
+                <p><input type="checkbox" name="genreMuscials[]" id="genre{{genreMusical.id}}" value="{{genreMusical.id}}">
+                <label for="{{genreMusical.id}}">{{genreMusical.nomGenreMusical}}</label></p>
+                {# <input type="submit" > #}
+
+            {% endfor %}
+                
+            </form>
+
+            
+        </div>
+        
+    </div>
+
+
+    {# </div>
+    <div id="search-page-genreMusical">
+
+    </div>
+    <div id="search-page-submit"> #}
+
+    <div id="search-page-result-zone">
+
+        <h3>Résultats</h3>
+
+        <div id="search-page-result-search">
+
+            {# {% for genreMusical in genreMusicals %}
+
+                {{ genreMusical.nomGenreMusical }}
+
+                {% for album in genreMusical.albums %}
+                    {# <p>{{ album.genreMusicals}}</p> #}
+                    {# <p>{{ album.nomAlbum }}</p> #}
+                {# {% endfor %}
+
+
+            {% endfor %}  #}
+
+            {% for album in albums %}
+                <p>{{ album.nomAlbum }}</p>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+    <script src="{{ asset('js/filters.js') }}"></script>
+
+    
 {% endblock %}

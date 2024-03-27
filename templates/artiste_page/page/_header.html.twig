@@ -9,33 +9,50 @@
         <p>{{ user.biographie}}</p>
 
         <div id="artiste-link">
+
             <div class="btn-suivre">
-                {% if app.user.follows is defined and not app.user.follows.contains(user) %}
-                <a href="{{ path('follow_artiste', {'userId': app.user.id, 'slug': user.slug}) }}">Follow</a>
+
+                {# Si l'utilisateur connecté est identique à l'utilisateur de la page #}
+                {% if app.user.id == user.id %}
+
+                {# On affiche le nombre de followers #}
+                <span>{{ user.followers|length }} Followers</span>   
+                
+                {# Si follows est définit et que l'utilisateur connecté ne suit pas l'utilisateur de la page, on affiche le lien pour le follow #}
+                {% elseif app.user.follows is defined and not app.user.follows.contains(user) %}
+                <a href="{{ path('follow_artiste', {'userId': app.user.id, 'artisteId': user.id}) }}">Follow</a>
+
+                {# Sino on affiche le lien pour l'unfollow #}
                 {% else %}
-                <a href="{{ path('unfollow_artiste', {'userId': app.user.id, 'slug': user.slug}) }}">Unfollow</a>
+                <a href="{{ path('unfollow_artiste', {'userId': app.user.id, 'artisteId': user.id}) }}">Unfollow</a>
                 {% endif %}
             </div>
 
+            {# artiste-page contient un lien pour rediriger vers les albums de l'artiste ainsi qu'un lien pour rediriger vers les concerts de l'artiste  #}
             <div class="artiste-page-link">
+
                 <a href="{{ path('albums_per_artiste', {'slug': user.slug}) }}">Albums</a>
                 <a href="{{ path('concerts_per_artiste', {'slug': user.slug}) }}">Concerts</a>
+                
             </div>
+            
         </div>
     </div> 
 
+    {# artiste-aside contient l'avatar de l'artiste, des liens vers ses réseaux sociaux et un lien pour éditer son profil #}
     <div class="artiste-aside">
 
         <div class="edit-artiste">
     
-    {% if is_granted('ROLE_ARTISTE') and app.user.slug == user.slug %} 
+        {# Si l'utilisateur à le rôle artiste et que le slug de l'utilisateur connecté est identique au slug de l'user à qui appartient la page #}
+        {% if is_granted('ROLE_ARTISTE') and app.user.slug == user.slug %} 
 
             <a href="{{ path('artiste_edit', {'slug': app.user.slug}) }}">Éditer le profil artiste</a>
 
-    {% endif %}
+        {% endif %}
 
             <figure class="avatar">
-                <img src="{{asset('uploads/avatar/mini/300x300-' ~ user.avatar)}}" alt="avatar {{ user.nomArtiste }}">
+                <img src="{{asset('uploads/avatar/mini/300x300-' ~ user.avatar)}}" alt="Avatar de {{ user.nomArtiste }}">
             </figure>
         </div>
 

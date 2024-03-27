@@ -10,103 +10,140 @@
 
   <div class="artiste-main">
       
+    {# commentaire-container contient les commentaires ainsi que le formulaire d'ajout de commentaire #}
     <div id="commentaire-container">
 
-      <div id="commentaire-header">
-
-        <h3>Commentaires</h3>
-
-      </div>
+      <h3>Commentaires</h3>
       
+      {# On parcours le tableau de commentaire posté sur la page de l'artiste #}
       {% for commentaire in commentaires %}
       
-      <div class="commentaire-post">
+        {# commentaire-post contient tout les commentaires #}
+        <div class="commentaire-post">
 
-        <div class="post-title">
+          {# post-title contient le nom de celui qui a émis le commentaire, le lien supprimé ainsi que le lien ban et unban #}
+          <div class="post-title">
 
-          {# Si l'utilisateur ayant écrit le commentaire à encore un compte #}
-          {% if commentaire.commenter %}
+            {# Si l'utilisateur ayant écrit le commentaire à encore un compte #}
+            {% if commentaire.commenter and commentaire.commenter.ban == false %}
 
+              {# Affiche le pseudo de celui qui émis le commentaire #}
               <span>{{ commentaire.commenter.pseudo }}</span> 
-          
-          {% else %}
+            
+            {# Si l'utilisateur est supprimé #}
+            {% else %}
 
               <span>Utilisateur supprimé</span>
-            
-          {% endif %}
-
-            <span>{{ commentaire.dateCreation | date("m/d/Y")}} </span>
-          {% if commentaire.commenter == null %}
-  
-          {% elseif is_granted('ROLE_ADMIN') or is_granted('ROLE_ARTISTE') and app.user.id == commentaire.repondre.id %}
-
-            <a href="{{ path('delete_commentaire', {'userId': user.id, 'commentaireId': commentaire.id}) }}">Supprimer</a>
-            
-          {% elseif commentaire.commenter is not null and commentaire.commenter.id == app.user.id %}
-
-            <a href="{{ path('delete_commentaire', {'userId': user.id, 'commentaireId': commentaire.id}) }}">Supprimer</a>
-
-          {% endif %}
-
-          {# Si le commentaire a été banni #}
-
-          <div class="ban">
-
-            {% if commentaire.ban == false and commentaire.commenter is not null %}
-            
-            <a href="{{ path('ban_commentaire', {'commentaireId': commentaire.id}) }}">Ban</a>
-
-            {% elseif commentaire.ban == true and is_granted('ROLE_ADMIN') or is_granted('ROLE_ARTISTE') and user.id == commentaire.repondre.id %}
-  
-            <a href="{{ path('unban_commentaire', {'commentaireId': commentaire.id}) }}">Unban</a>
-            
+              
             {% endif %}
+
+              {# Affiche la date d'émission du commentaire au format jour/mois/année en utilisant la fonction twig date #}
+              <span>{{ commentaire.dateCreation | date("d/m/Y")}} </span>
+
+                          {# Conditions pour afficher le lien supprimer  #}
+
+            {# Si l'utilisateur qui a écrit 
+              et que celui qui a écrit le message est identique à celui connecté
+              et que celui qui a écrit #}
+            {# Le lien supprimer n'est pas affiché #}
+
+            {% if commentaire.commenter is not null and commentaire.commenter.id == app.user.id and commentaire.commenter.id == user.id and commentaire.ban == false %}
+
+              <a href="{{ path('ban_commentaire', {'commentaireId': commentaire.id}) }}">Supprimer</a>
+
+            {% elseif commentaire.ban == true and commentaire.commenter.id == user.id %}
+
+            {% endif %}
+{# 
+            {% if commentaire.commenter == null %}
+
+            {# Si l'utilisateur à le rôle admin ou si l'utilisateur à le rôle 
+            artiste et que c'est sa page, le lien supprimé est affiché #}
+            {# {% elseif is_granted('ROLE_ADMIN') or is_granted('ROLE_ARTISTE') and app.user.id == commentaire.repondre.id %}
+
+              <a href="{{ path('delete_commentaire', {'userId': user.id, 'commentaireId': commentaire.id}) }}">Supprimer</a> #}
+              
+            {# Si l'utilisateur qui a commenté existe et que le commentaire a été émis par lui #}
+            {# {% elseif commentaire.commenter is not null and commentaire.commenter.id == app.user.id %}
+
+              <a href="{{ path('delete_commentaire', {'userId': user.id, 'commentaireId': commentaire.id}) }}">Supprimer</a>
+
+            {% endif %} #}
+
+            {# ban contien les liens ban et unban #}
+            <div class="ban">
+              
+              {# Si le commentaire n'est pas banni 
+              et que celui qui a écrit le commentaire existe 
+              et que le celui qui a écrit le commentaire est identique à l'utilisateur à qui appartient la page, 
+              on affiche le lien ban #}
+
+              {% if commentaire.ban == false and commentaire.commenter is not null and commentaire.commenter.id != user.id %}
+              
+                <a href="{{ path('ban_commentaire', {'commentaireId': commentaire.id}) }}">Ban</a>
+
+              {# Si le commentaire est ban 
+                et que l'utilisateur a le rôle admin 
+                ou que c'est la page de l'utilisateur ayant le rôle artiste, 
+                le lien unban est affiché #}
+              {% elseif commentaire.ban == true and is_granted('ROLE_ADMIN') or is_granted('ROLE_ARTISTE') and user.id == commentaire.repondre.id and commentaire.commenter.id != user.id %}
+
+                <a href="{{ path('unban_commentaire', {'commentaireId': commentaire.id}) }}">Unban</a>
+              
+              {% endif %}
+
+            </div>
 
           </div>
 
+          {# post-text contient le commentaire #}
+          <div class="post-text">
+
+            {# Si le commentaire a été banni on affiche ce message #}
+            {% if commentaire.ban == true %}
+              
+            <p>Commentaire supprimé ou ayant enfreint les règles.</p>
+
+            {% else %}
+              
+            <p>{{ commentaire.message}}</p>
+
+            {% endif %}
+
+          </div>
+            
         </div>
 
-        <div class="post-text">
+      {% endfor %}
 
-          {% if commentaire.ban == true %}
-            
-          <p>Commentaire supprimé ou ayant enfreint les règles.</p>
-
-          {% else %}
-            
-          <p>{{ commentaire.message}}</p>
-
-          {% endif %}
-
-        </div>
-          
-      </div>
-
-        {% endfor %}
-
-
+      {# commentaire-form contient le formulaire pour poster un commentaire #}
       <div id="commentaire-form">
 
+        {# Si l'utilisateur connecté follow l'utilisateur de la page #}
+        {% if app.user.follows is defined and app.user.follows.contains(user) or app.user.id == user.id %}
+          
         <h4>Ecrire un commentaire</h4>
 
         <form id="new-commentaire" action='{{ path('new_commentaire', {'userId': app.user.id, 'artisteId': user.id } ) }}' method="post">
     
           <label for="message"></label>
-    
-            <input type="textarea" name="message" >
+          <input type="textarea" name="message">
     
           <input type="submit" value="Valider">
     
         </form> 
+        {% else %}
+
+        <p>Vous devez <a href="{{ path('follow_artiste', {'userId': app.user.id, 'artisteId': user.id}) }}">suivre</a> {{ user.nomArtiste }} pour pouvoir commenter.</p>
+
+        {% endif %}
+
 
       </div>
 
     </div>
 
-
-
-
-    </div>
+  </div>
 
 </section>
 

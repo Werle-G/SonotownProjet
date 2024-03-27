@@ -42,15 +42,13 @@ class CommentaireController extends AbstractController
         $artiste = $userRepository->find($artisteId);
 
         // On récupère le message via la méthode get de la classe Request
-        
         if($request->isMethod("POST")) {
 
             // $request->request->get('message') : récupère les données via la méthode POST
-            // $request->get('message') : récupère les données via la méthode GET et POST
             $message = $request->request->get('message');
 
-            // Si userSession ainsi que artiste et addCommentaire existent
-            if($userSession && $artiste && $message){
+            // Si userSession, artiste et addCommentaire existent en rentre dans la condition
+            if($userSession && $artiste && $message) {
 
                 // On crée un nouvel objet commentaire
                 $commentaire = new Commentaire();
@@ -76,7 +74,6 @@ class CommentaireController extends AbstractController
             }
         }
 
-
         // On retourne la vue de la page de l'artiste
         return $this->redirectToRoute('artiste_page', ['artisteId' => $artisteId]); 
         
@@ -86,35 +83,44 @@ class CommentaireController extends AbstractController
     // L'artiste peut supprimer un commentaire 
     // L'utilisateur ayant crée le commentaire peut supprimer le commentaire 
     // L'administrateur peut supprimer le commentaire
-    #[Route('/user/{userId}/commentaire/{commentaireId}/delete', name: 'delete_commentaire')]
-    public function delete(
-        $userId,
-        $commentaireId,
-        UserRepository $userRepository,
-        EntityManagerInterface $entityManager,
-        CommentaireRepository $commentaireRepository, 
-    ): Response
-    {
+    // #[Route('/user/{userId}/commentaire/{commentaireId}/delete', name: 'delete_commentaire')]
+    // public function delete(
+    //     $userId,
+    //     $commentaireId,
+    //     UserRepository $userRepository,
+    //     EntityManagerInterface $entityManager,
+    //     CommentaireRepository $commentaireRepository, 
+    // ): Response
+    // {
         
-        $user = $userRepository->find($userId);
+    //     $this->denyAccessUnlessGranted('ROLE_ARTISTE');
 
-        $commentaire = $commentaireRepository->find($commentaireId);
+    //     // user récupère l'utilisateur ayant émis le commentaire
+    //     // $user = $userRepository->find($userId);
 
-        $artisteId = $commentaire->getRepondre()->getId();
+    //     // Récupère le commentaire par l'intermédiaire de son id
+    //     $commentaire = $commentaireRepository->find($commentaireId);
 
-        $user = $commentaire->getCommenter();
+    //     // On récupère l'id de l'artiste en passant par l'objet commentaire
+    //     $artisteId = $commentaire->getRepondre()->getId();
 
-        $user->removeCommentaire($commentaire);
+    //     // On récupère l'utilisateur en passant par l'objet commentaire
+    //     $user = $commentaire->getCommenter();
 
-        $entityManager->persist($user);
+    //     // L'utilisateur efface le nom de celui qui l'a émis
+    //     $user->removeCommentaire($commentaire);
 
-        $entityManager->flush();
+    //     // On prepare la requête
+    //     $entityManager->persist($user);
 
-        return $this->redirectToRoute('artiste_page', ['artisteId' => $artisteId]);
-    }
+    //     // On execute la requête
+    //     $entityManager->flush();
+
+    //     // On redirige sur la page de l'artiste en utilisant l'id
+    //     return $this->redirectToRoute('artiste_page', ['artisteId' => $artisteId]);
+    // }
 
     // Fonction pour bannir un commentaire
-    // Cette fonction cache le message du commentaire
     #[Route('/commentaire/{commentaireId}/ban', name: 'ban_commentaire')]
     public function banCommentaire(
         $commentaireId,
@@ -123,16 +129,22 @@ class CommentaireController extends AbstractController
     ): Response
     {
 
+        // On récupère le commentaire au moyen de son id
         $commentaire = $commentaireRepository->find($commentaireId);
 
+        // On récupère l'id de l'artiste en passant par l'objet commentaire en récupérant l'id de l'artiste qui le reçoit
         $artisteId = $commentaire->getRepondre()->getId();
 
+        // On affecte la valeur true a setBan
         $commentaire->setBan(true);
 
+        // On prépare la base de donnée
         $entityManager->persist($commentaire);
 
+        // On execute la requête
         $entityManager->flush();
 
+        // On redirige l'utilisateur sur la page artiste
         return $this->redirectToRoute('artiste_page', ['artisteId' => $artisteId]);
     }
 
@@ -145,17 +157,22 @@ class CommentaireController extends AbstractController
     ): Response
     {
 
+        // On récupère le commentaire au moyen de son id
         $commentaire = $commentaireRepository->find($commentaireId);
 
+        // On récupère l'id de l'artiste en passant par l'objet commentaire en récupérant l'id de l'artiste qui le reçoit
         $artisteId = $commentaire->getRepondre()->getId();
 
+        // On affecte la valeur false a setBan
         $commentaire->setBan(false);
 
+        // On prépare la base de donnée
         $entityManager->persist($commentaire);
 
+        // On execute la requête
         $entityManager->flush();
 
-
+        // On redirige l'utilisateur sur la page artiste
         return $this->redirectToRoute('artiste_page', ['artisteId' => $artisteId]);
     }
 

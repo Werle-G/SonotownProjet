@@ -36,6 +36,30 @@ class AlbumRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+   /**
+    * Retourne le nombre d'album
+    * @return void 
+    */
+   public function findAlbums($filters = null): array
+   {
+       $query = $this->createQueryBuilder('a')
+            ->Where('a.ban = false');
+
+
+        if($filters != null){
+
+            $query->andWhere('a.genreMusicals IN(:genres)')
+            ->setParameter(':genres', array_values($filters));
+        }
+
+        $query->orderBy('a.id', 'ASC');
+        ;
+
+        return $query->getQuery()->getResult();
+   }
+
+
+
 //    public function findOneBySomeField($value): ?Album
 //    {
 //        return $this->createQueryBuilder('a')

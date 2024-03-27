@@ -549,7 +549,39 @@ header{
     font-size: 20px;
 }
 
+/* Page de recherche */
 
+#search-lien{
+    font-size: 15px;
+}
+
+
+#search-page{}
+
+#search-page h2{}
+
+#search-page-search-zone{
+
+}
+
+#search-page-input{
+
+}
+
+#search-page-genreMusical{
+
+}
+
+#search-page-submit{}
+
+#search-page-relsult-zone{
+    
+}
+
+#search-page-relsult-zone h3{
+}
+
+#search-page-result-search{}
 
 /* Page artiste Profil */
 
@@ -715,10 +747,9 @@ header{
     z-index: 1;
     transition: .5s;
     font-size: var(--font-size-link);
-
 }
 
-.btn-suivre a::before {
+/* .btn-suivre a::before {
     content: '';
     position: absolute;
     top: 0;
@@ -728,7 +759,7 @@ header{
     background: var(--color-background-brown-3);
     z-index: -1;
     transition: .5s;
-}
+} */
 
 .btn-suivre a{
     background: transparent;
@@ -737,8 +768,16 @@ header{
     text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 3px -5px;
 }
 
-.btn-suivre a:hover::before{
-    width: 100%;
+.btn-suivre:hover{
+    /* width: 100%; */
+    background: var(--color-background-brown-2);
+}
+
+.btn-suivre span{
+    color: var(--color-background-brown-3) !important;
+    font-size: var(--font-size-link);
+    align-self: center;
+
 }
 
 
