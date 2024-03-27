@@ -37,11 +37,10 @@ class SearchController extends AbstractController
         $filters = $request->get("genreMusicals");
         // dd($filters);
 
-
         $albums = $albumRepository->findAll();
 
         $albums = $albumRepository->findAlbums($filters);
-        dd($albums);
+        // dd($albums);
 
         // On vérifie si on a une requête Ajax
         if($request->get('ajax')){
